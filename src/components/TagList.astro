@@ -1,0 +1,24 @@
+---
+import { laneOf, laneTag, laneVar, tagUrl } from '../lib/posts';
+
+interface Props {
+  tags: string[];
+}
+
+const { tags } = Astro.props;
+// Only the tag that sets the post's topic lane carries the color swatch; `other` posts show none.
+const swatchTag = laneTag(tags);
+const lane = laneOf(tags);
+---
+{tags.length > 0 && (
+  <ul class="tags" aria-label="Tags">
+    {tags.map((tag) => (
+      <li>
+        <a class="tag" href={tagUrl(tag)}>
+          {tag === swatchTag && <span class="sw" style={`--lane: ${laneVar(lane)}`} aria-hidden="true"></span>}
+          {tag}
+        </a>
+      </li>
+    ))}
+  </ul>
+)}

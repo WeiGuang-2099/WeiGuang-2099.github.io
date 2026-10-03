@@ -1,0 +1,50 @@
+---
+/*
+ * Waterfall list: one row per post. Columns are date, post (title, description, tags) and a timeline
+ * cell where the post's reading time is drawn as a bar on the list's shared minute axis.
+ */
+import TitleSegments from './TitleSegments.astro';
+import TagList from './TagList.astro';
+import { laneVar, type Axis, type PostSummary } from '../lib/posts';
+import { isoDate, pct, tickLabel } from '../lib/format';
+
+interface Props {
+  items: PostSummary[];
+  axis: Axis;
+  /** Heading level of the post titles, so the outline stays correct on every page. */
+  titleTag?: 'h2' | 'h3';
+}
+
+const { items, axis, titleTag: TitleTag = 'h3' } = Astro.props;
+const intervals = axis.ticks.length - 1;
+---
+<div class="panel wf" style={`--axis-max: ${axis.max}; --intervals: ${intervals}`}>
+  <div class="wf-head" aria-hidden="true">
+    <span class="c-date">Date</span>
+    <span class="c-post">Post</span>
+    <div class="c-time">
+      <div class="ruler">
+        {axis.ticks.map((tick, i) => (
+          <span style={`--at: ${pct(tick, axis.max)}`}>
+            {tickLabel(tick)}{i === axis.ticks.length - 1 && <span class="unit">min</span>}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+  <ol class="wf-rows">
+    {items.map(({ post, url, lane, minutes, draft }) => (
+      <li class:list={['wf-row', { 'is-draft': draft }]} style={`--lane: ${laneVar(lane)}; --dur: ${minutes}`}>
+        <time class="c-date" datetime={isoDate(post.data.pubDate)}>{isoDate(post.data.pubDate)}</time>
+        <div class="c-post">
+          <TitleTag class="post-title" lang={post.data.lang}>{draft && <span class="draft-mark" lang="en">Draft</span>}<a href={url}><TitleSegments title={post.data.title} /></a></TitleTag>
+          <p class="post-desc" lang={post.data.lang}>{post.data.description}</p>
+          <TagList tags={post.data.tags} />
+        </div>
+        <div class="c-time">
+          <div class="span-row"><span class="bar" aria-hidden="true"></span><span class="dur"><span class="sr-only">Reading time: </span>{minutes} min</span></div>
+        </div>
+      </li>
+    ))}
+  </ol>
+</div>

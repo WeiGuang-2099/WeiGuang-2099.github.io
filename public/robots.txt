@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://weiguang-2099.github.io/sitemap-index.xml

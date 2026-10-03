@@ -1,0 +1,12 @@
+---
+import { titleSegments } from '../lib/format';
+
+interface Props {
+  title: string;
+}
+
+const segments = titleSegments(Astro.props.title);
+---
+{segments.length === 1 ? segments[0] : segments.map((segment, i) => (
+  <Fragment>{i > 0 && segments[i - 1].endsWith(':') ? ' ' : ''}<span class="seg">{segment}</span></Fragment>
+))}

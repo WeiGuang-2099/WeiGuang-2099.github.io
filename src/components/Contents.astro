@@ -1,0 +1,64 @@
+---
+/*
+ * The contents waterfall: the post drawn as a trace. The root row is the whole post; each h2-h4 is a
+ * child span whose bar starts where the section starts and is as long as the section takes to read
+ * (its own text plus its subsections). Durations are shares of the reading time in the header, so
+ * the rail never contradicts it. Without JS every row is a plain link.
+ */
+import TocItems, { type TocNode } from './TocItems.astro';
+import TitleSegments from './TitleSegments.astro';
+import { contentsAxis, type TocSection } from '../lib/posts';
+import { pct, tickLabel } from '../lib/format';
+
+interface Props {
+  title: string;
+  sections: TocSection[];
+  /** measured reading time in seconds */
+  seconds: number;
+  /** displayed reading time in whole minutes */
+  minutes: number;
+  lane: string;
+  lang: string;
+}
+
+const { title, sections, seconds, minutes, lane, lang } = Astro.props;
+
+const roots: TocNode[] = [];
+const stack: TocNode[] = [];
+for (const section of sections) {
+  while (stack.length && stack[stack.length - 1].section.depth >= section.depth) stack.pop();
+  const node: TocNode = { section, level: stack.length + 1, children: [] };
+  (stack.length ? stack[stack.length - 1].children : roots).push(node);
+  stack.push(node);
+}
+
+const axis = contentsAxis(minutes);
+const line = 'linear-gradient(var(--rule-strong), var(--rule-strong))';
+const grid = 'linear-gradient(var(--rule), var(--rule))';
+const inner = axis.ticks.slice(1, -1);
+const rulerStyle = [
+  `--tick-img: ${axis.ticks.map(() => line).join(', ')}`,
+  `--tick-pos: ${axis.ticks.map((t) => `${pct(t, axis.max)} 0`).join(', ')}`,
+].join('; ');
+const listStyle = [
+  `--lane: ${lane}`,
+  `--grid-img: ${inner.length ? inner.map(() => grid).join(', ') : 'none'}`,
+  `--grid-pos: ${inner.length ? inner.map((t) => `${pct(t, axis.max)} 0`).join(', ') : '0 0'}`,
+].join('; ');
+---
+<div class="toc-ruler" aria-hidden="true" style={rulerStyle}>
+  {axis.ticks.map((tick, i) => (
+    <span style={`--at: ${pct(tick, axis.max)}`}>{tickLabel(tick)}{i === axis.ticks.length - 1 ? ' min' : ''}</span>
+  ))}
+</div>
+<ol class="toc-list" style={listStyle}>
+  <li>
+    <a class="toc-link d0" href="#post-title" style="--depth: 0; --start: 0%; --len: 100%">
+      <span class="t" lang={lang}><TitleSegments title={title} /></span>
+      <span class="d">{minutes} min</span>
+      <span class="track" aria-hidden="true"></span>
+    </a>
+    {roots.length > 0 && <TocItems nodes={roots} total={seconds} shown={minutes * 60} lang={lang} />}
+  </li>
+</ol>
+<p class="toc-note">Each bar shows where a section starts in the post and how long it takes to read.</p>

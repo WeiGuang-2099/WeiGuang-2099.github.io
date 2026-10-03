@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts, laneVar, listAxis, summarize, type Axis } from '../../lib/posts';
+import { groupByTag, type TagGroup } from '../../lib/tags';
+import { plural } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const all = await summarize(await getPosts());
+  // Same scale as the home page and the archive, so a bar means the same thing everywhere.
+  const axis = listAxis(all.map((s) => s.minutes));
+  return groupByTag(all).map((group) => ({ params: { tag: group.slug }, props: { group, axis } }));
+}
+
+interface Props {
+  group: TagGroup;
+  axis: Axis;
+}
+
+const { group, axis } = Astro.props;
+---
+<BaseLayout title={`Posts tagged ${group.name}`} description={`Posts on Dawning tagged “${group.name}”, newest first.`}>
+  <div class="container page">
+    <header class="page-head">
+      <p class="page-kicker"><a class="text-link" href="/tags/">Tags</a></p>
+      <h1>
+        {group.lane && <span class="sw sw-lg" style={`--lane: ${laneVar(group.lane)}`} aria-hidden="true"></span>}
+        {group.name}
+      </h1>
+      <p class="page-dek">{plural(group.items.length, 'post')}, {group.minutes} min of reading. Bars show reading time on a 0 to {axis.max} min scale.</p>
+    </header>
+    <div class="container-bleed">
+      <PostList items={group.items} axis={axis} titleTag="h2" />
+    </div>
+  </div>
+</BaseLayout>

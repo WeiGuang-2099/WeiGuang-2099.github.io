@@ -1,0 +1,38 @@
+---
+import TitleSegments from './TitleSegments.astro';
+import { pct, sectionDuration } from '../lib/format';
+import type { TocSection } from '../lib/posts';
+
+export interface TocNode {
+  section: TocSection;
+  level: number;
+  children: TocNode[];
+}
+
+interface Props {
+  nodes: TocNode[];
+  /** measured length of the post in seconds (the axis runs over it) */
+  total: number;
+  /** seconds shown for the whole post (its displayed minutes x 60) */
+  shown: number;
+  lang: string;
+}
+
+const { nodes, total, shown, lang } = Astro.props;
+---
+<ol>
+  {nodes.map(({ section, level, children }) => (
+    <li>
+      <a
+        class={`toc-link d${level}`}
+        href={`#${section.slug}`}
+        style={`--depth: ${level}; --start: ${pct(section.start, total)}; --len: ${pct(section.span, total)}`}
+      >
+        <span class="t" lang={lang}><TitleSegments title={section.text} /></span>
+        <span class="d">{sectionDuration((section.span / total) * shown)}</span>
+        <span class="track" aria-hidden="true"></span>
+      </a>
+      {children.length > 0 && <Astro.self nodes={children} total={total} shown={shown} lang={lang} />}
+    </li>
+  ))}
+</ol>

@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../lib/site';
+import { getPosts, postUrl } from '../lib/posts';
+
+// "The first post" is Hello World, which tells the story of the name (the oldest post if it is ever renamed).
+const posts = await getPosts();
+const first = posts.find((post) => post.id === 'hello-world') ?? posts.at(-1);
+---
+<BaseLayout
+  title="About"
+  description="About Dawning (缉熙), an AI engineer writing about RAG systems, multi-agent orchestration and LLM application engineering."
+  mainClass="container article-layout no-rail"
+>
+  <article class="sheet" aria-labelledby="post-title">
+    <header class="post-head">
+      <h1 id="post-title">About</h1>
+    </header>
+
+    <figure class="motto">
+      <blockquote lang="zh-CN">
+        <p>日就月将，学有缉熙于光明。</p>
+      </blockquote>
+      <p class="motto-en">Gain a little each day and more each month; keep learning, and it gathers into light.</p>
+      <figcaption><cite lang="zh-CN">《诗经·周颂·敬之》</cite></figcaption>
+    </figure>
+
+    <div class="prose" lang="en">
+      <p>Dawning (<span lang="zh-CN">缉熙</span>) is the pen name of an AI engineer who builds retrieval-augmented generation systems, multi-agent workflows and LLM applications. This site is a working notebook: design notes, failure modes, evaluations, and the occasional result that changed my mind.</p>
+
+      <h2 id="the-name">The name</h2>
+      <p><span lang="zh-CN">缉熙</span> comes from the Book of Songs (<span lang="zh-CN">《诗经·周颂·敬之》</span>) and describes learning that accumulates day by day until it turns into light. Dawning says the same thing in English: the sky growing lighter, and an idea slowly becoming clear. {first ? <a href={postUrl(first)}>The first post</a> : 'The first post'} tells the longer story.</p>
+
+      <h2 id="elsewhere">Elsewhere</h2>
+      <ul class="link-list">
+        <li><a href={SITE.github}>GitHub</a> <span class="link-note">github.com/WeiGuang-2099</span></li>
+        <li><a href="/rss.xml">RSS feed</a> <span class="link-note">new posts, with title and summary</span></li>
+      </ul>
+
+      <h2 id="this-site">This site</h2>
+      <p>Built with Astro and hosted on GitHub Pages. No UI framework, no client-side framework; the only scripts are the theme toggle, the copy buttons and the contents highlighter. <a href={SITE.repo}>The source is on GitHub.</a></p>
+    </div>
+  </article>
+</BaseLayout>
