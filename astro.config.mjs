@@ -52,6 +52,8 @@ export default defineConfig({
     }),
     shikiConfig: {
       themes: { light: traceLight, dark: traceDark },
+      // Datalog has no grammar of its own; its syntax is a subset of Prolog's.
+      langAlias: { datalog: 'prolog' },
       defaultColor: false,
       transformers: [transformerCodeBlock()],
     },

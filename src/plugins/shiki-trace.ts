@@ -149,6 +149,7 @@ const LANGUAGE_NAMES: Record<string, string> = {
   c: 'C',
   cpp: 'C++',
   css: 'CSS',
+  datalog: 'Datalog',
   diff: 'Diff',
   dockerfile: 'Dockerfile',
   go: 'Go',

@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="348" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- The book's Lucy and Alain example as a property graph, simplified: Lucy was born in Idaho, Alain in
+       Beaune, both live in London, and they are married. Every edge runs vertically or horizontally, so
+       the arrowheads never change angle with the figure's width: columns are percentages (14 / 50 / 86,
+       Europe and Alain at 68, Lucy at 32) and px offsets come from nested svgs or a translate. Lines are
+       drawn first and run to box centres; the boxes, drawn last with the page color, cover their ends.
+       No viewBox: text keeps its size. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- edges -->
+  <g style="stroke: var(--muted, #5D6672); stroke-width: 1; fill: none">
+    <!-- within: Idaho -> United States -> North America -->
+    <line x1="14%" y1="141" x2="14%" y2="109" />
+    <line x1="14%" y1="75" x2="14%" y2="43" />
+    <!-- within: London -> England -> United Kingdom -> Europe -->
+    <line x1="50%" y1="207" x2="50%" y2="175" />
+    <line x1="50%" y1="141" x2="50%" y2="109" />
+    <line x1="50%" y1="75" x2="50%" y2="22" />
+    <line x1="50%" y1="22" x2="68%" y2="22" />
+    <!-- within: Beaune -> France -> Europe -->
+    <line x1="86%" y1="207" x2="86%" y2="109" />
+    <line x1="86%" y1="75" x2="86%" y2="22" />
+    <line x1="86%" y1="22" x2="68%" y2="22" />
+    <!-- born_in: Lucy -> Idaho -->
+    <line x1="32%" y1="292" x2="14%" y2="292" />
+    <line x1="14%" y1="292" x2="14%" y2="175" />
+    <!-- lives_in: Lucy -> London (8px left of the column) and Alain -> London (8px right) -->
+    <g transform="translate(-8 0)">
+      <line x1="32%" y1="292" x2="50%" y2="292" />
+      <line x1="50%" y1="292" x2="50%" y2="241" />
+    </g>
+    <g transform="translate(8 0)">
+      <line x1="68%" y1="292" x2="50%" y2="292" />
+      <line x1="50%" y1="292" x2="50%" y2="241" />
+    </g>
+    <!-- born_in: Alain -> Beaune -->
+    <line x1="68%" y1="292" x2="86%" y2="292" />
+    <line x1="86%" y1="292" x2="86%" y2="241" />
+    <!-- married: Lucy -> Alain, below the two boxes -->
+    <line x1="32%" y1="305" x2="32%" y2="326" />
+    <line x1="32%" y1="326" x2="68%" y2="326" />
+    <line x1="68%" y1="326" x2="68%" y2="313" />
+  </g>
+
+  <!-- arrowheads: the tip sits on the edge of the target box -->
+  <g style="fill: var(--muted, #5D6672)">
+    <svg x="14%" y="101" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+    <svg x="14%" y="35" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+    <svg x="50%" y="167" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+    <svg x="50%" y="101" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+    <svg x="68%" y="22" overflow="visible"><path d="M-39 -3.5V3.5L-31 0Z" /><path d="M39 -3.5V3.5L31 0Z" /></svg>
+    <svg x="86%" y="101" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+    <svg x="14%" y="167" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+    <svg x="50%" y="233" overflow="visible"><path d="M-11.5 8H-4.5L-8 0Z" /><path d="M4.5 8H11.5L8 0Z" /></svg>
+    <svg x="86%" y="233" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+    <svg x="68%" y="305" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+  </g>
+
+  <!-- edge labels -->
+  <g style="font-family: var(--font-mono, monospace); font-size: 12px; fill: var(--muted, #5D6672)">
+    <text x="14%" dx="7" y="59">within</text>
+    <text x="14%" dx="7" y="125">within</text>
+    <text x="50%" dx="7" y="52">within</text>
+    <text x="50%" dx="7" y="125">within</text>
+    <text x="50%" dx="7" y="191">within</text>
+    <text x="86%" dx="-7" y="52" text-anchor="end">within</text>
+    <text x="86%" dx="-7" y="158" text-anchor="end">within</text>
+    <text x="14%" dx="7" y="238">born_in</text>
+    <text x="50%" dx="-15" y="268" text-anchor="end">lives_in</text>
+    <text x="50%" dx="15" y="268">lives_in</text>
+    <text x="86%" dx="-7" y="254" text-anchor="end">born_in</text>
+    <text x="50%" y="342" text-anchor="middle">married</text>
+  </g>
+
+  <!-- vertices: locations -->
+  <g style="font-size: 14px; fill: var(--ink, #1B222B)">
+    <svg x="14%" y="22" overflow="visible"><rect x="-30.5" y="-12.5" width="61" height="25" rx="2" style="fill: var(--bg, #F5F6F3); stroke: var(--rule-strong, #B1B8BB)" /><text y="5" text-anchor="middle">北美洲</text></svg>
+    <svg x="68%" y="22" overflow="visible"><rect x="-30.5" y="-12.5" width="61" height="25" rx="2" style="fill: var(--bg, #F5F6F3); stroke: var(--rule-strong, #B1B8BB)" /><text y="5" text-anchor="middle">欧洲</text></svg>
+    <svg x="14%" y="88" overflow="visible"><rect x="-30.5" y="-12.5" width="61" height="25" rx="2" style="fill: var(--bg, #F5F6F3); stroke: var(--rule-strong, #B1B8BB)" /><text y="5" text-anchor="middle">美国</text></svg>
+    <svg x="50%" y="88" overflow="visible"><rect x="-30.5" y="-12.5" width="61" height="25" rx="2" style="fill: var(--bg, #F5F6F3); stroke: var(--rule-strong, #B1B8BB)" /><text y="5" text-anchor="middle">英国</text></svg>
+    <svg x="86%" y="88" overflow="visible"><rect x="-30.5" y="-12.5" width="61" height="25" rx="2" style="fill: var(--bg, #F5F6F3); stroke: var(--rule-strong, #B1B8BB)" /><text y="5" text-anchor="middle">法国</text></svg>
+    <svg x="14%" y="154" overflow="visible"><rect x="-30.5" y="-12.5" width="61" height="25" rx="2" style="fill: var(--bg, #F5F6F3); stroke: var(--rule-strong, #B1B8BB)" /><text y="5" text-anchor="middle">爱达荷</text></svg>
+    <svg x="50%" y="154" overflow="visible"><rect x="-30.5" y="-12.5" width="61" height="25" rx="2" style="fill: var(--bg, #F5F6F3); stroke: var(--rule-strong, #B1B8BB)" /><text y="5" text-anchor="middle">英格兰</text></svg>
+    <svg x="50%" y="220" overflow="visible"><rect x="-30.5" y="-12.5" width="61" height="25" rx="2" style="fill: var(--bg, #F5F6F3); stroke: var(--rule-strong, #B1B8BB)" /><text y="5" text-anchor="middle">伦敦</text></svg>
+    <svg x="86%" y="220" overflow="visible"><rect x="-30.5" y="-12.5" width="61" height="25" rx="2" style="fill: var(--bg, #F5F6F3); stroke: var(--rule-strong, #B1B8BB)" /><text y="5" text-anchor="middle">博讷</text></svg>
+  </g>
+
+  <!-- vertices: people -->
+  <g style="font-size: 14px; font-weight: 600; fill: var(--ink, #1B222B)">
+    <svg x="32%" y="292" overflow="visible"><rect x="-31.5" y="-12.5" width="63" height="25" rx="2" style="fill: var(--bg, #F5F6F3); stroke: var(--ink, #1B222B)" /><text y="5" text-anchor="middle">Lucy</text></svg>
+    <svg x="68%" y="292" overflow="visible"><rect x="-31.5" y="-12.5" width="63" height="25" rx="2" style="fill: var(--bg, #F5F6F3); stroke: var(--ink, #1B222B)" /><text y="5" text-anchor="middle">Alain</text></svg>
+  </g>
+</svg>
