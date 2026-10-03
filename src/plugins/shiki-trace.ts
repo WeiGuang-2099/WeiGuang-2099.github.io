@@ -1,14 +1,15 @@
 /**
- * Shiki setup for the Trace design: two TextMate themes and a transformer for the code block chrome.
+ * Shiki setup for the site's code blocks: two TextMate themes and a transformer for the code block chrome.
  *
- * Token roles (every text token is at least 4.5:1 on the code well, #F1F3F6 light / #0F1218 dark):
+ * Token roles (every text token is at least 4.5:1 on the code well, #ECEEEA light / #171D24 dark):
  *   plain        variables, parameters, functions, decorators, commands   (functions stay plain on purpose)
- *   keyword      marked by weight (Red Hat Mono 600), not by hue
- *   literal      strings, regexes, numbers, language constants             crimson
- *   type         types and classes                                          low-chroma steel
+ *   keyword      marked by weight (IBM Plex Mono 600), not by hue
+ *   literal      strings, regexes, numbers, language constants             rouge
+ *   type         types and classes                                          muted violet
  *   comment      comments                                                   grey
  *   punctuation  punctuation and operators                                  darker grey
- * The hues are kept away from the topic lane colors, so code never "speaks" the topic language.
+ * The hues are kept away from the topic lane pigments (malachite, ochre, azurite), so code never
+ * "speaks" the topic language.
  *
  * Astro renders both themes at once (`defaultColor: false`), as --shiki-light / --shiki-dark custom
  * properties on every token; src/styles/global.css (the .astro-code span rules) picks one, so the manual
@@ -28,23 +29,23 @@ interface Palette {
 }
 
 const LIGHT: Palette = {
-  bg: '#F1F3F6',
-  plain: '#1D222A',
-  keyword: '#13161B',
-  literal: '#A3303F',
-  type: '#2F5E78',
-  comment: '#666E7B',
-  punct: '#535B68',
+  bg: '#ECEEEA',
+  plain: '#1E252E',
+  keyword: '#11161C',
+  literal: '#A23547',
+  type: '#5A4A86',
+  comment: '#5F6874',
+  punct: '#545E69',
 };
 
 const DARK: Palette = {
-  bg: '#0F1218',
-  plain: '#D8DDE5',
-  keyword: '#EEF1F5',
-  literal: '#F48A96',
-  type: '#92BACF',
-  comment: '#7E8796',
-  punct: '#A0A8B5',
+  bg: '#171D24',
+  plain: '#D5DBE1',
+  keyword: '#EEF2F5',
+  literal: '#EE8C9B',
+  type: '#B4A6E6',
+  comment: '#808B97',
+  punct: '#A2ABB5',
 };
 
 function theme(name: string, type: 'light' | 'dark', p: Palette): ThemeRegistration {

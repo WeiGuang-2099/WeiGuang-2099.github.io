@@ -1,31 +1,29 @@
 ---
 /*
  * Page shell: <head> (SEO, Open Graph, fonts, theme bootstrap), header, footer and the theme toggle.
- * Fonts are self-hosted from @fontsource. Weight sets are chosen so one CSS weight pairs each script
- * with the face that balances it (CSS font matching rounds a missing 500 up to 600 and a missing
- * 700 down to 600):
- *   font-weight 500 -> Red Hat Display 600 + Noto Sans SC 500   (article title, home name)
- *   font-weight 700 -> Red Hat Display 700 + Noto Sans SC 600   (h2-h4, list titles)
- * Noto Sans SC is split into unicode-range slices, so a page only downloads the slices it uses.
+ * Fonts are self-hosted from @fontsource. Two voices: a serif for what people wrote, a monospace for
+ * what the build measured (dates, durations, counts, code).
+ *   Source Serif 4 (variable, with optical sizes)  Latin text; headings get the display cut by size
+ *   Noto Serif SC 400 / 600                         Chinese text (the Source Han Serif design)
+ *   IBM Plex Mono 400 / 500 / 600                   measured values and code
+ * Source Serif renders any weight; for Noto Serif SC, CSS font matching takes 500 down to 400 and 700
+ * down to 600, so one CSS weight always pairs the two scripts.
+ * Noto Serif SC is split into unicode-range slices, so a page only downloads the slices it uses.
  */
-import '@fontsource/red-hat-display/600.css';
-import '@fontsource/red-hat-display/700.css';
-import '@fontsource/red-hat-text/400.css';
-import '@fontsource/red-hat-text/400-italic.css';
-import '@fontsource/red-hat-text/500.css';
-import '@fontsource/red-hat-text/600.css';
-import '@fontsource/red-hat-mono/400.css';
-import '@fontsource/red-hat-mono/600.css';
+import '@fontsource-variable/source-serif-4/opsz.css';
+import '@fontsource-variable/source-serif-4/opsz-italic.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '@fontsource/ibm-plex-mono/600.css';
 import '../styles/global.css';
-// Noto Sans SC's @font-face list is large (one rule per slice and weight), so it is emitted as its own
+// Noto Serif SC's @font-face list is large (one rule per slice and weight), so it is emitted as its own
 // stylesheet and linked at the end of <body>, where it does not block rendering.
-import notoSansSc from '../styles/noto-sans-sc.css?url';
+import notoSerifSc from '../styles/noto-serif-sc.css?url';
 
-// "SC Punct": inside Chinese text, quotes, dashes, the ellipsis and the interpunct come from Noto Sans SC
+// "SC Punct": inside Chinese text, quotes, dashes, the ellipsis and the interpunct come from Noto Serif SC
 // (full width) instead of the Latin face. These are the self-hosted Noto slices that hold those code points.
-import punct400 from '@fontsource/noto-sans-sc/files/noto-sans-sc-latin-400-normal.woff2?url';
-import punct500 from '@fontsource/noto-sans-sc/files/noto-sans-sc-latin-500-normal.woff2?url';
-import punct600 from '@fontsource/noto-sans-sc/files/noto-sans-sc-latin-600-normal.woff2?url';
+import punct400 from '@fontsource/noto-serif-sc/files/noto-serif-sc-latin-400-normal.woff2?url';
+import punct600 from '@fontsource/noto-serif-sc/files/noto-serif-sc-latin-600-normal.woff2?url';
 
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
@@ -53,7 +51,6 @@ const ogImage = new URL(SITE.ogImage.path, Astro.site ?? SITE.url).href;
 
 const punctFaces = [
   [400, punct400],
-  [500, punct500],
   [600, punct600],
 ]
   .map(
@@ -69,13 +66,13 @@ const punctFaces = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F4F5F7" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0F1115" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F5F6F3" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#11161C" />
     <script is:inline>
       /* the browser bar follows a theme the reader picked, not only the system (the colors are --bg) */
       function setThemeColor(t) {
         document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) {
-          m.setAttribute('content', t === 'dark' ? '#0F1115' : '#F4F5F7');
+          m.setAttribute('content', t === 'dark' ? '#11161C' : '#F5F6F3');
         });
       }
       try {
@@ -153,6 +150,6 @@ const punctFaces = [
       })();
     </script>
     <slot name="scripts" />
-    <link rel="stylesheet" href={notoSansSc} />
+    <link rel="stylesheet" href={notoSerifSc} />
   </body>
 </html>

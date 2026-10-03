@@ -19,7 +19,7 @@ for (const item of all) {
   <div class="container page">
     <header class="page-head">
       <h1>Archive</h1>
-      <p class="page-dek">{plural(all.length, 'post')}, {totalMinutes} min of reading. Bars show reading time on a 0 to {axis.max} min scale.</p>
+      <p class="page-dek">{plural(all.length, 'post')}, {totalMinutes} min of reading. Spans show reading time on a 0 to {axis.max} min scale.</p>
     </header>
 
     {[...years].map(([year, items]) => (
@@ -28,9 +28,7 @@ for (const item of all) {
           <h2 id={`y${year}`}>{year}</h2>
           <p class="legend">{plural(items.length, 'post')}</p>
         </div>
-        <div class="container-bleed">
-          <PostList items={items} axis={axis} />
-        </div>
+        <PostList items={items} axis={axis} />
       </section>
     ))}
     {all.length === 0 && <p class="empty">Nothing published yet.</p>}

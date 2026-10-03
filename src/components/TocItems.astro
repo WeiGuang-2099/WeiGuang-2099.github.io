@@ -16,23 +16,28 @@ interface Props {
   /** seconds shown for the whole post (its displayed minutes x 60) */
   shown: number;
   lang: string;
+  /** section number of the parent ("2" for the children of section 2); empty at the top level */
+  prefix?: string;
 }
 
-const { nodes, total, shown, lang } = Astro.props;
+const { nodes, total, shown, lang, prefix = '' } = Astro.props;
+// Section numbers follow the outline (1, 1.1, 1.1.1), the same numbers the headings in the post carry.
+const number = (i: number) => (prefix ? `${prefix}.${i + 1}` : String(i + 1));
 ---
 <ol>
-  {nodes.map(({ section, level, children }) => (
+  {nodes.map(({ section, level, children }, i) => (
     <li>
       <a
         class={`toc-link d${level}`}
         href={`#${section.slug}`}
         style={`--depth: ${level}; --start: ${pct(section.start, total)}; --len: ${pct(section.span, total)}`}
       >
+        <span class="n" aria-hidden="true">{number(i)}</span>
         <span class="t" lang={lang}><TitleSegments title={section.text} /></span>
         <span class="d">{sectionDuration((section.span / total) * shown)}</span>
         <span class="track" aria-hidden="true"></span>
       </a>
-      {children.length > 0 && <Astro.self nodes={children} total={total} shown={shown} lang={lang} />}
+      {children.length > 0 && <Astro.self nodes={children} total={total} shown={shown} lang={lang} prefix={number(i)} />}
     </li>
   ))}
 </ol>

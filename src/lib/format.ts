@@ -1,13 +1,9 @@
-/** 2026-10-03 (list columns: ISO dates in tabular figures line up like trace timestamps). */
+/**
+ * 2026-10-03: every date on the site is an ISO date set in the monospace face, so dates line up in a
+ * column like trace timestamps. Dates are calendar dates, kept in UTC.
+ */
 export function isoDate(date: Date): string {
   return date.toISOString().slice(0, 10);
-}
-
-/** 3 October 2026 (a single value in the attribute row). Dates are calendar dates, kept in UTC. */
-export function longDate(date: Date): string {
-  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(
-    date,
-  );
 }
 
 /** Axis labels: whole numbers stay whole, halves keep one decimal. */

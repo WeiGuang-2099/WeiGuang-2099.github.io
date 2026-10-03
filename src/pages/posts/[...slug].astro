@@ -5,7 +5,7 @@ import TitleSegments from '../../components/TitleSegments.astro';
 import TagList from '../../components/TagList.astro';
 import Contents from '../../components/Contents.astro';
 import { getPosts, getReading, isDraft, laneOf, laneVar, listAxis, postUrl, summarize, type Post } from '../../lib/posts';
-import { isoDate, longDate, plural } from '../../lib/format';
+import { isoDate, plural } from '../../lib/format';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -53,12 +53,12 @@ const sectionCount = plural(reading.sections.length, 'section');
         )}
         <div>
           <dt>{draft ? 'Date' : 'Published'}</dt>
-          <dd><time datetime={isoDate(pubDate)}>{longDate(pubDate)}</time></dd>
+          <dd><time datetime={isoDate(pubDate)}>{isoDate(pubDate)}</time></dd>
         </div>
         {updatedDate && (
           <div>
             <dt>Updated</dt>
-            <dd><time datetime={isoDate(updatedDate)}>{longDate(updatedDate)}</time></dd>
+            <dd><time datetime={isoDate(updatedDate)}>{isoDate(updatedDate)}</time></dd>
           </div>
         )}
         <div>
@@ -92,7 +92,7 @@ const sectionCount = plural(reading.sections.length, 'section');
       </details>
     )}
 
-    <div class="prose" lang={lang}>
+    <div class="prose numbered" lang={lang}>
       <Content />
     </div>
 

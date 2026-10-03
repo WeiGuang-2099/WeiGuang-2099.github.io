@@ -1,6 +1,0 @@
-/* Noto Sans SC at 400 / 500 / 600, split into unicode-range slices (only the slices a page uses are
-   downloaded). This file is loaded at the end of <body> (see BaseLayout.astro) so its large list of
-   @font-face rules never blocks the first paint; text shows in a system CJK face until it arrives. */
-@import '@fontsource/noto-sans-sc/400.css';
-@import '@fontsource/noto-sans-sc/500.css';
-@import '@fontsource/noto-sans-sc/600.css';

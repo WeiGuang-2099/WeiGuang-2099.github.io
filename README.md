@@ -5,7 +5,7 @@
 - 线上地址：<https://weiguang-2099.github.io>
 - 源码：<https://github.com/WeiGuang-2099/WeiGuang-2099.github.io>
 
-站点用 Astro 构建，从官方 minimal 模板起步，页面、布局和样式全部手写：没有博客主题，没有 UI 组件库，没有前端框架。设计方向叫 Trace，借用 LLM tracing 工具的视觉语言：一篇文章是一个 span，阅读时长是它的 duration，文章目录就是这篇文章自己的瀑布图。界面本身只用灰阶，彩色只用来表示主题（rag、agents、llm-apps）。
+站点用 Astro 构建，从官方 minimal 模板起步，页面、布局和样式全部手写：没有博客主题，没有 UI 组件库，没有前端框架。设计方向叫“界”（ruled lines）：一本像中文书那样排版、像工程图那样标注的技术笔记。人写的内容用衬线体（思源宋体 / Source Serif），构建时测出来的数值（日期、阅读时长、篇数、小节编号、代码）用等宽体。阅读时长画成工程图里的尺寸线：一篇文章是一个 span，阅读时长是它的 duration，文章目录就是这篇文章自己的瀑布图。界面只用墨色和纸色，彩色只用来表示主题（rag、agents、llm-apps，用石绿、赭石、石青三种矿物颜料色）；唯一的例外是首页那方朱红的印章。
 
 ## 本地开发
 
@@ -91,7 +91,7 @@ src/content/drafts/my-post/index.md     -> /posts/my-post/（只在 npm run dev 
 ```
 
 - 这个文件夹写在 `.gitignore` 里，不会被提交，所以草稿永远不会出现在公开的 GitHub 仓库里；
-- `npm run dev` 会把草稿和正式文章一起列出来，草稿带 `Draft` 标记，阅读时长条是斜纹的；
+- `npm run dev` 会把草稿和正式文章一起列出来，草稿带 `Draft` 标记，阅读时长线画成虚线；
 - `npm run build` 和 GitHub Actions 根本不读这个文件夹；
 - 草稿的 frontmatter 也必须完整（必填字段一个都不能少），否则 `npm run dev` 无法启动，错误信息会指出是哪个文件；
 - 写完以后，把文件（或整个文件夹）移到 `src/content/posts/` 就是发布，`npm run dev` 开着时也可以直接移动。草稿和正式文章不要用同一个 slug，否则两篇会抢同一个网址；想改写已发布的文章，直接改 `posts/` 里的文件，不要在 `drafts/` 里放同名副本。
@@ -100,7 +100,7 @@ src/content/drafts/my-post/index.md     -> /posts/my-post/（只在 npm run dev 
 
 ### 主题泳道（彩色标记）
 
-站点有三个彩色的主题泳道：`rag`（青绿）、`agents`（琥珀）、`llm-apps`（蓝）。一篇文章属于哪个泳道，取决于它的 `tags` 里**第一个**出现的泳道标签；一个都没有就归入灰色的 `other`。泳道颜色用在首页和归档的阅读时长条、文章目录的瀑布条，以及该标签前面的小色块上（`other` 的文章不显示色块）。
+站点有三个彩色的主题泳道：`rag`（石绿）、`agents`（赭石）、`llm-apps`（石青）。一篇文章属于哪个泳道，取决于它的 `tags` 里**第一个**出现的泳道标签；一个都没有就归入灰色的 `other`。泳道颜色用在首页和归档的阅读时长线、文章目录的瀑布图，以及该标签前面的小圆点上（`other` 的文章不显示圆点）。
 
 ### 阅读时长和目录
 
@@ -112,6 +112,8 @@ src/content/drafts/my-post/index.md     -> /posts/my-post/（只在 npm run dev 
 - 不计 frontmatter、链接地址、图片路径；脚注算在第一次引用它的位置。
 
 页面上显示四舍五入后的整分钟数（至少 1 分钟）。同一次计算也给出每个 h2 到 h4 小节的起点和长度，文章有两个或更多小标题时，右侧（窄屏时在文章开头）会显示目录瀑布图。
+
+文章里的 h2 到 h4 会自动编号（1、1.1、1.1.1），宽屏时编号悬挂在正文左侧的页边里，目录瀑布图用的是同一套编号。所以**标题里不要手写编号**（写 `## 可靠性`，不要写 `## 2. 可靠性`），否则会出现两个编号。
 
 ### 代码块
 
@@ -147,7 +149,7 @@ print("hello")
 
 写可以内联的 SVG 时请注意：
 
-- 颜色用 CSS 变量，并给出浅色模式的兜底值，例如 `style="fill: var(--ink, #13161B)"`；可用的变量见 `src/styles/global.css` 顶部（`--ink`、`--muted`、`--rule-strong`、`--sky-1` 到 `--sky-3` 等）；
+- 颜色用 CSS 变量，并给出浅色模式的兜底值，例如 `style="fill: var(--ink, #1B222B)"`；可用的变量见 `src/styles/global.css` 顶部（`--ink`、`--muted`、`--rule-strong`、`--sky-1` 到 `--sky-3` 等）；
 - 不要用渐变；
 - 替代文字写在 Markdown 的 `![...]` 里，会成为 SVG 的 `aria-label`；
 - 文字字号保持在 12px 以上，确保手机上可读。可以参考 `src/content/posts/hello-world/dawn.svg`：它没有 viewBox，横向位置用百分比，所以文字不会随宽度缩小。带 viewBox 的 SVG 会按比例整体缩放，文字也跟着变小。
@@ -179,14 +181,14 @@ Hello World 一文里的 `src/content.config.ts` 代码块是这个文件的原�
 
 字体全部自托管（`@fontsource`），不依赖 Google Fonts，国内访问也能正常加载：
 
-- Red Hat Display（600、700）：标题；
-- Red Hat Text（400、500、600，以及 400 斜体）：正文和界面；
-- Red Hat Mono（400、600）：代码；
-- Noto Sans SC（400、500、600）：中文，按 unicode-range 分片，页面只下载用到的分片。
+- Source Serif 4（可变字体，带 optical size 轴）：英文正文和标题，标题按字号自动换成更精细的 display 字形；
+- Noto Serif SC（400、600）：中文，也就是思源宋体，按 unicode-range 分片，页面只下载用到的分片；
+- IBM Plex Mono（400、500、600）：日期、阅读时长等测量值，以及代码；
+- 楷体：中文引文和首页的题款按“正文宋体、引文楷体”的习惯用楷体，取读者系统自带的楷体（macOS 的 Kaiti SC、Windows 的 KaiTi），不额外下载；没有楷体的系统显示宋体。
 
 只发布 woff2 格式：`astro.config.mjs` 去掉了 @fontsource 附带的 woff 备用文件，并且不把字体分片内联进 CSS。
 
-字重是成对选的：CSS 的 500 对应 Display 600 和 Noto 500，700 对应 Display 700 和 Noto 600，让中英文的视觉粗细一致。中文段落里的引号、破折号、省略号和间隔号使用 Noto Sans SC 的全角字形（`SC Punct` 字体，定义在 `BaseLayout.astro`）。
+Source Serif 4 能显示任意字重；Noto Serif SC 只有 400 和 600 两档，CSS 的 500 会落到 400、700 会落到 600，所以同一个字重下中英文的粗细总是成对的。中文段落里的引号、破折号、省略号和间隔号使用 Noto Serif SC 的全角字形（`SC Punct` 字体，定义在 `BaseLayout.astro`）。
 
 ## 许可
 

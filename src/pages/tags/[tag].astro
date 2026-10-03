@@ -27,10 +27,8 @@ const { group, axis } = Astro.props;
         {group.lane && <span class="sw sw-lg" style={`--lane: ${laneVar(group.lane)}`} aria-hidden="true"></span>}
         {group.name}
       </h1>
-      <p class="page-dek">{plural(group.items.length, 'post')}, {group.minutes} min of reading. Bars show reading time on a 0 to {axis.max} min scale.</p>
+      <p class="page-dek">{plural(group.items.length, 'post')}, {group.minutes} min of reading. Spans show reading time on a 0 to {axis.max} min scale.</p>
     </header>
-    <div class="container-bleed">
-      <PostList items={group.items} axis={axis} titleTag="h2" />
-    </div>
+    <PostList items={group.items} axis={axis} titleTag="h2" />
   </div>
 </BaseLayout>

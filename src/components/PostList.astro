@@ -1,7 +1,8 @@
 ---
 /*
  * Waterfall list: one row per post. Columns are date, post (title, description, tags) and a timeline
- * cell where the post's reading time is drawn as a bar on the list's shared minute axis.
+ * cell where the post's reading time is drawn as a span (a dimension line) on the list's shared
+ * minute axis.
  */
 import TitleSegments from './TitleSegments.astro';
 import TagList from './TagList.astro';
@@ -18,10 +19,8 @@ interface Props {
 const { items, axis, titleTag: TitleTag = 'h3' } = Astro.props;
 const intervals = axis.ticks.length - 1;
 ---
-<div class="panel wf" style={`--axis-max: ${axis.max}; --intervals: ${intervals}`}>
+<div class="wf" style={`--axis-max: ${axis.max}; --intervals: ${intervals}`}>
   <div class="wf-head" aria-hidden="true">
-    <span class="c-date">Date</span>
-    <span class="c-post">Post</span>
     <div class="c-time">
       <div class="ruler">
         {axis.ticks.map((tick, i) => (

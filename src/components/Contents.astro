@@ -54,6 +54,7 @@ const listStyle = [
 <ol class="toc-list" style={listStyle}>
   <li>
     <a class="toc-link d0" href="#post-title" style="--depth: 0; --start: 0%; --len: 100%">
+      <span class="n" aria-hidden="true"></span>
       <span class="t" lang={lang}><TitleSegments title={title} /></span>
       <span class="d">{minutes} min</span>
       <span class="track" aria-hidden="true"></span>
@@ -61,4 +62,4 @@ const listStyle = [
     {roots.length > 0 && <TocItems nodes={roots} total={seconds} shown={minutes * 60} lang={lang} />}
   </li>
 </ol>
-<p class="toc-note">Each bar shows where a section starts in the post and how long it takes to read.</p>
+<p class="toc-note">Each span shows where a section starts in the post and how long it takes to read.</p>
