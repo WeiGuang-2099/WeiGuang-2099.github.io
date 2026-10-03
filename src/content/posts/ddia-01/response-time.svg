@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="314" style="font-family: var(--font-text, 'Noto Sans SC', 'PingFang SC', sans-serif); overflow: visible">
+  <!-- One request drawn as a trace: the root span is the response time the client sees, the child spans are
+       its parts in time order. Proportions are illustrative, not measured. No viewBox: text keeps its size
+       at any width, bars are placed in percentages. Colors are the site's tokens (with light-theme
+       fallbacks), so the inlined figure follows the theme toggle. -->
+
+  <!-- axis: request sent (0%) to response received (100%) -->
+  <g style="font-size: 12.5px; fill: var(--muted, #596170)">
+    <text x="0" y="12">发出请求</text>
+    <text x="100%" y="12" text-anchor="end">收到响应</text>
+  </g>
+  <line x1="0" y1="24.5" x2="100%" y2="24.5" style="stroke: var(--rule-strong, #B4BAC4); stroke-width: 1" />
+
+  <!-- root span: response time, 0-100% -->
+  <text x="0" y="52" style="font-size: 14px; font-weight: 500; fill: var(--ink, #13161B)">响应时间<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #596170)">response time</tspan></text>
+  <rect x="0" y="60" width="100%" height="8" rx="1" style="fill: var(--ink, #13161B)" />
+
+  <!-- network, request on its way to the server: 0-12% -->
+  <text x="0" y="100" style="font-size: 14px; font-weight: 500; fill: var(--ink, #13161B)">网络<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #596170)">请求发往服务端</tspan></text>
+  <rect x="0" y="108" width="12%" height="8" rx="1" style="fill: var(--muted, #596170)" />
+
+  <!-- queueing: 12-42% -->
+  <text x="0" y="148" style="font-size: 14px; font-weight: 500; fill: var(--ink, #13161B)">排队<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #596170)">queueing delay</tspan></text>
+  <rect x="12%" y="156" width="30%" height="8" rx="1" style="fill: var(--muted, #596170)" />
+
+  <!-- service time: 42-88% -->
+  <text x="0" y="196" style="font-size: 14px; font-weight: 500; fill: var(--ink, #13161B)">处理<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #596170)">service time</tspan></text>
+  <rect x="42%" y="204" width="46%" height="8" rx="1" style="fill: var(--muted, #596170)" />
+
+  <!-- network, response on its way back: 88-100% -->
+  <text x="0" y="244" style="font-size: 14px; font-weight: 500; fill: var(--ink, #13161B)">网络<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #596170)">响应返回客户端</tspan></text>
+  <rect x="88%" y="252" width="12%" height="8" rx="1" style="fill: var(--muted, #596170)" />
+
+  <!-- latency: everything before the request is handled (0-42%), drawn as a bracket, not a span -->
+  <text x="0" y="292" style="font-size: 14px; font-weight: 500; fill: var(--ink, #13161B)">延迟<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #596170)">latency：等待被处理</tspan></text>
+  <g style="stroke: var(--ink, #13161B); stroke-width: 1">
+    <line x1="0.5" y1="298" x2="0.5" y2="310" />
+    <line x1="0" y1="304.5" x2="42%" y2="304.5" />
+    <line x1="42%" y1="298" x2="42%" y2="310" />
+  </g>
+</svg>
