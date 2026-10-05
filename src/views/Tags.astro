@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPosts, laneVar, listAxis, summarize, tagUrl } from '../lib/posts';
+import { groupByTag } from '../lib/tags';
+import { pct, tickLabel } from '../lib/format';
+import type { Locale } from '../lib/i18n';
+import { UI } from '../lib/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = UI[locale];
+const all = await summarize(await getPosts(locale));
+const groups = groupByTag(all);
+const axis = listAxis(groups.map((g) => g.minutes));
+const intervals = axis.ticks.length - 1;
+---
+<BaseLayout locale={locale} title={t.tags.title} description={t.tags.description}>
+  <div class="container page">
+    <header class="page-head">
+      <h1>{t.tags.title}</h1>
+      <p class="page-dek">{t.tags.dek(groups.length, all.length)}</p>
+    </header>
+
+    {groups.length > 0 ? (
+      <div class="wf tagwf" style={`--axis-max: ${axis.max}; --intervals: ${intervals}`}>
+        <div class="wf-head" aria-hidden="true">
+          <div class="c-time">
+            <div class="ruler">
+              {axis.ticks.map((tick, i) => (
+                <span style={`--at: ${pct(tick, axis.max)}`}>
+                  {tickLabel(tick)}{i === axis.ticks.length - 1 && <span class="unit">min</span>}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+        <ul class="wf-rows">
+          {groups.map((group) => (
+            <li class="wf-row" style={`--dur: ${group.minutes}`}>
+              <div class="c-post">
+                <a class="tag-name" href={tagUrl(group.name, locale)}>
+                  {group.lane && <span class="sw" style={`--lane: ${laneVar(group.lane)}`} aria-hidden="true"></span>}
+                  {group.name}
+                </a>
+              </div>
+              <span class="c-count">{t.tags.count(group.items.length)}</span>
+              <div class="c-time">
+                <div class="span-row">
+                  <span class="bar bar-stack" aria-hidden="true">
+                    {group.lanes.map(({ lane, minutes }) => <span style={`--lane: ${laneVar(lane)}; --v: ${minutes}`}></span>)}
+                  </span>
+                  <span class="dur"><span class="sr-only">{t.tags.totalOf}</span>{group.minutes} min</span>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ) : (
+      <p class="empty">{t.tags.empty}</p>
+    )}
+  </div>
+</BaseLayout>

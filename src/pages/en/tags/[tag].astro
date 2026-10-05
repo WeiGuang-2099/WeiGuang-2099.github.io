@@ -1,9 +1,9 @@
 ---
 import type { InferGetStaticPropsType } from 'astro';
-import Tag from '../../views/Tag.astro';
-import { tagPaths } from '../../lib/routes';
+import Tag from '../../../views/Tag.astro';
+import { tagPaths } from '../../../lib/routes';
 
-export const getStaticPaths = () => tagPaths('zh');
+export const getStaticPaths = () => tagPaths('en');
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 ---
 <Tag {...Astro.props} />

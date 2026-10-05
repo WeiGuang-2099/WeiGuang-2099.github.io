@@ -1,0 +1,251 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TitleSegments from '../components/TitleSegments.astro';
+import TagList from '../components/TagList.astro';
+import Contents from '../components/Contents.astro';
+import { editionUrl, getReading, isDraft, laneOf, laneVar, postUrl, type Post } from '../lib/posts';
+import { isoDate } from '../lib/format';
+import { LANG, localeOfLang, otherLocale, type Locale } from '../lib/i18n';
+import { UI } from '../lib/ui';
+
+interface Props {
+  locale: Locale;
+  post: Post;
+  newer?: Post;
+  older?: Post;
+  axisMax: number;
+}
+
+const { locale, post, newer, older, axisMax } = Astro.props;
+const t = UI[locale];
+const { title, description, pubDate, updatedDate, tags, lang } = post.data;
+const { Content } = await render(post.entry);
+const reading = await getReading(post);
+const lane = laneVar(laneOf(tags));
+const hasToc = reading.sections.length >= 2;
+const draft = isDraft(post);
+const sectionCount = t.post.sections(reading.sections.length);
+// a translation links back to the post it was translated from
+const original = post.entry.collection === 'translations' ? editionUrl(post, localeOfLang(post.original.data.lang)) : null;
+---
+<BaseLayout
+  locale={locale}
+  alternate={editionUrl(post, otherLocale(locale))}
+  title={title}
+  description={description}
+  type="article"
+  article={{ published: pubDate, modified: updatedDate, tags }}
+  mainClass={`container article-layout${hasToc ? '' : ' no-rail'}`}
+>
+  <article class:list={['sheet', { 'is-draft': draft }]} aria-labelledby="post-title">
+    <header class="post-head">
+      <h1 id="post-title" lang={lang}><TitleSegments title={title} /></h1>
+      <p class="dek" lang={lang}>{description}</p>
+      <dl class="attrs">
+        {draft && (
+          <div>
+            <dt>{t.post.status}</dt>
+            <dd><span class="draft-mark">{t.draft}</span></dd>
+          </div>
+        )}
+        <div>
+          <dt>{draft ? t.post.date : t.post.published}</dt>
+          <dd><time datetime={isoDate(pubDate)}>{isoDate(pubDate)}</time></dd>
+        </div>
+        {updatedDate && (
+          <div>
+            <dt>{t.post.updated}</dt>
+            <dd><time datetime={isoDate(updatedDate)}>{isoDate(updatedDate)}</time></dd>
+          </div>
+        )}
+        <div>
+          <dt>{t.post.readingTime}</dt>
+          <dd>
+            <span class="minibar" style={`--lane: ${lane}; --dur: ${reading.minutes}; --axis-max: ${axisMax}`} aria-hidden="true"></span>
+            <span class="num">{reading.minutes} min</span>{t.post.readSuffix && <span class="sr-only">{t.post.readSuffix}</span>}
+          </dd>
+        </div>
+        {tags.length > 0 && (
+          <div>
+            <dt>{t.post.tags}</dt>
+            <dd><TagList tags={tags} locale={locale} /></dd>
+          </div>
+        )}
+        {original && (
+          <div>
+            <dt>{t.post.translatedFrom}</dt>
+            <dd><a class="text-link attr-link" href={original} hreflang={post.original.data.lang}>{t.post.original}</a></dd>
+          </div>
+        )}
+      </dl>
+    </header>
+
+    {hasToc && (
+      <details class="toc-compact">
+        <summary>
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5"></path></svg>
+          {t.post.contents}
+          <span class="count">{sectionCount}</span>
+        </summary>
+        <div class="toc-body">
+          <nav aria-label={t.post.contents}>
+            <Contents title={title} sections={reading.sections} seconds={reading.seconds} minutes={reading.minutes} lane={lane} lang={lang} locale={locale} />
+          </nav>
+        </div>
+      </details>
+    )}
+
+    <div class="prose numbered" lang={lang}>
+      <Content />
+    </div>
+
+    {(older || newer) && (
+      <nav class="post-nav" aria-label={t.post.more}>
+        {older && (
+          <div class="post-nav-item">
+            <span class="k">{t.post.previous}</span>
+            <a href={postUrl(older)} lang={older.data.lang} rel="prev">{older.locale !== locale && <span class="lang-mark" aria-hidden="true">{t.otherLanguage.mark}</span><span class="sr-only" lang={LANG[locale]}>{t.otherLanguage.prefix}</span>}<TitleSegments title={older.data.title} /></a>
+          </div>
+        )}
+        {newer && (
+          <div class="post-nav-item post-nav-next">
+            <span class="k">{t.post.next}</span>
+            <a href={postUrl(newer)} lang={newer.data.lang} rel="next">{newer.locale !== locale && <span class="lang-mark" aria-hidden="true">{t.otherLanguage.mark}</span><span class="sr-only" lang={LANG[locale]}>{t.otherLanguage.prefix}</span>}<TitleSegments title={newer.data.title} /></a>
+          </div>
+        )}
+      </nav>
+    )}
+  </article>
+
+  {hasToc && (
+    <div class="rail">
+      <nav class="toc" aria-labelledby="toc-title">
+        <div class="toc-head">
+          <h2 id="toc-title">{t.post.contents}</h2>
+          <span class="count">{sectionCount}</span>
+        </div>
+        <Contents title={title} sections={reading.sections} seconds={reading.seconds} minutes={reading.minutes} lane={lane} lang={lang} locale={locale} />
+      </nav>
+    </div>
+  )}
+
+  <p id="copy-status" class="sr-only" role="status" aria-live="polite" slot="after-main"></p>
+
+  <script is:inline slot="scripts" define:vars={{ copyLabels: t.copy }}>
+    /* copy buttons: one polite status region per page announces the result. The button's label and
+       data-what (the file name, or the language of the snippet) are rendered with the post. */
+    (function () {
+      var status = document.getElementById('copy-status');
+      var statusTimer;
+      function announce(msg) {
+        if (!status) return;
+        status.textContent = msg;
+        clearTimeout(statusTimer);
+        statusTimer = setTimeout(function () { status.textContent = ''; }, 1500);
+      }
+      function fallbackCopy(text) {
+        var active = document.activeElement;
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        document.body.removeChild(ta);
+        if (active && active.focus) active.focus();
+        return ok;
+      }
+      function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(text).then(function () { return true; }, function () { return fallbackCopy(text); });
+        }
+        return Promise.resolve(fallbackCopy(text));
+      }
+      document.querySelectorAll('[data-copy]').forEach(function (btn) {
+        var timer;
+        var label = btn.textContent;
+        var what = btn.getAttribute('data-what') || '';
+        btn.addEventListener('click', function () {
+          var code = btn.closest('.code-block').querySelector('pre code');
+          copyText(code.textContent).then(function (ok) {
+            /* both clipboard paths failed: select the code so it can be copied by hand */
+            if (!ok && window.getSelection) window.getSelection().selectAllChildren(code);
+            btn.textContent = ok ? copyLabels.copied : copyLabels.selected;
+            btn.dataset.state = ok ? 'done' : 'failed';
+            announce((ok ? copyLabels.announceCopied : copyLabels.announceFailed).replace('{what}', what));
+            clearTimeout(timer);
+            timer = setTimeout(function () { btn.textContent = label; delete btn.dataset.state; }, 1500);
+          });
+        });
+      });
+    })();
+
+    /* contents: mark the section being read (optional; without JS every row is a plain link).
+       Active = the last heading whose top has reached its scroll-margin line (+8px). */
+    (function () {
+      var heads = Array.prototype.slice.call(document.querySelectorAll('.prose :is(h2, h3, h4)[id]:not(.sr-only)'));
+      var links = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
+      if (!heads.length || !links.length) return;
+      var root = document.documentElement;
+      var rail = document.querySelector('.rail');
+      var current, frame = 0, locked = false, settle;
+      /* a long contents list scrolls inside the rail on short screens: keep the marked row in view.
+         Runs only when the section changes, so it never fights the reader scrolling the rail. */
+      function reveal() {
+        if (!rail || rail.scrollHeight <= rail.clientHeight) return;
+        var a = rail.querySelector('.toc-link[aria-current]');
+        if (!a) return;
+        var r = a.getBoundingClientRect(), box = rail.getBoundingClientRect();
+        var top = Math.max(box.top, 0), bottom = Math.min(box.bottom, window.innerHeight);
+        if (r.bottom > bottom) rail.scrollTop += r.bottom - bottom + 8;
+        else if (r.top < top) rail.scrollTop -= top - r.top + 8;
+      }
+      function mark(id) {
+        if (id === current) return;
+        current = id;
+        links.forEach(function (a) {
+          if (decodeURIComponent(a.hash.slice(1)) === id) a.setAttribute('aria-current', 'location');
+          else a.removeAttribute('aria-current');
+        });
+        reveal();
+      }
+      function update() {
+        frame = 0;
+        if (locked) return;
+        var id = null; /* above the first heading only the root span applies; it is never highlighted */
+        if (window.scrollY + window.innerHeight >= root.scrollHeight - 2) {
+          id = heads[heads.length - 1].id; /* true bottom: the last section cannot reach the line */
+        } else {
+          var line = (parseFloat(getComputedStyle(heads[0]).scrollMarginTop) || 0) + 8;
+          for (var i = 0; i < heads.length && heads[i].getBoundingClientRect().top <= line; i++) id = heads[i].id;
+        }
+        mark(id);
+      }
+      function schedule() { if (!frame) frame = requestAnimationFrame(update); }
+      function release() { locked = false; clearTimeout(settle); }
+      /* a click or hash change names the section: show it at once and ignore scroll until it settles */
+      function follow(id) {
+        mark(heads.some(function (h) { return h.id === id; }) ? id : null);
+        locked = true;
+        clearTimeout(settle);
+        settle = setTimeout(release, 600);
+      }
+      window.addEventListener('scroll', function () {
+        if (locked) { clearTimeout(settle); settle = setTimeout(release, 150); return; }
+        schedule();
+      }, { passive: true });
+      window.addEventListener('scrollend', function () { if (locked) release(); });
+      window.addEventListener('resize', schedule);
+      window.addEventListener('hashchange', function () { follow(decodeURIComponent(location.hash.slice(1))); });
+      links.forEach(function (a) {
+        a.addEventListener('click', function () { follow(decodeURIComponent(a.hash.slice(1))); });
+      });
+      update();
+    })();
+  </script>
+</BaseLayout>

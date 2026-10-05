@@ -1,9 +1,9 @@
 ---
 import type { InferGetStaticPropsType } from 'astro';
-import Post from '../../views/Post.astro';
-import { postPaths } from '../../lib/routes';
+import Post from '../../../views/Post.astro';
+import { postPaths } from '../../../lib/routes';
 
-export const getStaticPaths = () => postPaths('zh');
+export const getStaticPaths = () => postPaths('en');
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 ---
 <Post {...Astro.props} />

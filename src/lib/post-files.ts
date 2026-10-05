@@ -14,15 +14,24 @@ export const SHOW_DRAFTS = import.meta.env.DEV && import.meta.env.MODE === 'deve
 export const isDraftFile = (filePath: string | undefined) => filePath?.replace(/\\/g, '/').startsWith(DRAFTS_DIR) ?? false;
 
 /**
+ * An English translation sits next to its original (index.en.md beside index.md, x.en.md beside x.md),
+ * and both share this key: the file path without `.en` and the extension. Translations are matched to
+ * their original by it (src/lib/posts.ts).
+ */
+export const sourceKey = (filePath: string | undefined) =>
+  (filePath ?? '').replace(/\\/g, '/').replace(/(?:\.en)?\.mdx?$/i, '');
+
+/**
  * The id glob() would give the file inside its own folder, so posts/<slug>.md, posts/<slug>/index.md
- * and the same paths under drafts/ all become <slug> and are served at /posts/<slug>/.
+ * and the same paths under drafts/ all become <slug> and are served at /posts/<slug>/. A translation
+ * (index.en.md) gets the same id as its original in its own collection.
  * Like glob(), a `slug` in the frontmatter wins and every path segment is slugified.
  */
 export function postId({ entry, data }: { entry: string; data: Record<string, unknown> }): string {
   if (data.slug) return String(data.slug);
   return entry
     .replace(/^(?:posts|drafts)\//, '')
-    .replace(/\.[^./]+$/, '')
+    .replace(/(?:\.en)?\.[^./]+$/, '')
     .split('/')
     .map((segment) => slug(segment))
     .join('/')

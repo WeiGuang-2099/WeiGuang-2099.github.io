@@ -6,7 +6,7 @@ import { unified } from '@astrojs/markdown-remark';
 
 import remarkReadingTime from './src/plugins/remark-reading-time.ts';
 import remarkFigure from './src/plugins/remark-figure.ts';
-import { rehypeBlockquoteAttribution, rehypeTableWrap, rehypeLatinApostrophe } from './src/plugins/rehype-prose.ts';
+import { rehypeBlockquoteAttribution, rehypeTableWrap, rehypeLatinApostrophe, rehypeChromeLanguage } from './src/plugins/rehype-prose.ts';
 import { traceLight, traceDark, transformerCodeBlock } from './src/plugins/shiki-trace.ts';
 import { thrift, avdl } from './src/plugins/shiki-langs.ts';
 
@@ -27,7 +27,11 @@ const woff2Only = {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://weiguang-2099.github.io',
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    // pairs /posts/x/ with /en/posts/x/ (and every other page with its /en/ twin) as hreflang alternates
+    sitemap({ i18n: { defaultLocale: 'zh', locales: { zh: 'zh-CN', en: 'en' } } }),
+  ],
   vite: {
     css: { postcss: { plugins: [woff2Only] } },
     // Font slices stay files: a unicode-range slice must only load on a page that uses its characters,
@@ -44,7 +48,7 @@ export default defineConfig({
     // remark/rehype pipeline (@astrojs/markdown-remark); .mdx files inherit it through the MDX integration.
     processor: unified({
       remarkPlugins: [remarkReadingTime, remarkFigure],
-      rehypePlugins: [rehypeBlockquoteAttribution, rehypeTableWrap, rehypeLatinApostrophe],
+      rehypePlugins: [rehypeBlockquoteAttribution, rehypeTableWrap, rehypeLatinApostrophe, rehypeChromeLanguage],
       remarkRehype: {
         // U+21A9 + VS15: the back-reference arrow in text presentation, never as an emoji
         footnoteBackContent: '↩︎',

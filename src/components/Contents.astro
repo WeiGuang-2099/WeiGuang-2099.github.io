@@ -9,6 +9,8 @@ import TocItems, { type TocNode } from './TocItems.astro';
 import TitleSegments from './TitleSegments.astro';
 import { contentsAxis, type TocSection } from '../lib/posts';
 import { pct, tickLabel } from '../lib/format';
+import type { Locale } from '../lib/i18n';
+import { UI } from '../lib/ui';
 
 interface Props {
   title: string;
@@ -18,10 +20,13 @@ interface Props {
   /** displayed reading time in whole minutes */
   minutes: number;
   lane: string;
+  /** language of the post (its title and headings) */
   lang: string;
+  /** edition of the page (the interface text) */
+  locale: Locale;
 }
 
-const { title, sections, seconds, minutes, lane, lang } = Astro.props;
+const { title, sections, seconds, minutes, lane, lang, locale } = Astro.props;
 
 const roots: TocNode[] = [];
 const stack: TocNode[] = [];
@@ -62,4 +67,4 @@ const listStyle = [
     {roots.length > 0 && <TocItems nodes={roots} total={seconds} shown={minutes * 60} lang={lang} />}
   </li>
 </ol>
-<p class="toc-note">Each span shows where a section starts in the post and how long it takes to read.</p>
+<p class="toc-note">{UI[locale].post.tocNote}</p>

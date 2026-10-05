@@ -1,14 +1,21 @@
 ---
 import { SITE } from '../lib/site';
+import { localePath, type Locale } from '../lib/i18n';
+import { UI } from '../lib/ui';
 
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
   <div class="container">
-    <p>&copy; {year} {SITE.name}</p>
+    <p>&copy; {year} {UI[locale].siteName}</p>
     <ul>
       <li><a href={SITE.github}>GitHub</a></li>
-      <li><a href="/rss.xml">RSS</a></li>
+      <li><a href={localePath(locale, '/rss.xml')}>RSS</a></li>
     </ul>
   </div>
 </footer>

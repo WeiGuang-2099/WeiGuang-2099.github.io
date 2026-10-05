@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { getPosts, listAxis, summarize, type PostSummary } from '../lib/posts';
+import type { Locale } from '../lib/i18n';
+import { UI } from '../lib/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = UI[locale];
+const all = await summarize(await getPosts(locale));
+const axis = listAxis(all.map((s) => s.minutes));
+const totalMinutes = all.reduce((sum, s) => sum + s.minutes, 0);
+
+// Newest year first; posts inside a year are already newest first.
+const years = new Map<number, PostSummary[]>();
+for (const item of all) {
+  const year = item.post.data.pubDate.getUTCFullYear();
+  years.set(year, [...(years.get(year) ?? []), item]);
+}
+---
+<BaseLayout locale={locale} title={t.archive.title} description={t.archive.description}>
+  <div class="container page">
+    <header class="page-head">
+      <h1>{t.archive.title}</h1>
+      <p class="page-dek">{t.listDek(all.length, totalMinutes, axis.max)}</p>
+    </header>
+
+    {[...years].map(([year, items]) => (
+      <section class="year" aria-labelledby={`y${year}`}>
+        <div class="section-head">
+          <h2 id={`y${year}`}>{year}</h2>
+          <p class="legend">{t.archive.year(items.length)}</p>
+        </div>
+        <PostList locale={locale} items={items} axis={axis} />
+      </section>
+    ))}
+    {all.length === 0 && <p class="empty">{t.empty}</p>}
+  </div>
+</BaseLayout>

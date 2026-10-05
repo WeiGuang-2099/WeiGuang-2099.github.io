@@ -219,7 +219,7 @@ const el = (tagName: string, properties: Element['properties'], children: Elemen
  * Wraps each highlighted block in the code chrome from the design:
  *   <div class="code-block">
  *     <div class="code-head">[<span class="code-file">name</span>] <span class="code-lang">Lang</span>
- *       <button type="button" class="copy" data-copy aria-label="Copy name">Copy</button></div>
+ *       <button type="button" class="copy" data-copy data-what="name" aria-label="Copy name">Copy</button></div>
  *     <pre class="astro-code has-lines" data-language lang="en" tabindex="0"><code>…lines…</code></pre>
  *   </div>
  * Blocks longer than one line get line numbers (drawn by CSS counters, never copied); from 100 lines
@@ -245,6 +245,9 @@ export function transformerCodeBlock(): ShikiTransformer {
       const raw = (this.options.meta as { __raw?: string } | undefined)?.__raw;
       const title = metaTitle(raw);
       const langLabel = languageName(typeof lang === 'string' ? lang : undefined);
+      // what the copy button names: the file, or the snippet by its language (set in Chinese in a
+      // Chinese post, by rehypeChromeLanguage in rehype-prose.ts)
+      const what = title ?? `${langLabel} snippet`;
 
       const classes = String(pre.properties.class ?? 'astro-code').split(/\s+/).filter(Boolean);
       if (lineCount > 1) classes.push('has-lines');
@@ -261,7 +264,8 @@ export function transformerCodeBlock(): ShikiTransformer {
             type: 'button',
             className: ['copy'],
             dataCopy: '',
-            ariaLabel: title ? `Copy ${title}` : `Copy ${langLabel} snippet`,
+            dataWhat: what,
+            ariaLabel: `Copy ${what}`,
           },
           [text('Copy')],
         ),

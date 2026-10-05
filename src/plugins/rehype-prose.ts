@@ -13,13 +13,31 @@
  *   In Chinese text the quote marks come from the full-width "SC Punct" face (BaseLayout.astro), which
  *   also covers U+2019, so the apostrophe in O’Neil or writer’s would be set full width. An apostrophe
  *   between two Latin letters is wrapped in <span lang="en">, an English island that resets the face.
+ *   English posts are left alone.
+ *
+ * rehypeChromeLanguage
+ *   The code block chrome (shiki-trace.ts) and the footnote labels (the remarkRehype options in
+ *   astro.config.mjs) are written in English. In a Chinese post they are set in Chinese, like the rest of
+ *   the Chinese edition: 复制 on the copy buttons, 脚注 for the footnotes heading (read by screen
+ *   readers), 返回引用 N on the links back from a footnote.
  */
 import type { Root, Element, ElementContent, Text } from 'hast';
 import { toString } from 'hast-util-to-string';
 import { visit, SKIP } from 'unist-util-visit';
+import type { VFile } from 'vfile';
 
 const isElement = (node: ElementContent, tag?: string): node is Element =>
   node.type === 'element' && (tag === undefined || node.tagName === tag);
+
+const hasClass = (node: Element, name: string) =>
+  Array.isArray(node.properties.className) && node.properties.className.includes(name);
+
+/** A translation (index.en.md), or an original whose frontmatter says `lang: en`. */
+function isEnglish(file: VFile): boolean {
+  if (file.path && /.en.mdx?$/i.test(file.path)) return true;
+  const lang = (file.data as { astro?: { frontmatter?: { lang?: unknown } } }).astro?.frontmatter?.lang;
+  return typeof lang === 'string' && /^en/i.test(lang);
+}
 
 export function rehypeBlockquoteAttribution() {
   return function (tree: Root) {
@@ -66,7 +84,8 @@ const APOSTROPHE = /(?<=[A-Za-z])’(?=[A-Za-z])/g;
 const NOT_PROSE = new Set(['code', 'pre', 'svg', 'script', 'style']);
 
 export function rehypeLatinApostrophe() {
-  return function (tree: Root) {
+  return function (tree: Root, file: VFile) {
+    if (isEnglish(file)) return;
     visit(tree, (node, index, parent) => {
       if (node.type === 'element' && NOT_PROSE.has(node.tagName)) return SKIP;
       if (node.type !== 'text' || !parent || index === undefined || !APOSTROPHE.test(node.value)) return;
@@ -80,6 +99,29 @@ export function rehypeLatinApostrophe() {
       }
       (parent as Element).children.splice(index, 1, ...parts);
       return [SKIP, index + parts.length];
+    });
+  };
+}
+
+export function rehypeChromeLanguage() {
+  return function (tree: Root, file: VFile) {
+    if (isEnglish(file)) return;
+    visit(tree, 'element', (node: Element) => {
+      if (node.tagName === 'div' && hasClass(node, 'code-head')) {
+        const parts = node.children.filter((child): child is Element => isElement(child));
+        const name = parts.find((part) => hasClass(part, 'code-file'));
+        const lang = parts.find((part) => hasClass(part, 'code-lang'));
+        const button = parts.find((part) => part.tagName === 'button' && 'dataCopy' in part.properties);
+        if (!button) return;
+        const what = name ? toString(name) : `${lang ? toString(lang) : ''} 代码`.trim();
+        button.properties.dataWhat = what;
+        button.properties.ariaLabel = `复制 ${what}`;
+        button.children = [{ type: 'text', value: '复制' }];
+      } else if (node.tagName === 'h2' && node.properties.id === 'footnote-label') {
+        node.children = [{ type: 'text', value: '脚注' }];
+      } else if (node.tagName === 'a' && 'dataFootnoteBackref' in node.properties) {
+        node.properties.ariaLabel = String(node.properties.ariaLabel ?? '').replace(/^Back to reference /, '返回引用 ');
+      }
     });
   };
 }

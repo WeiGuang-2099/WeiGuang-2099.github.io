@@ -1,7 +1,18 @@
 ---
 import { NAV, SITE } from '../lib/site';
+import { LANG, localePath, otherLocale, unlocalizedPath, type Locale } from '../lib/i18n';
+import { UI } from '../lib/ui';
 
-const path = Astro.url.pathname;
+interface Props {
+  locale: Locale;
+  /** the same page in the other edition; null when there is none (a post that is not translated yet) */
+  alternate: string | null;
+}
+
+const { locale, alternate } = Astro.props;
+const t = UI[locale];
+const other = otherLocale(locale);
+const path = unlocalizedPath(Astro.url.pathname);
 // "page" on a section's own index page, "true" on pages inside the section (a post, a tag page).
 const current = (item: (typeof NAV)[number]) => {
   if (path === item.href) return 'page';
@@ -10,18 +21,26 @@ const current = (item: (typeof NAV)[number]) => {
 ---
 <header class="site-header">
   <div class="container">
-    <a class="site-name" href="/" aria-label={`${SITE.name}, home`} aria-current={path === '/' ? 'page' : undefined}>
-      {SITE.name}<span class="site-name-zh" lang="zh-CN" aria-hidden="true">{SITE.nameZh}</span>
+    <a class="site-name" href={localePath(locale, '/')} aria-label={t.homeLink} aria-current={path === '/' ? 'page' : undefined}>
+      <span lang="en">{SITE.name}</span><span class="site-name-zh" lang="zh-CN" aria-hidden="true">{SITE.nameZh}</span>
     </a>
-    <nav class="site-nav" aria-label="Main">
+    <nav class="site-nav" aria-label={t.mainNav}>
       <ul>
         {NAV.map((item) => (
-          <li><a href={item.href} aria-current={current(item)}>{item.label}</a></li>
+          <li><a href={localePath(locale, item.href)} aria-current={current(item)}>{t.nav[item.key]}</a></li>
         ))}
       </ul>
     </nav>
-    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme">
-      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.25"></circle><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"></path></svg>
-    </button>
+    <div class="header-tools">
+      {/* the language switch names the language it leads to; dashed and inert when the page has no translation */}
+      {alternate ? (
+        <a class="lang-toggle" href={alternate} hreflang={LANG[other]} lang={LANG[other]} title={t.switchTo.name} aria-label={t.switchTo.name}>{t.switchTo.label}</a>
+      ) : (
+        <span class="lang-toggle" lang={LANG[other]} aria-disabled="true" title={t.noTranslation}>{t.switchTo.label}</span>
+      )}
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label={t.theme.toggle} data-label-dark={t.theme.toDark} data-label-light={t.theme.toLight}>
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.25"></circle><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"></path></svg>
+      </button>
+    </div>
   </div>
 </header>

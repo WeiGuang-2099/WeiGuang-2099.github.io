@@ -1,22 +1,104 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import type { MarkdownHeading } from 'astro';
 import type { ReadingData, ReadingSection } from '../plugins/remark-reading-time';
-import { isDraftFile, SHOW_DRAFTS } from './post-files';
+import { isDraftFile, SHOW_DRAFTS, sourceKey } from './post-files';
+import { localeOfLang, localePath, otherLocale, LANG, LOCALES, type Locale } from './i18n';
+import { sourceHash } from './source-hash';
 
-export type Post = CollectionEntry<'posts'>;
+type Original = CollectionEntry<'posts'>;
+type Translation = CollectionEntry<'translations'>;
 
-/** A post marked `draft: true`, or any file in src/content/drafts/. */
-export const isDraft = (post: Post) => post.data.draft || isDraftFile(post.filePath);
-
-/** Published posts, newest first (same day: by title). Drafts are visible in `astro dev` only. */
-export async function getPosts(): Promise<Post[]> {
-  const posts = await getCollection('posts', (post) => SHOW_DRAFTS || !isDraft(post));
-  return posts.sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf() || a.data.title.localeCompare(b.data.title),
-  );
+/**
+ * One language edition of a post: the original as written, or its English translation (index.en.md).
+ * Both editions share the slug, the date, the tags and the draft state of the original.
+ */
+export interface Post {
+  /** the slug, the same in both editions: /posts/<id>/ and /en/posts/<id>/ */
+  id: string;
+  /** the edition this is, which decides its URL */
+  locale: Locale;
+  /** the editions the post exists in: its original's, plus English once it is translated */
+  locales: Locale[];
+  /** the original's frontmatter, with this edition's title, description and lang */
+  data: Original['data'];
+  /** what render() takes */
+  entry: Original | Translation;
+  original: Original;
 }
 
-export const postUrl = (post: Post) => `/posts/${post.id}/`;
+const isDraftEntry = (entry: Original) => entry.data.draft || isDraftFile(entry.filePath);
+
+/** A post marked `draft: true`, or any file in src/content/drafts/. */
+export const isDraft = (post: Post) => isDraftEntry(post.original);
+
+const warned = new Set<string>();
+const warnOnce = (message: string) => {
+  if (warned.has(message)) return;
+  warned.add(message);
+  console.warn(message);
+};
+
+/**
+ * Every post as its editions, newest first (same day: by the original's title). Drafts are visible in
+ * `astro dev` only. A translation whose original has changed since it was made is still published,
+ * with a warning in the terminal.
+ */
+async function getEditions(): Promise<Partial<Record<Locale, Post>>[]> {
+  const families = new Map<string, { original: Original; editions: Partial<Record<Locale, Post>> }>();
+  for (const original of await getCollection('posts')) {
+    const locale = localeOfLang(original.data.lang);
+    const post: Post = { id: original.id, locale, locales: [locale], data: original.data, entry: original, original };
+    families.set(sourceKey(original.filePath), { original, editions: { [locale]: post } });
+  }
+
+  for (const translation of await getCollection('translations')) {
+    const family = families.get(sourceKey(translation.filePath));
+    if (!family) {
+      warnOnce(`[translations] ${translation.filePath} has no original next to it and is not published.`);
+      continue;
+    }
+    const { original, editions } = family;
+    if (editions.en) {
+      throw new Error(`${translation.filePath}: ${original.filePath} is already in English (lang: ${original.data.lang}).`);
+    }
+    const current = sourceHash({ title: original.data.title, description: original.data.description, body: original.body ?? '' });
+    if (translation.data.sourceHash !== current) {
+      warnOnce(
+        `[translations] ${translation.filePath} is out of date: ${original.filePath} has changed since it was translated. ` +
+          `Run \`npm run translate -- ${original.id}\` to translate it again.`,
+      );
+    }
+    const data = { ...original.data, title: translation.data.title, description: translation.data.description, lang: LANG.en };
+    editions.en = { id: original.id, locale: 'en', locales: [], data, entry: translation, original };
+  }
+
+  const all = [...families.values()].filter(({ original }) => SHOW_DRAFTS || !isDraftEntry(original));
+  all.sort(
+    (a, b) =>
+      b.original.data.pubDate.valueOf() - a.original.data.pubDate.valueOf() ||
+      a.original.data.title.localeCompare(b.original.data.title),
+  );
+  return all.map(({ editions }) => {
+    const locales = LOCALES.filter((locale) => editions[locale]);
+    for (const locale of locales) editions[locale]!.locales = locales;
+    return editions;
+  });
+}
+
+/**
+ * The posts listed in an edition, newest first: every post, in that edition's language when it exists
+ * in it, otherwise in its original language (a Chinese post that is not translated yet). The latter
+ * keep their own URL in the other edition.
+ */
+export async function getPosts(locale: Locale): Promise<Post[]> {
+  return (await getEditions()).map((editions) => (editions[locale] ?? editions[otherLocale(locale)])!);
+}
+
+export const postUrl = (post: Post) => localePath(post.locale, `/posts/${post.id}/`);
+
+/** The URL of the post in the given edition, or null when the post does not exist in that language. */
+export const editionUrl = (post: Post, locale: Locale) =>
+  post.locales.includes(locale) ? localePath(locale, `/posts/${post.id}/`) : null;
 
 /* ---------------------------------------------------------------------------------------------
    Tags and topic lanes
@@ -31,7 +113,7 @@ export function tagSlug(tag: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
-export const tagUrl = (tag: string) => `/tags/${tagSlug(tag)}/`;
+export const tagUrl = (tag: string, locale: Locale) => localePath(locale, `/tags/${tagSlug(tag)}/`);
 
 /** The colored topic lanes. Everything else falls into the neutral `other` lane. */
 export const TOPIC_LANES = ['rag', 'agents', 'llm-apps'] as const;
@@ -92,9 +174,11 @@ export function matchSections(sections: ReadingSection[], headings: MarkdownHead
 const readingCache = new Map<string, Promise<PostReading>>();
 
 export function getReading(post: Post): Promise<PostReading> {
-  let cached = readingCache.get(post.id);
+  // the two editions of a post share its id, but not their text
+  const key = `${post.entry.collection}/${post.id}`;
+  let cached = readingCache.get(key);
   if (!cached) {
-    cached = render(post).then(({ headings, remarkPluginFrontmatter }) => {
+    cached = render(post.entry).then(({ headings, remarkPluginFrontmatter }) => {
       const data = (remarkPluginFrontmatter as { reading?: ReadingData }).reading ?? { seconds: 0, sections: [] };
       return {
         seconds: data.seconds,
@@ -102,7 +186,7 @@ export function getReading(post: Post): Promise<PostReading> {
         sections: matchSections(data.sections, headings),
       };
     });
-    readingCache.set(post.id, cached);
+    readingCache.set(key, cached);
   }
   return cached;
 }

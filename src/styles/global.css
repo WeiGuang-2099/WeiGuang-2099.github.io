@@ -242,6 +242,21 @@ em, i, cite { font-synthesis-style: none; }
    4. Components
    ========================================================================== */
 
+/* header tools: the language switch and the theme toggle, a pair of round controls */
+.header-tools { display: flex; align-items: center; gap: 10px; flex: none; }
+/* the language switch names the language it leads to: EN in the monospace, 中 in the serif */
+.lang-toggle {
+  position: relative;
+  display: inline-grid; place-items: center; width: 36px; height: 36px; flex: none;
+  border: 1px solid var(--rule-strong); border-radius: 50%;
+  font: 500 11.5px/1 var(--font-mono); letter-spacing: 0.04em; color: var(--ink); text-decoration: none;
+}
+.lang-toggle:lang(zh) { font: 400 15px/1 var(--cjk-serif); letter-spacing: 0; }
+.lang-toggle::after { content: ""; position: absolute; inset: -4px; }
+a.lang-toggle:hover { border-color: var(--ink); }
+/* no translation yet: drawn dashed, like a draft, and inert */
+.lang-toggle[aria-disabled] { border-style: dashed; color: var(--faint); cursor: default; }
+
 /* theme toggle */
 .theme-toggle {
   position: relative;
@@ -453,6 +468,15 @@ html:not(.js) .theme-toggle { display: none; }
   font: 500 12px/18px var(--font-mono); color: var(--muted);
 }
 .attrs .draft-mark { margin-right: 0; vertical-align: 0; }
+/* a post listed in the other language because it is not translated yet */
+.lang-mark {
+  display: inline-block; margin-right: 10px; padding: 0 6px; vertical-align: 3px;
+  border: 1px solid var(--rule-strong); border-radius: 3px;
+  font: 400 12.5px/18px var(--font-text); letter-spacing: 0.06em; color: var(--muted);
+}
+.post-nav .lang-mark { margin-right: 8px; vertical-align: 2px; }
+/* the monospace has no Chinese: Chinese labels in measured contexts take the serif */
+.draft-mark:lang(zh), .copy:lang(zh) { font-family: var(--cjk-serif); font-weight: 400; }
 .is-draft .bar, .is-draft .minibar::after {
   background: repeating-linear-gradient(to right, var(--lane) 0 4px, transparent 4px 7px) left center / 100% 3px no-repeat;
 }
@@ -475,6 +499,8 @@ html:not(.js) .theme-toggle { display: none; }
 
 /* post header */
 .post-head h1 { font-size: 40px; line-height: 1.35; text-wrap: balance; }
+/* the 404 page says it in both languages: the English line under the Chinese one */
+.h1-alt { display: block; margin-top: 4px; font-size: 0.6em; font-weight: 400; line-height: 1.3; color: var(--muted); }
 .post-head h1:lang(en) { line-height: 1.15; letter-spacing: -0.01em; }
 .post-head .dek { margin-top: 18px; font-size: 19px; line-height: 1.8; color: var(--muted); max-width: 36em; }
 .post-head .dek:lang(en) { line-height: 1.55; }
@@ -489,6 +515,7 @@ html:not(.js) .theme-toggle { display: none; }
 .attrs dd { margin-top: 5px; display: flex; align-items: center; gap: 10px; font: 400 14.5px/24px var(--font-mono); }
 .attrs .tags { font-size: 14px; gap: 4px 18px; }
 .attrs .tag { color: var(--ink); }
+.attrs .attr-link { font: 400 16px/24px var(--font-text); }
 .attrs .links { display: flex; flex-wrap: wrap; gap: 4px 20px; padding: 0; list-style: none; font: 400 16px/24px var(--font-text); }
 /* the post's span from the home list: same minute scale, drawn as the same dimension line */
 .minibar {
@@ -605,7 +632,8 @@ html:not(.js) .theme-toggle { display: none; }
 /* About: the signature */
 .motto { margin-top: 40px; }
 .motto blockquote p { font: 400 30px/1.5 var(--font-quote); letter-spacing: 0.04em; color: var(--ink); }
-.motto-en { margin-top: 12px; max-width: 30em; font-size: 18px; line-height: 1.6; font-style: italic; color: var(--ink); }
+.motto-gloss { margin-top: 12px; max-width: 30em; font-size: 18px; line-height: 1.6; color: var(--ink); }
+.motto-gloss:lang(en) { font-style: italic; }
 .motto figcaption { margin-top: 10px; font-size: 15px; line-height: 1.5; color: var(--muted); }
 .motto cite { font-style: normal; }
 
@@ -831,7 +859,7 @@ html:not(.js) .copy { display: none; }
   .site-nav { order: 3; width: 100%; }
   .site-nav ul { gap: 14px; }
   .site-nav a { padding-block: 10px; }
-  .theme-toggle { width: 40px; height: 40px; }
+  .theme-toggle, .lang-toggle { width: 40px; height: 40px; }
   .hero { padding-block: 40px 56px; row-gap: 36px; }
   .specimen { gap: 20px; }
   .specimen-name { --cell: 105px; }
@@ -883,5 +911,5 @@ html:not(.js) .copy { display: none; }
   .post-nav-next { grid-column: auto; align-items: flex-start; text-align: left; }
   .motto { margin-top: 28px; }
   .motto blockquote p { font-size: 24px; }
-  .motto-en { font-size: 17px; }
+  .motto-gloss { font-size: 17px; }
 }

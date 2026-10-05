@@ -2,7 +2,7 @@
 
 缉熙（Dawning）的个人技术博客，记录 RAG、多智能体编排和 LLM 应用工程方面的笔记。
 
-- 线上地址：<https://weiguang-2099.github.io>
+- 线上地址：<https://weiguang-2099.github.io>（英文版：<https://weiguang-2099.github.io/en/>）
 - 源码：<https://github.com/WeiGuang-2099/WeiGuang-2099.github.io>
 
 站点用 Astro 构建，从官方 minimal 模板起步，页面、布局和样式全部手写：没有博客主题，没有 UI 组件库，没有前端框架。设计方向叫“界”（ruled lines）：一本像中文书那样排版、像工程图那样标注的技术笔记。人写的内容用衬线体（思源宋体 / Source Serif），构建时测出来的数值（日期、阅读时长、篇数、小节编号、代码）用等宽体。阅读时长画成工程图里的尺寸线：一篇文章是一个 span，阅读时长是它的 duration，文章目录就是这篇文章自己的瀑布图。界面只用墨色和纸色，彩色只用来表示主题（rag、agents、llm-apps，用石绿、赭石、石青三种矿物颜料色）；唯一的例外是首页那方朱红的印章。
@@ -17,6 +17,7 @@ npm run dev        # 本地预览，默认 http://localhost:4321 ，草稿也会
 npm run build      # 生成静态站点到 dist/（先停掉 dev）
 npm run preview    # 预览 dist/ 里的构建结果
 npm run check      # 类型检查（astro check，同样先停掉 dev）
+npm run translate  # 用 DeepSeek 把还没有英文版的文章翻译成英文（见下面的“英文版”）
 ```
 
 想严格按 `package-lock.json` 安装（和提交的版本完全一致）可以用 `npm ci`。
@@ -28,13 +29,17 @@ npm run check      # 类型检查（astro check，同样先停掉 dev）
 ```text
 .github/workflows/deploy.yml   GitHub Pages 部署
 public/                        原样复制的文件：favicon、og.png（社交分享图）、robots.txt
-src/content.config.ts          文章集合（posts）的定义和 frontmatter schema
-src/content/posts/             文章
+scripts/translate.ts           npm run translate：调用 DeepSeek 生成英文版
+scripts/glossary.md            翻译用的术语表
+src/content.config.ts          文章集合（posts）、英文版集合（translations）的定义和 frontmatter schema
+src/content/posts/             文章（英文版 index.en.md 放在原文旁边）
 src/content/drafts/            草稿（不进仓库，只在 npm run dev 里显示，需要时自己建）
-src/pages/                     页面：首页、文章、归档、标签、About、404、RSS
-src/layouts/BaseLayout.astro   页面骨架：<head>（SEO、Open Graph、字体）、页眉、页脚、主题切换
-src/components/                文章列表、目录瀑布图、标签等组件
-src/lib/                       数据整理：文章排序、主题泳道、阅读时长、坐标轴、日期格式
+src/pages/                     路由：中文版的首页、文章、归档、标签、About、404、RSS
+src/pages/en/                  路由：英文版的同一套页面
+src/views/                     页面内容：每个页面只写一份，中文和英文路由共用
+src/layouts/BaseLayout.astro   页面骨架：<head>（SEO、Open Graph、hreflang、字体）、页眉、页脚、主题切换
+src/components/                页眉（语言切换）、文章列表、目录瀑布图、标签等组件
+src/lib/                       数据整理：文章和它的英文版、主题泳道、阅读时长、坐标轴、日期格式；界面文字（ui.ts）
 src/plugins/                   Markdown 插件和代码高亮主题（构建时运行）
 src/styles/global.css          全部样式（颜色变量、排版、布局、组件、深色模式）
 ```
@@ -75,7 +80,7 @@ lang: zh-CN
 | `updatedDate` | 日期 | 无 | 更新日期，填了才会在文章页显示 “Updated”。 |
 | `tags` | string[] | `[]` | 标签。每个标签都有自己的页面 `/tags/<标签>/`（小写，空格变 `-`，中文保留）。 |
 | `draft` | boolean | `false` | 草稿只在 `npm run dev` 里显示，不会出现在正式构建的任何页面、RSS 和 sitemap 里。但文件本身仍在公开仓库里，见下面的“草稿”。 |
-| `lang` | string | `zh-CN` | 正文的语言，决定中文标点和字体的处理方式。英文文章写 `en`。站点界面始终是英文。 |
+| `lang` | string | `zh-CN` | 正文的语言，也决定中文标点和字体的处理方式。`zh-CN` 的文章属于中文版；直接用英文写的文章写 `en`，它属于英文版，发布在 `/en/posts/<slug>/`。 |
 | `slug` | string | 无 | 网址里的 slug，不写就由文件名生成（见上面）。 |
 
 - 标题只写在 frontmatter 的 `title` 里，正文从 `##` 开始，不要再写 `#` 一级标题：页面已经把 `title` 显示成唯一的一级标题。Typora、Obsidian 等编辑器习惯在第一行写 `# 标题`，记得删掉。
@@ -164,9 +169,67 @@ print("hello")
 
 ### 维护提示
 
-Hello World 一文里的 `src/content.config.ts` 代码块是这个文件的原样拷贝，修改 schema 时请同步更新。
+Hello World 一文里的 `src/content.config.ts` 代码块是这个文件的原样拷贝，修改 schema 时请同步更新（之后 Hello World 的英文版会过期，用 `npm run translate -- hello-world` 重新翻译）。
 
 渲染好的文章缓存在 `node_modules/.astro/` 里（CI 里 withastro/action 也会恢复这份缓存），Astro 只在文章本身的 Markdown 改动时才重新渲染它。为此 `src/lib/inlined-svgs.ts` 会在 `src/plugins/`、`astro.config.mjs`、`package-lock.json` 或文章目录里的 SVG 改动后，让所有文章在下一次构建时自动重新渲染；开发服务器要重启才会用上改过的插件。如果别处的改动也影响文章的渲染结果，先删除 `node_modules/.astro/` 再构建。
+
+## 英文版
+
+站点有两个版本：中文版在原来的网址（`/`、`/posts/<slug>/`），英文版在 `/en/` 下（`/en/`、`/en/posts/<slug>/`）。页眉右上角的语言按钮（中文页上是 `EN`，英文页上是 `中`）在两个版本的同一页面之间切换。界面文字在 `src/lib/ui.ts`，首页介绍和 About 的长段落在 `src/views/` 里，中英文各一份。日期、阅读时长等测量值在两个版本里写法相同（`2026-10-05`、`12 min`）。
+
+### 英文版的文章从哪里来
+
+文章只用中文写。英文版是放在原文旁边的另一个文件，由 `npm run translate` 调用 DeepSeek API 生成，和原文一起提交：
+
+```text
+src/content/posts/ddia-03/
+  index.md            中文原文
+  index.en.md         英文版（脚本生成，可以手改）
+  lsm-tree.svg        插图
+  lsm-tree.en.svg     插图的英文版（只替换了图里的中文标签）
+```
+
+`index.en.md` 的 frontmatter 只有三项：`title`、`description`（英文标题和摘要）和 `sourceHash`（翻译时中文原文的标题、摘要和正文的指纹，用来判断英文版是否过期）。发布日期、标签和草稿状态都跟着中文原文走，不用写两遍。
+
+还没有英文版的文章也会出现在英文版的列表里：标题前有一个“中文”标记，链接指向中文原文，这篇文章页上的语言按钮画成虚线、不能点。英文版的文章信息栏里有一行 “Translated from”，链回中文原文。
+
+### 配置
+
+在项目根目录建一个 `.env` 文件（已经写在 `.gitignore` 里，不会提交）：
+
+```sh
+DEEPSEEK_API_KEY=sk-...
+# 可选：
+# TRANSLATE_MODEL=deepseek-flash                 默认是 deepseek-v4-pro
+# TRANSLATE_BASE_URL=https://api.deepseek.com    换成其他兼容 OpenAI 接口的服务也可以
+```
+
+### 翻译
+
+```sh
+npm run translate                # 翻译所有还没有英文版的已发布文章，更新英文插图，列出过期的英文版
+npm run translate -- ddia-05     # 翻译（或重新翻译）指定的文章，草稿也可以
+npm run translate -- --dry-run   # 只列出要翻译什么和大概的费用，不调用 API
+npm run translate -- --check     # 手改译文之后，核对每篇英文版的结构是否还和原文一致，不调用 API
+npm run translate -- ddia-05 --from <文件>   # 用文件里的译文代替 API 的回复（例如改好的被拒译文），照常核对、写入
+```
+
+- 一篇文章整篇一次翻译，前后术语一致。术语表在 `scripts/glossary.md`；翻译规则（Markdown 结构不变、代码原样保留、标题不加编号、括号里给出的英文术语直接用……）写在 `scripts/translate.ts` 的提示词里。哪个词译得不满意，就往术语表里加一行，再重新翻译。
+- 写文件之前，脚本会核对标题层级、代码块、脚注、链接、表格行数、段落数和列表项数是否和原文一致；代码块里只有含中文的行（注释、字符串）允许改动。对不上就不写文件，译文存到系统临时目录里，路径会打印出来；改好以后用 `--from` 交回脚本。
+- 英文版里指向其他文章的链接会自动改成英文版的地址（`/posts/x/` 变成 `/en/posts/x/`），那篇还没有英文版时保持指向中文。
+- 写好以后，脚本列出仍然含有中文的行：引用的古诗可以保留，其余的要看一下。
+- 用 `git diff` 审阅译文，可以直接修改，满意了再提交。GitHub Actions 构建时不调用 API，也不需要 key。
+- 费用：`deepseek-v4-pro` 翻译一篇一万字左右的文章约 0.5 元；北京时间工作日 9:00 到 12:00、14:00 到 18:00 以外（包括周末和法定节假日）半价。脚本结束时会打印这次的用量和估算费用。
+
+### 中文改过以后
+
+- 中文原文的标题、摘要或正文改过，英文版就过期了：`npm run dev` 和构建会在终端里提示，`npm run translate` 也会列出来。英文版不会被自动覆盖（它可能手改过），需要时运行 `npm run translate -- <slug>` 重新翻译整篇。
+- 插图不一样：中文插图改过以后，下一次 `npm run translate` 会重新生成它的英文版，对英文插图的手工调整也会被覆盖。
+- 英文标签通常比中文长，可能放不下或者压到别的线条。新生成的英文插图要在浏览器里看一眼，放不下就直接改 `.en.svg`：挪位置，或者换一个更短的说法。
+
+### 草稿
+
+草稿的英文版也放在草稿旁边（`drafts/my-post/index.en.md`），发布时和中文原文一起移到 `posts/`。`npm run translate` 默认不翻译草稿，要翻译时写出它的名字：`npm run translate -- my-post`。
 
 ## 部署
 

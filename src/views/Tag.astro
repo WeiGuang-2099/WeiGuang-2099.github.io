@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { laneVar, type Axis } from '../lib/posts';
+import type { TagGroup } from '../lib/tags';
+import { localePath, type Locale } from '../lib/i18n';
+import { UI } from '../lib/ui';
+
+interface Props {
+  locale: Locale;
+  group: TagGroup;
+  axis: Axis;
+}
+
+const { locale, group, axis } = Astro.props;
+const t = UI[locale];
+---
+<BaseLayout locale={locale} title={t.tag.title(group.name)} description={t.tag.description(group.name)}>
+  <div class="container page">
+    <header class="page-head">
+      <p class="page-kicker"><a class="text-link" href={localePath(locale, '/tags/')}>{t.tags.title}</a></p>
+      <h1>
+        {group.lane && <span class="sw sw-lg" style={`--lane: ${laneVar(group.lane)}`} aria-hidden="true"></span>}
+        {group.name}
+      </h1>
+      <p class="page-dek">{t.listDek(group.items.length, group.minutes, axis.max)}</p>
+    </header>
+    <PostList locale={locale} items={group.items} axis={axis} titleTag="h2" />
+  </div>
+</BaseLayout>

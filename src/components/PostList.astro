@@ -8,15 +8,19 @@ import TitleSegments from './TitleSegments.astro';
 import TagList from './TagList.astro';
 import { laneVar, type Axis, type PostSummary } from '../lib/posts';
 import { isoDate, pct, tickLabel } from '../lib/format';
+import { LANG, type Locale } from '../lib/i18n';
+import { UI } from '../lib/ui';
 
 interface Props {
+  locale: Locale;
   items: PostSummary[];
   axis: Axis;
   /** Heading level of the post titles, so the outline stays correct on every page. */
   titleTag?: 'h2' | 'h3';
 }
 
-const { items, axis, titleTag: TitleTag = 'h3' } = Astro.props;
+const { locale, items, axis, titleTag: TitleTag = 'h3' } = Astro.props;
+const t = UI[locale];
 const intervals = axis.ticks.length - 1;
 ---
 <div class="wf" style={`--axis-max: ${axis.max}; --intervals: ${intervals}`}>
@@ -36,12 +40,13 @@ const intervals = axis.ticks.length - 1;
       <li class:list={['wf-row', { 'is-draft': draft }]} style={`--lane: ${laneVar(lane)}; --dur: ${minutes}`}>
         <time class="c-date" datetime={isoDate(post.data.pubDate)}>{isoDate(post.data.pubDate)}</time>
         <div class="c-post">
-          <TitleTag class="post-title" lang={post.data.lang}>{draft && <span class="draft-mark" lang="en">Draft</span>}<a href={url}><TitleSegments title={post.data.title} /></a></TitleTag>
+          {/* lang-mark: a post that exists only in the other language (not translated yet); kept on one line, so no space is set between the marks and the title */}
+          <TitleTag class="post-title" lang={post.data.lang}>{draft && <span class="draft-mark" lang={LANG[locale]}>{t.draft}</span>}{post.locale !== locale && <span class="lang-mark" aria-hidden="true">{t.otherLanguage.mark}</span>}<a href={url}>{post.locale !== locale && <span class="sr-only" lang={LANG[locale]}>{t.otherLanguage.prefix}</span>}<TitleSegments title={post.data.title} /></a></TitleTag>
           <p class="post-desc" lang={post.data.lang}>{post.data.description}</p>
-          <TagList tags={post.data.tags} />
+          <TagList tags={post.data.tags} locale={locale} />
         </div>
         <div class="c-time">
-          <div class="span-row"><span class="bar" aria-hidden="true"></span><span class="dur"><span class="sr-only">Reading time: </span>{minutes} min</span></div>
+          <div class="span-row"><span class="bar" aria-hidden="true"></span><span class="dur"><span class="sr-only">{t.readingTimeOf}</span>{minutes} min</span></div>
         </div>
       </li>
     ))}

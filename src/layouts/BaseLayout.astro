@@ -28,8 +28,17 @@ import punct600 from '@fontsource/noto-serif-sc/files/noto-serif-sc-latin-600-no
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { SITE } from '../lib/site';
+import { DEFAULT_LOCALE, LANG, localeOfPath, localePath, OG_LOCALE, otherLocale, unlocalizedPath, type Locale } from '../lib/i18n';
+import { UI } from '../lib/ui';
 
 interface Props {
+  /** Edition of the page; by default the one its URL names (/en/... is English). */
+  locale?: Locale;
+  /**
+   * The same page in the other edition. By default the same path with the other prefix, since every
+   * index page exists in both; a post passes its translation, or null when it has none.
+   */
+  alternate?: string | null;
   /** Page name; omitted on the home page, whose title is just the site name. */
   title?: string;
   description?: string;
@@ -43,11 +52,33 @@ interface Props {
   noindex?: boolean;
 }
 
-const { title, description = SITE.description, type = 'website', article, mainClass, canonicalPath, noindex } = Astro.props;
-const fullTitle = title ? `${title} | ${SITE.name}` : SITE.name;
-const ogTitle = title ?? SITE.name;
-const canonical = new URL(canonicalPath ?? Astro.url.pathname, Astro.site ?? SITE.url).href;
-const ogImage = new URL(SITE.ogImage.path, Astro.site ?? SITE.url).href;
+const { locale = localeOfPath(Astro.url.pathname) } = Astro.props;
+const t = UI[locale];
+const other = otherLocale(locale);
+const {
+  alternate = localePath(other, unlocalizedPath(Astro.url.pathname)),
+  title,
+  description = t.siteDescription,
+  type = 'website',
+  article,
+  mainClass,
+  canonicalPath,
+  noindex,
+} = Astro.props;
+const site = Astro.site ?? SITE.url;
+const fullTitle = title ? `${title} | ${t.siteName}` : t.siteName;
+const ogTitle = title ?? t.siteName;
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, site).href;
+const ogImage = new URL(SITE.ogImage.path, site).href;
+// hreflang: both editions of the page, and the Chinese one as the default for other languages
+// (not on the 404 page, whose "other edition" is just the English home page)
+const alternates = alternate && !noindex
+  ? [
+      { lang: LANG[locale], href: canonical },
+      { lang: LANG[other], href: new URL(alternate, site).href },
+      { lang: 'x-default', href: locale === DEFAULT_LOCALE ? canonical : new URL(alternate, site).href },
+    ]
+  : [];
 
 const punctFaces = [
   [400, punct400],
@@ -61,7 +92,7 @@ const punctFaces = [
   .join('');
 ---
 <!doctype html>
-<html lang="en">
+<html lang={LANG[locale]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -87,19 +118,21 @@ const punctFaces = [
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {alternates.map((link) => <link rel="alternate" hreflang={link.lang} href={link.href} />)}
     {noindex && <meta name="robots" content="noindex" />}
 
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content={SITE.name} />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content={t.siteName} />
+    <meta property="og:locale" content={OG_LOCALE[locale]} />
+    {alternates.length > 0 && <meta property="og:locale:alternate" content={OG_LOCALE[other]} />}
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content={String(SITE.ogImage.width)} />
     <meta property="og:image:height" content={String(SITE.ogImage.height)} />
-    <meta property="og:image:alt" content={SITE.ogImage.alt} />
+    <meta property="og:image:alt" content={t.ogImageAlt} />
     {article && <meta property="article:published_time" content={article.published.toISOString()} />}
     {article?.modified && <meta property="article:modified_time" content={article.modified.toISOString()} />}
     {article?.tags.map((tag) => <meta property="article:tag" content={tag} />)}
@@ -107,24 +140,24 @@ const punctFaces = [
     <meta name="twitter:title" content={ogTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:image:alt" content={SITE.ogImage.alt} />
+    <meta name="twitter:image:alt" content={t.ogImageAlt} />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="alternate" type="application/rss+xml" title={SITE.name} href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title={t.siteName} href={localePath(locale, '/rss.xml')} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
     <style is:inline set:html={punctFaces}></style>
   </head>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <SiteHeader />
+    <a class="skip-link" href="#main">{t.skipLink}</a>
+    <SiteHeader locale={locale} alternate={alternate} />
     <main id="main" class={mainClass}>
       <slot />
     </main>
     <slot name="after-main" />
-    <SiteFooter />
+    <SiteFooter locale={locale} />
     <script is:inline>
       /* theme toggle: follows the system until the reader picks a theme, which is remembered */
       (function () {
@@ -134,7 +167,11 @@ const punctFaces = [
         function effective() { return root.dataset.theme || (mq.matches ? 'dark' : 'light'); }
         function sync() {
           var next = effective() === 'dark' ? 'light' : 'dark';
-          buttons.forEach(function (b) { b.setAttribute('aria-label', 'Switch to ' + next + ' theme'); b.title = 'Switch to ' + next + ' theme'; });
+          buttons.forEach(function (b) {
+            var label = b.getAttribute(next === 'dark' ? 'data-label-dark' : 'data-label-light');
+            b.setAttribute('aria-label', label);
+            b.title = label;
+          });
         }
         buttons.forEach(function (b) {
           b.addEventListener('click', function () {
