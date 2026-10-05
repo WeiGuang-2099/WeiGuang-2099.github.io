@@ -1,0 +1,93 @@
+<!-- English version of column-storage.svg, written by npm run translate from source 32c3ab51af9d854d. Adjust the layout here if a label does not fit; the file is only written again when column-storage.svg changes. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="338" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- Six rows of a fact table stored column by column, then bitmaps over the same rows. Every column file
+       and every bitmap is a strip of six cells on one shared grid: labels take 0-40% of the width, cell k
+       spans 40+10(k-1)% to 40+10k%, so position k lines up vertically in every strip and is row k (row
+       numbers on top). The tint band through position 4 picks out row 4 = (31, 3, 5). Below the 位图 rule:
+       one bitmap per product_sk value (29, 30, 31) and the bitmap for store_sk = 3; the ink line and the
+       label 上两行按位与 mark the bitwise AND of the last two only, which leaves rows 1 and 4 (tinted). Bits: 1 in ink (muted in the
+       two bitmaps the query does not use), 0 in faint. Strip outlines sit in a translate(-0.5 0) group, so
+       at 300px every vertical line falls on a pixel and the right edge stays inside the width. No viewBox:
+       text keeps its size. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- tints, drawn first: position 4 through the row numbers and the three column files; result rows 1 and 4 -->
+  <g style="fill: var(--tint, #ECEEEA)">
+    <rect x="70%" y="0" width="10%" height="119" />
+    <rect x="40%" y="311" width="10%" height="25" />
+    <rect x="70%" y="311" width="10%" height="25" />
+  </g>
+
+  <!-- strips: outlines, then the cell dividers -->
+  <g transform="translate(-0.5 0)" style="fill: none; stroke-width: 1">
+    <g style="stroke: var(--rule-strong, #B1B8BB)">
+      <rect x="40%" y="24.5" width="60%" height="26" />
+      <rect x="40%" y="58.5" width="60%" height="26" />
+      <rect x="40%" y="92.5" width="60%" height="26" />
+      <rect x="40%" y="166.5" width="60%" height="26" />
+      <rect x="40%" y="200.5" width="60%" height="26" />
+      <rect x="40%" y="234.5" width="60%" height="26" />
+      <rect x="40%" y="268.5" width="60%" height="26" />
+      <rect x="40%" y="310.5" width="60%" height="26" />
+    </g>
+    <g style="stroke: var(--rule, #DADDD8)">
+      <line x1="50%" y1="25" x2="50%" y2="50" /><line x1="60%" y1="25" x2="60%" y2="50" /><line x1="70%" y1="25" x2="70%" y2="50" /><line x1="80%" y1="25" x2="80%" y2="50" /><line x1="90%" y1="25" x2="90%" y2="50" />
+      <line x1="50%" y1="59" x2="50%" y2="84" /><line x1="60%" y1="59" x2="60%" y2="84" /><line x1="70%" y1="59" x2="70%" y2="84" /><line x1="80%" y1="59" x2="80%" y2="84" /><line x1="90%" y1="59" x2="90%" y2="84" />
+      <line x1="50%" y1="93" x2="50%" y2="118" /><line x1="60%" y1="93" x2="60%" y2="118" /><line x1="70%" y1="93" x2="70%" y2="118" /><line x1="80%" y1="93" x2="80%" y2="118" /><line x1="90%" y1="93" x2="90%" y2="118" />
+      <line x1="50%" y1="167" x2="50%" y2="192" /><line x1="60%" y1="167" x2="60%" y2="192" /><line x1="70%" y1="167" x2="70%" y2="192" /><line x1="80%" y1="167" x2="80%" y2="192" /><line x1="90%" y1="167" x2="90%" y2="192" />
+      <line x1="50%" y1="201" x2="50%" y2="226" /><line x1="60%" y1="201" x2="60%" y2="226" /><line x1="70%" y1="201" x2="70%" y2="226" /><line x1="80%" y1="201" x2="80%" y2="226" /><line x1="90%" y1="201" x2="90%" y2="226" />
+      <line x1="50%" y1="235" x2="50%" y2="260" /><line x1="60%" y1="235" x2="60%" y2="260" /><line x1="70%" y1="235" x2="70%" y2="260" /><line x1="80%" y1="235" x2="80%" y2="260" /><line x1="90%" y1="235" x2="90%" y2="260" />
+      <line x1="50%" y1="269" x2="50%" y2="294" /><line x1="60%" y1="269" x2="60%" y2="294" /><line x1="70%" y1="269" x2="70%" y2="294" /><line x1="80%" y1="269" x2="80%" y2="294" /><line x1="90%" y1="269" x2="90%" y2="294" />
+      <line x1="50%" y1="311" x2="50%" y2="336" /><line x1="60%" y1="311" x2="60%" y2="336" /><line x1="70%" y1="311" x2="70%" y2="336" /><line x1="80%" y1="311" x2="80%" y2="336" /><line x1="90%" y1="311" x2="90%" y2="336" />
+    </g>
+  </g>
+
+  <!-- the 位图 rule between the two halves, and the ink line under the two bitmaps that are ANDed -->
+  <line x1="38" y1="148.5" x2="100%" y2="148.5" style="stroke: var(--rule, #DADDD8); stroke-width: 1" />
+  <line x1="0" y1="302.5" x2="100%" y2="302.5" style="stroke: var(--ink, #1B222B); stroke-width: 1" />
+
+  <!-- labels -->
+  <text x="0" y="14" style="font-size: 12.5px; fill: var(--muted, #5D6672)">row number</text>
+  <text x="0" y="153.5" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">bitmap</text>
+  <text x="0" y="328.5" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">bitwise AND</text>
+  <g style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--ink, #1B222B)">
+    <text x="0" y="42">product_sk</text>
+    <text x="0" y="76">store_sk</text>
+    <text x="0" y="110">quantity</text>
+    <text x="0" y="184" style="fill: var(--muted, #5D6672)">product_sk = 29</text>
+    <text x="0" y="218" style="fill: var(--muted, #5D6672)">product_sk = 30</text>
+    <text x="0" y="252">product_sk = 31</text>
+    <text x="0" y="286">store_sk = 3</text>
+  </g>
+
+  <!-- cell contents, centred at 45 / 55 / 65 / 75 / 85 / 95% -->
+  <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--ink, #1B222B)">
+    <!-- row numbers; 4 is the tinted row -->
+    <g style="fill: var(--muted, #5D6672)">
+      <text x="45%" y="14">1</text>
+      <text x="55%" y="14">2</text>
+      <text x="65%" y="14">3</text>
+      <text x="75%" y="14" style="font-weight: 600; fill: var(--ink, #1B222B)">4</text>
+      <text x="85%" y="14">5</text>
+      <text x="95%" y="14">6</text>
+    </g>
+
+    <!-- column files: product_sk 31 30 30 31 29 31, store_sk 3 3 4 3 4 4, quantity 1 2 1 5 1 3 -->
+    <text x="45%" y="42">31</text><text x="55%" y="42">30</text><text x="65%" y="42">30</text><text x="75%" y="42">31</text><text x="85%" y="42">29</text><text x="95%" y="42">31</text>
+    <text x="45%" y="76">3</text><text x="55%" y="76">3</text><text x="65%" y="76">4</text><text x="75%" y="76">3</text><text x="85%" y="76">4</text><text x="95%" y="76">4</text>
+    <text x="45%" y="110">1</text><text x="55%" y="110">2</text><text x="65%" y="110">1</text><text x="75%" y="110">5</text><text x="85%" y="110">1</text><text x="95%" y="110">3</text>
+
+    <!-- bitmaps: 0 in faint, 1 in muted (unused by the query) or ink -->
+    <g style="fill: var(--faint, #757D87)">
+      <!-- product_sk = 29: 0 0 0 0 1 0 -->
+      <text x="45%" y="184">0</text><text x="55%" y="184">0</text><text x="65%" y="184">0</text><text x="75%" y="184">0</text><text x="85%" y="184" style="fill: var(--muted, #5D6672)">1</text><text x="95%" y="184">0</text>
+      <!-- product_sk = 30: 0 1 1 0 0 0 -->
+      <text x="45%" y="218">0</text><text x="55%" y="218" style="fill: var(--muted, #5D6672)">1</text><text x="65%" y="218" style="fill: var(--muted, #5D6672)">1</text><text x="75%" y="218">0</text><text x="85%" y="218">0</text><text x="95%" y="218">0</text>
+      <!-- product_sk = 31: 1 0 0 1 0 1 -->
+      <text x="45%" y="252" style="fill: var(--ink, #1B222B)">1</text><text x="55%" y="252">0</text><text x="65%" y="252">0</text><text x="75%" y="252" style="fill: var(--ink, #1B222B)">1</text><text x="85%" y="252">0</text><text x="95%" y="252" style="fill: var(--ink, #1B222B)">1</text>
+      <!-- store_sk = 3: 1 1 0 1 0 0 -->
+      <text x="45%" y="286" style="fill: var(--ink, #1B222B)">1</text><text x="55%" y="286" style="fill: var(--ink, #1B222B)">1</text><text x="65%" y="286">0</text><text x="75%" y="286" style="fill: var(--ink, #1B222B)">1</text><text x="85%" y="286">0</text><text x="95%" y="286">0</text>
+      <!-- product_sk = 31 AND store_sk = 3: 1 0 0 1 0 0, rows 1 and 4 -->
+      <text x="45%" y="328" style="font-weight: 600; fill: var(--ink, #1B222B)">1</text><text x="55%" y="328">0</text><text x="65%" y="328">0</text><text x="75%" y="328" style="font-weight: 600; fill: var(--ink, #1B222B)">1</text><text x="85%" y="328">0</text><text x="95%" y="328">0</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,70 @@
+<!-- English version of avro-resolution.svg, written by npm run translate from source 2fe06252d2cb1f45. Adjust the layout here if a label does not fit; the file is only written again when avro-resolution.svg changes. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="173" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- Avro schema resolution: the writer's schema (left, 0..40%) and the reader's schema (right,
+       60..100%) side by side. Fields with the same name are joined by elbow edges: out of the writer
+       box, along a vertical lane of their own in the gap, into the reader box, where the arrowhead's
+       tip touches the box edge. Lanes: interests 44%, favoriteNumber 48.5%, userName 53%. photoURL has
+       no partner: a dashed stub ending in a cross, labelled 忽略. email has no partner: the default
+       declared in the reader's schema, null, is written under it inside the reader box.
+       Both boxes use the same row grid (rows 26px apart, field names 8px or 7px from the edge so that
+       favoriteNumber fits a 40% box at 300px), but the reader box sits half a row (13px) lower, so no
+       two horizontal segments share a y and the edges cross only twice (interests has to cross the
+       other two, since it moves from third place to first). Edges are drawn first; the boxes, drawn
+       after them, cover the line ends. The reader box is a nested svg at 60%, its rect shifted half a
+       pixel left so its right edge stays inside the width.
+       No viewBox: text keeps its size. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- edges: horizontal out of the writer box, vertical in its lane, horizontal into the reader box -->
+  <g style="stroke: var(--muted, #5D6672); stroke-width: 1">
+    <!-- userName: writer row 1 to reader row 2, lane 53% -->
+    <line x1="40%" y1="47.5" x2="53%" y2="47.5" />
+    <line x1="53%" y1="47" x2="53%" y2="87" />
+    <line x1="53%" y1="86.5" x2="60%" y2="86.5" />
+    <!-- favoriteNumber: writer row 2 to reader row 3, lane 48.5% -->
+    <line x1="40%" y1="73.5" x2="48.5%" y2="73.5" />
+    <line x1="48.5%" y1="73" x2="48.5%" y2="113" />
+    <line x1="48.5%" y1="112.5" x2="60%" y2="112.5" />
+    <!-- interests: writer row 3 up to reader row 1, lane 44% -->
+    <line x1="40%" y1="99.5" x2="44%" y2="99.5" />
+    <line x1="44%" y1="100" x2="44%" y2="60" />
+    <line x1="44%" y1="60.5" x2="60%" y2="60.5" />
+  </g>
+  <!-- arrowheads: the tip touches the reader box's left edge -->
+  <g style="fill: var(--muted, #5D6672)">
+    <svg x="60%" y="60.5" overflow="visible"><path d="M-9 -3.5V3.5L-1 0Z" /></svg>
+    <svg x="60%" y="86.5" overflow="visible"><path d="M-9 -3.5V3.5L-1 0Z" /></svg>
+    <svg x="60%" y="112.5" overflow="visible"><path d="M-9 -3.5V3.5L-1 0Z" /></svg>
+  </g>
+
+  <!-- photoURL: only the writer has it, so the reader skips it -->
+  <svg x="40%" y="125.5" overflow="visible">
+    <line x1="1" y1="0" x2="12" y2="0" style="stroke: var(--muted, #5D6672); stroke-width: 1; stroke-dasharray: 2 2" />
+    <path d="M13 -3L19 3M13 3L19 -3" style="fill: none; stroke: var(--muted, #5D6672); stroke-width: 1" />
+    <text x="25" y="4.5" style="font-size: 12.5px; fill: var(--muted, #5D6672)">skip</text>
+  </svg>
+
+  <!-- the writer's schema -->
+  <rect x="0.5" y="0.5" width="40%" height="142" style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+  <line x1="0.5" y1="30.5" x2="40%" y2="30.5" style="stroke: var(--rule, #DADDD8); stroke-width: 1" />
+  <text x="8" y="20" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">writer's schema</text>
+  <g style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--ink, #1B222B)">
+    <text x="8" y="52">userName</text>
+    <text x="8" y="78">favoriteNumber</text>
+    <text x="8" y="104">interests</text>
+    <text x="8" y="130" style="fill: var(--muted, #5D6672)">photoURL</text>
+  </g>
+
+  <!-- the reader's schema: half a row lower, its own order, plus email with a default -->
+  <svg x="60%" y="0" overflow="visible">
+    <rect x="-0.5" y="13.5" width="40%" height="159" style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+    <line x1="-0.5" y1="43.5" x2="40%" y2="43.5" style="stroke: var(--rule, #DADDD8); stroke-width: 1" />
+    <text x="7" y="33" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">reader's schema</text>
+    <g style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--ink, #1B222B)">
+      <text x="7" y="65">interests</text>
+      <text x="7" y="91">userName</text>
+      <text x="7" y="117">favoriteNumber</text>
+      <text x="7" y="143">email</text>
+    </g>
+    <text x="7" y="160" style="font-size: 12.5px; fill: var(--muted, #5D6672)">default <tspan style="font-family: var(--font-mono, monospace)">null</tspan></text>
+  </svg>
+</svg>
