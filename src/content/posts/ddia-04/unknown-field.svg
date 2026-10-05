@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="478" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- The book's lost-field example (an old version of the code updates a record that a newer version
+       wrote). Three full-width boxes stacked in one column, joined by two labelled downward arrows:
+       the record the new code wrote (with photoURL), the old code's model object (no photoURL), and the
+       record after the old code writes it back (photoURL gone, favoriteNumber changed). The boxes share
+       one row grid (rows 22px apart), so photoURL, its empty dashed slot in the model object and its
+       empty dashed slot in the written-back record line up. Field names sit at x=12; the notes sit in
+       one column at x=140, just past the longest field name, so the eye does not travel to the right
+       edge on a wide screen. Each box is a nested svg placed at its top in px; its edges are four
+       1px lines (the right one shifted half a pixel left), so nothing leaves 0..100% of the width.
+       Arrows run at x=24.5 px, their heads touch the next box's top edge, labels sit to their right.
+       No viewBox: text keeps its size. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- arrows between the boxes -->
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="24.5" y1="130" x2="24.5" y2="166" />
+    <line x1="24.5" y1="304" x2="24.5" y2="340" />
+  </g>
+  <g style="fill: var(--ink, #1B222B)">
+    <path d="M21 166H28L24.5 174Z" />
+    <path d="M21 340H28L24.5 348Z" />
+  </g>
+  <g style="font-size: 14px; fill: var(--muted, #5D6672)">
+    <text x="38" y="157">旧版本代码读取、解码</text>
+    <text x="38" y="331">修改后编码、写回</text>
+  </g>
+
+  <!-- 1. the record the new code wrote: four fields, photoURL is the new one -->
+  <svg x="0" y="0" overflow="visible">
+    <line x1="0" y1="30.5" x2="100%" y2="30.5" style="stroke: var(--rule, #DADDD8); stroke-width: 1" />
+    <g style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+      <line x1="0" y1="0.5" x2="100%" y2="0.5" />
+      <line x1="0" y1="129.5" x2="100%" y2="129.5" />
+      <line x1="0.5" y1="0" x2="0.5" y2="130" />
+      <line x1="100%" y1="0" x2="100%" y2="130" transform="translate(-0.5 0)" />
+    </g>
+    <text x="12" y="20" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">新版本代码写入的记录</text>
+    <g style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">
+      <text x="12" y="49">userName</text>
+      <text x="12" y="71">favoriteNumber</text>
+      <text x="12" y="93">interests</text>
+      <text x="12" y="115" style="font-weight: 500; fill: var(--ink, #1B222B)">photoURL</text>
+    </g>
+    <text x="140" y="115" style="font-size: 12.5px; fill: var(--muted, #5D6672)">新版本加的字段</text>
+  </svg>
+
+  <!-- 2. the old code's model object: no field for photoURL, shown as an empty dashed slot -->
+  <svg x="0" y="174" overflow="visible">
+    <line x1="0" y1="30.5" x2="100%" y2="30.5" style="stroke: var(--rule, #DADDD8); stroke-width: 1" />
+    <g style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+      <line x1="0" y1="0.5" x2="100%" y2="0.5" />
+      <line x1="0" y1="129.5" x2="100%" y2="129.5" />
+      <line x1="0.5" y1="0" x2="0.5" y2="130" />
+      <line x1="100%" y1="0" x2="100%" y2="130" transform="translate(-0.5 0)" />
+    </g>
+    <text x="12" y="20" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">旧版本代码的模型对象</text>
+    <g style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">
+      <text x="12" y="49">userName</text>
+      <text x="12" y="71">favoriteNumber</text>
+      <text x="12" y="93">interests</text>
+    </g>
+    <rect x="6.5" y="102.5" width="72" height="18" style="fill: none; stroke: var(--faint, #757D87); stroke-width: 1; stroke-dasharray: 3 3" />
+    <text x="140" y="115" style="font-size: 12.5px; fill: var(--muted, #5D6672)">没有<tspan dx="4" style="font-family: var(--font-mono, monospace)">photoURL</tspan></text>
+  </svg>
+
+  <!-- 3. the record as written back: favoriteNumber changed, photoURL gone -->
+  <svg x="0" y="348" overflow="visible">
+    <line x1="0" y1="30.5" x2="100%" y2="30.5" style="stroke: var(--rule, #DADDD8); stroke-width: 1" />
+    <g style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+      <line x1="0" y1="0.5" x2="100%" y2="0.5" />
+      <line x1="0" y1="129.5" x2="100%" y2="129.5" />
+      <line x1="0.5" y1="0" x2="0.5" y2="130" />
+      <line x1="100%" y1="0" x2="100%" y2="130" transform="translate(-0.5 0)" />
+    </g>
+    <text x="12" y="20" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">写回后的记录</text>
+    <g style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">
+      <text x="12" y="49">userName</text>
+      <text x="12" y="71" style="fill: var(--ink, #1B222B)">favoriteNumber</text>
+      <text x="12" y="93">interests</text>
+    </g>
+    <text x="140" y="71" style="font-size: 12.5px; fill: var(--muted, #5D6672)">已修改</text>
+    <rect x="6.5" y="102.5" width="72" height="18" style="fill: none; stroke: var(--faint, #757D87); stroke-width: 1; stroke-dasharray: 3 3" />
+    <text x="140" y="115" style="font-size: 12.5px; font-weight: 500; fill: var(--ink, #1B222B)"><tspan style="font-family: var(--font-mono, monospace)">photoURL</tspan><tspan dx="4">丢了</tspan></text>
+  </svg>
+</svg>
