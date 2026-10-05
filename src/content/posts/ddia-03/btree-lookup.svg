@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="290" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- Looking up key 251 in a three-level B-tree, after the book's figure. Each page is a box 201px wide
+       and 57px tall: a header strip with the level name (and, below the root, the key range the page
+       covers), then a row of boundary keys with a child reference (a dot) before, between and after
+       them. The followed reference is an ink dot whose ink line runs down, across and down onto the
+       next page's header; the other references are muted dots with short muted stubs (other child
+       pages). The keys that bound the chosen range are in ink: 200 and 300 in the root, 240 and 260 in
+       the middle page; in the leaf, 251 is boxed and bold, and a note below the leaf (right-aligned, as
+       wide as the page) says each key carries its value or a reference to the value's page. The pages
+       form a staircase: the root starts
+       at 0, the middle page is centred on 50%, the leaf ends at 100%; each page is a nested svg at that
+       anchor with a px translate, so every page uses the same local geometry. The across segments join
+       two anchors: the first is a line from px 130 to 50% shifted left by 29.5; the second sits in a
+       nested svg from 50% that is 50% wide, so its 100% is the figure's right edge, shifted left by
+       130.5. All edges are vertical or horizontal, so the arrowheads hold at every width. No viewBox:
+       text keeps its size. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- the query -->
+  <text x="217" y="19" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">查找<tspan dx="6" style="font-family: var(--font-mono, monospace); font-size: 12.5px; font-weight: 600">251</tspan></text>
+
+  <!-- root page: 0 to 201 -->
+  <svg x="0" y="0" overflow="visible">
+    <rect x="0.5" y="0.5" width="200" height="56" style="fill: none; stroke: var(--rule-strong, #B1B8BB)" />
+    <line x1="0.5" y1="28.5" x2="200.5" y2="28.5" style="stroke: var(--rule, #DADDD8)" />
+    <text x="10" y="19" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">根页</text>
+    <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">
+      <text x="36" y="47">100</text>
+      <text x="79" y="47" style="fill: var(--ink, #1B222B)">200</text>
+      <text x="122" y="47" style="fill: var(--ink, #1B222B)">300</text>
+      <text x="165" y="47">400</text>
+    </g>
+    <g style="stroke: var(--muted, #5D6672); stroke-width: 1">
+      <line x1="14.5" y1="42.5" x2="14.5" y2="67" />
+      <line x1="57.5" y1="42.5" x2="57.5" y2="67" />
+      <line x1="143.5" y1="42.5" x2="143.5" y2="67" />
+      <line x1="186.5" y1="42.5" x2="186.5" y2="67" />
+    </g>
+    <g style="fill: var(--muted, #5D6672)">
+      <circle cx="14.5" cy="42.5" r="2.5" />
+      <circle cx="57.5" cy="42.5" r="2.5" />
+      <circle cx="143.5" cy="42.5" r="2.5" />
+      <circle cx="186.5" cy="42.5" r="2.5" />
+    </g>
+    <!-- the reference between 200 and 300, down to the channel at 86.5 -->
+    <line x1="100.5" y1="42.5" x2="100.5" y2="86.5" style="stroke: var(--ink, #1B222B); stroke-width: 1; stroke-linecap: square" />
+    <circle cx="100.5" cy="42.5" r="3" style="fill: var(--ink, #1B222B)" />
+  </svg>
+
+  <!-- middle page: centred on 50%, top at 104 -->
+  <svg x="50%" y="104" overflow="visible">
+    <g transform="translate(-100 0)">
+      <rect x="0.5" y="0.5" width="200" height="56" style="fill: none; stroke: var(--rule-strong, #B1B8BB)" />
+      <line x1="0.5" y1="28.5" x2="200.5" y2="28.5" style="stroke: var(--rule, #DADDD8)" />
+      <text x="10" y="19" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">中间页</text>
+      <text x="191" y="19" text-anchor="end" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">200–300</text>
+      <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">
+        <text x="36" y="47">220</text>
+        <text x="79" y="47" style="fill: var(--ink, #1B222B)">240</text>
+        <text x="122" y="47" style="fill: var(--ink, #1B222B)">260</text>
+        <text x="165" y="47">280</text>
+      </g>
+      <g style="stroke: var(--muted, #5D6672); stroke-width: 1">
+        <line x1="14.5" y1="42.5" x2="14.5" y2="67" />
+        <line x1="57.5" y1="42.5" x2="57.5" y2="67" />
+        <line x1="143.5" y1="42.5" x2="143.5" y2="67" />
+        <line x1="186.5" y1="42.5" x2="186.5" y2="67" />
+      </g>
+      <g style="fill: var(--muted, #5D6672)">
+        <circle cx="14.5" cy="42.5" r="2.5" />
+        <circle cx="57.5" cy="42.5" r="2.5" />
+        <circle cx="143.5" cy="42.5" r="2.5" />
+        <circle cx="186.5" cy="42.5" r="2.5" />
+      </g>
+      <g style="stroke: var(--ink, #1B222B); stroke-width: 1; stroke-linecap: square">
+        <!-- arriving from the root, onto the header -->
+        <line x1="70.5" y1="-17.5" x2="70.5" y2="-8" />
+        <!-- the reference between 240 and 260, down to the channel at 190.5 -->
+        <line x1="100.5" y1="42.5" x2="100.5" y2="86.5" />
+      </g>
+      <g style="fill: var(--ink, #1B222B)">
+        <path d="M67 -8H74L70.5 0Z" />
+        <circle cx="100.5" cy="42.5" r="3" />
+      </g>
+    </g>
+  </svg>
+
+  <!-- leaf page: ends at 100%, top at 208 -->
+  <svg x="100%" y="208" overflow="visible">
+    <g transform="translate(-201 0)">
+      <rect x="0.5" y="0.5" width="200" height="56" style="fill: none; stroke: var(--rule-strong, #B1B8BB)" />
+      <line x1="0.5" y1="28.5" x2="200.5" y2="28.5" style="stroke: var(--rule, #DADDD8)" />
+      <text x="10" y="19" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">叶子页</text>
+      <text x="191" y="19" text-anchor="end" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">240–260</text>
+      <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">
+        <text x="20.5" y="47">241</text>
+        <text x="60.5" y="47">245</text>
+        <text x="100.5" y="47" style="font-weight: 600; fill: var(--ink, #1B222B)">251</text>
+        <text x="140.5" y="47">253</text>
+        <text x="180.5" y="47">258</text>
+      </g>
+      <rect x="83.5" y="33.5" width="34" height="18" style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1" />
+      <!-- arriving from the middle page, onto the header -->
+      <line x1="70.5" y1="-17.5" x2="70.5" y2="-8" style="stroke: var(--ink, #1B222B); stroke-width: 1; stroke-linecap: square" />
+      <path d="M67 -8H74L70.5 0Z" style="fill: var(--ink, #1B222B)" />
+    </g>
+  </svg>
+
+  <!-- the two across segments of the path -->
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1; stroke-linecap: square">
+    <!-- root slot (100.5) to the middle page's landing point (50% - 29.5) -->
+    <line x1="130" y1="86.5" x2="50%" y2="86.5" transform="translate(-29.5 0)" />
+    <!-- middle slot (50% + 0.5) to the leaf's landing point (100% - 130.5) -->
+    <svg x="50%" width="50%" overflow="visible">
+      <line x1="131" y1="190.5" x2="100%" y2="190.5" transform="translate(-130.5 0)" />
+    </svg>
+  </g>
+
+  <!-- what a leaf page holds -->
+  <text x="100%" y="285" text-anchor="end" style="font-size: 12.5px; fill: var(--muted, #5D6672)">每个键都带着值，或值所在页的引用</text>
+</svg>
