@@ -145,6 +145,7 @@ export const traceDark = theme('trace-dark', 'dark', DARK);
 
 const LANGUAGE_NAMES: Record<string, string> = {
   astro: 'Astro',
+  avdl: 'Avro IDL',
   bash: 'Shell',
   c: 'C',
   cpp: 'C++',
@@ -165,6 +166,8 @@ const LANGUAGE_NAMES: Record<string, string> = {
   mdx: 'MDX',
   plaintext: 'Text',
   powershell: 'PowerShell',
+  proto: 'Protocol Buffers',
+  protobuf: 'Protocol Buffers',
   ps1: 'PowerShell',
   py: 'Python',
   python: 'Python',
@@ -175,6 +178,7 @@ const LANGUAGE_NAMES: Record<string, string> = {
   shellscript: 'Shell',
   sql: 'SQL',
   text: 'Text',
+  thrift: 'Thrift',
   toml: 'TOML',
   ts: 'TypeScript',
   tsx: 'TSX',

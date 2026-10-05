@@ -8,8 +8,13 @@
  * rehypeTableWrap
  *   Wraps every <table> in <div class="table-wrap"> so wide tables scroll inside the column
  *   instead of widening the page.
+ *
+ * rehypeLatinApostrophe
+ *   In Chinese text the quote marks come from the full-width "SC Punct" face (BaseLayout.astro), which
+ *   also covers U+2019, so the apostrophe in O’Neil or writer’s would be set full width. An apostrophe
+ *   between two Latin letters is wrapped in <span lang="en">, an English island that resets the face.
  */
-import type { Root, Element, ElementContent } from 'hast';
+import type { Root, Element, ElementContent, Text } from 'hast';
 import { toString } from 'hast-util-to-string';
 import { visit, SKIP } from 'unist-util-visit';
 
@@ -52,6 +57,29 @@ export function rehypeTableWrap() {
         children: [node],
       };
       return SKIP;
+    });
+  };
+}
+
+const APOSTROPHE = /(?<=[A-Za-z])’(?=[A-Za-z])/g;
+/** Elements whose text is not prose: code keeps its own face, inlined figures their own type. */
+const NOT_PROSE = new Set(['code', 'pre', 'svg', 'script', 'style']);
+
+export function rehypeLatinApostrophe() {
+  return function (tree: Root) {
+    visit(tree, (node, index, parent) => {
+      if (node.type === 'element' && NOT_PROSE.has(node.tagName)) return SKIP;
+      if (node.type !== 'text' || !parent || index === undefined || !APOSTROPHE.test(node.value)) return;
+      APOSTROPHE.lastIndex = 0;
+      const parts: ElementContent[] = [];
+      for (const [i, piece] of node.value.split(APOSTROPHE).entries()) {
+        if (i > 0) {
+          parts.push({ type: 'element', tagName: 'span', properties: { lang: 'en' }, children: [{ type: 'text', value: '’' }] });
+        }
+        if (piece) parts.push({ type: 'text', value: piece } as Text);
+      }
+      (parent as Element).children.splice(index, 1, ...parts);
+      return [SKIP, index + parts.length];
     });
   };
 }

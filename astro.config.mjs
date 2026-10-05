@@ -6,8 +6,9 @@ import { unified } from '@astrojs/markdown-remark';
 
 import remarkReadingTime from './src/plugins/remark-reading-time.ts';
 import remarkFigure from './src/plugins/remark-figure.ts';
-import { rehypeBlockquoteAttribution, rehypeTableWrap } from './src/plugins/rehype-prose.ts';
+import { rehypeBlockquoteAttribution, rehypeTableWrap, rehypeLatinApostrophe } from './src/plugins/rehype-prose.ts';
 import { traceLight, traceDark, transformerCodeBlock } from './src/plugins/shiki-trace.ts';
+import { thrift, avdl } from './src/plugins/shiki-langs.ts';
 
 // Fontsource lists a .woff fallback after every .woff2. Every browser the site supports takes the
 // .woff2, so the fallback is dropped and the build no longer emits about 300 unused .woff files.
@@ -43,7 +44,7 @@ export default defineConfig({
     // remark/rehype pipeline (@astrojs/markdown-remark); .mdx files inherit it through the MDX integration.
     processor: unified({
       remarkPlugins: [remarkReadingTime, remarkFigure],
-      rehypePlugins: [rehypeBlockquoteAttribution, rehypeTableWrap],
+      rehypePlugins: [rehypeBlockquoteAttribution, rehypeTableWrap, rehypeLatinApostrophe],
       remarkRehype: {
         // U+21A9 + VS15: the back-reference arrow in text presentation, never as an emoji
         footnoteBackContent: '↩︎',
@@ -54,6 +55,8 @@ export default defineConfig({
       themes: { light: traceLight, dark: traceDark },
       // Datalog has no grammar of its own; its syntax is a subset of Prolog's.
       langAlias: { datalog: 'prolog' },
+      // Thrift and Avro IDL are not bundled with Shiki: small grammars of our own
+      langs: [thrift, avdl],
       defaultColor: false,
       transformers: [transformerCodeBlock()],
     },
