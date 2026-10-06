@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="150" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- The book's n = 5, w = 3, r = 3 quorum. Five replicas in a row, each in a 20% column with a 1% gap on
+       either side: replicas 1-3 took the write (v7), replicas 4 and 5 missed it and still hold v6. The
+       dimension line above spans the replicas the write succeeded on (1-3, 1% to 59%); the one below
+       spans the replicas that answered the read (3-5, 41% to 99%). A tinted band behind replica 3 marks
+       where the two overlap, so the read is sure to see v7. No viewBox: text keeps its size, columns are
+       placed in percentages. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- the overlap: replica 3's column, from one dimension line to the other -->
+  <rect x="41%" y="28" width="18%" height="93" style="fill: var(--tint, #ECEEEA)" />
+
+  <!-- the write succeeded on replicas 1-3 -->
+  <text x="30%" y="14" text-anchor="middle" style="font-size: 12.5px; fill: var(--muted, #5D6672)">写入成功的副本：<tspan style="font-family: var(--font-mono, monospace); fill: var(--ink, #1B222B)">w = 3</tspan></text>
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="1%" y1="22" x2="1%" y2="34" />
+    <line x1="1%" y1="28.5" x2="59%" y2="28.5" />
+    <line x1="59%" y1="22" x2="59%" y2="34" />
+  </g>
+
+  <!-- five replicas; replica 3 is drawn in ink -->
+  <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+    <rect x="1%" y="44.5" width="18%" height="60" />
+    <rect x="21%" y="44.5" width="18%" height="60" />
+    <rect x="61%" y="44.5" width="18%" height="60" />
+    <rect x="81%" y="44.5" width="18%" height="60" />
+  </g>
+  <rect x="41%" y="44.5" width="18%" height="60" style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1" />
+  <g text-anchor="middle" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">
+    <text x="10%" y="70">副本 1</text>
+    <text x="30%" y="70">副本 2</text>
+    <text x="50%" y="70">副本 3</text>
+    <text x="70%" y="70">副本 4</text>
+    <text x="90%" y="70">副本 5</text>
+  </g>
+  <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px">
+    <text x="10%" y="92" style="fill: var(--ink, #1B222B)">v7</text>
+    <text x="30%" y="92" style="fill: var(--ink, #1B222B)">v7</text>
+    <text x="50%" y="92" style="font-weight: 600; fill: var(--ink, #1B222B)">v7</text>
+    <text x="70%" y="92" style="fill: var(--muted, #5D6672)">v6</text>
+    <text x="90%" y="92" style="fill: var(--muted, #5D6672)">v6</text>
+  </g>
+
+  <!-- the read got answers from replicas 3-5 -->
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="41%" y1="115" x2="41%" y2="127" />
+    <line x1="41%" y1="120.5" x2="99%" y2="120.5" />
+    <line x1="99%" y1="115" x2="99%" y2="127" />
+  </g>
+  <text x="70%" y="144" text-anchor="middle" style="font-size: 12.5px; fill: var(--muted, #5D6672)">读取时给出响应的副本：<tspan style="font-family: var(--font-mono, monospace); fill: var(--ink, #1B222B)">r = 3</tspan></text>
+</svg>

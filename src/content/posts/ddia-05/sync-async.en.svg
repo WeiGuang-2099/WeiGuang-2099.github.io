@@ -1,0 +1,46 @@
+<!-- English version of sync-async.svg, written by npm run translate from source 239b05d2186ccb0d. Adjust the layout here if a label does not fit; the file is only written again when sync-async.svg changes. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="266" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- The book's profile-picture update with one synchronous and one asynchronous follower, drawn as a
+       trace like the figures in DDIA notes 01. Time runs left to right: the client's request is the root
+       span (0-64%); the leader writes locally (2-18%) and sends the change to both followers at 20%;
+       follower 1 writes and acknowledges (20-58%), after which the leader answers the client (64%);
+       follower 2 only finishes at 100%. The bracket marks 64-100%, when the client already has its "ok"
+       but follower 2 still serves the old value. A dotted guide at 64% ties the "ok" on the axis to the
+       bracket; it is drawn first so the bars cover it. Proportions are illustrative, not measured.
+       No viewBox: text keeps its size, bars are placed in percentages. Colors are the site's tokens,
+       with light-theme fallbacks. -->
+
+  <!-- axis: the client sends the update (0%) and gets its "ok" (64%) -->
+  <g style="font-size: 12.5px; fill: var(--muted, #5D6672)">
+    <text x="0" y="12">client sends update</text>
+    <text x="64%" y="12" text-anchor="middle">client gets success</text>
+  </g>
+  <line x1="0" y1="24.5" x2="100%" y2="24.5" style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+
+  <!-- the moment of the "ok", down to the bracket -->
+  <line x1="64%" y1="25" x2="64%" y2="250" style="stroke: var(--faint, #757D87); stroke-width: 1; stroke-dasharray: 2 3" />
+
+  <!-- root span: the client's request, 0-64% -->
+  <text x="0" y="52" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">client<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">waits for write</tspan></text>
+  <rect x="0" y="60" width="64%" height="8" rx="1" style="fill: var(--ink, #1B222B)" />
+
+  <!-- the leader writes to its own storage: 2-18% -->
+  <text x="0" y="100" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">leader<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">writes locally</tspan></text>
+  <rect x="2%" y="108" width="16%" height="8" rx="1" style="fill: var(--muted, #5D6672)" />
+
+  <!-- follower 1, synchronous: writes and acknowledges, 20-58%; the leader waits for it -->
+  <text x="0" y="148" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">follower 1<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">sync: writes, acks</tspan></text>
+  <rect x="20%" y="156" width="38%" height="8" rx="1" style="fill: var(--muted, #5D6672)" />
+
+  <!-- follower 2, asynchronous: the change arrives and is written, 20-100%; nobody waits for it -->
+  <text x="0" y="196" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">follower 2<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">async: no wait</tspan></text>
+  <rect x="20%" y="204" width="80%" height="8" rx="1" style="fill: var(--muted, #5D6672)" />
+
+  <!-- the stale window: the client has its "ok", follower 2 has not caught up, 64-100% -->
+  <text x="0" y="244" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">stale reads<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">from follower 2</tspan></text>
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="64%" y1="250" x2="64%" y2="262" />
+    <line x1="64%" y1="256.5" x2="100%" y2="256.5" />
+    <line x1="100%" y1="250" x2="100%" y2="262" transform="translate(-0.5 0)" />
+  </g>
+</svg>
