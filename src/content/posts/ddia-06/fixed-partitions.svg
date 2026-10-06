@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="368" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- Rebalancing with a fixed number of partitions. Twenty partitions p0-p19, dealt round-robin to nodes
+       0-3 (node j holds p(j), p(j+4), ... p(j+16)). Top panel: before node 4 joins, its column is an empty
+       dashed slot. Bottom panel (196px down): after it joins, each old node has handed over one whole
+       partition, p16-p19, which are drawn in ink in both panels; the slots they left are dashed. Five
+       columns of 20% each, partition boxes 16% wide and centred in their column, rows 24px apart. No
+       viewBox: text keeps its size. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- top panel: before -->
+  <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">加入新节点之前<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">每个节点 5 个分区</tspan></text>
+  <g text-anchor="middle" style="font-size: 13px; fill: var(--ink, #1B222B)">
+    <text x="10%" y="42">节点 0</text>
+    <text x="30%" y="42">节点 1</text>
+    <text x="50%" y="42">节点 2</text>
+    <text x="70%" y="42">节点 3</text>
+    <text x="90%" y="42" style="fill: var(--faint, #757D87)">节点 4</text>
+  </g>
+  <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+    <rect x="2%" y="52.5" width="16%" height="18" />
+    <rect x="2%" y="76.5" width="16%" height="18" />
+    <rect x="2%" y="100.5" width="16%" height="18" />
+    <rect x="2%" y="124.5" width="16%" height="18" />
+    <rect x="22%" y="52.5" width="16%" height="18" />
+    <rect x="22%" y="76.5" width="16%" height="18" />
+    <rect x="22%" y="100.5" width="16%" height="18" />
+    <rect x="22%" y="124.5" width="16%" height="18" />
+    <rect x="42%" y="52.5" width="16%" height="18" />
+    <rect x="42%" y="76.5" width="16%" height="18" />
+    <rect x="42%" y="100.5" width="16%" height="18" />
+    <rect x="42%" y="124.5" width="16%" height="18" />
+    <rect x="62%" y="52.5" width="16%" height="18" />
+    <rect x="62%" y="76.5" width="16%" height="18" />
+    <rect x="62%" y="100.5" width="16%" height="18" />
+    <rect x="62%" y="124.5" width="16%" height="18" />
+  </g>
+  <!-- the four partitions that will move -->
+  <g style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1">
+    <rect x="2%" y="148.5" width="16%" height="18" />
+    <rect x="22%" y="148.5" width="16%" height="18" />
+    <rect x="42%" y="148.5" width="16%" height="18" />
+    <rect x="62%" y="148.5" width="16%" height="18" />
+  </g>
+  <!-- node 4 has not joined yet -->
+  <rect x="82%" y="52.5" width="16%" height="114" style="fill: none; stroke: var(--faint, #757D87); stroke-width: 1; stroke-dasharray: 3 3" />
+  <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">
+    <text x="10%" y="66">p0</text>
+    <text x="10%" y="90">p4</text>
+    <text x="10%" y="114">p8</text>
+    <text x="10%" y="138">p12</text>
+    <text x="30%" y="66">p1</text>
+    <text x="30%" y="90">p5</text>
+    <text x="30%" y="114">p9</text>
+    <text x="30%" y="138">p13</text>
+    <text x="50%" y="66">p2</text>
+    <text x="50%" y="90">p6</text>
+    <text x="50%" y="114">p10</text>
+    <text x="50%" y="138">p14</text>
+    <text x="70%" y="66">p3</text>
+    <text x="70%" y="90">p7</text>
+    <text x="70%" y="114">p11</text>
+    <text x="70%" y="138">p15</text>
+    <g style="fill: var(--ink, #1B222B)">
+      <text x="10%" y="162">p16</text>
+      <text x="30%" y="162">p17</text>
+      <text x="50%" y="162">p18</text>
+      <text x="70%" y="162">p19</text>
+    </g>
+  </g>
+
+  <!-- bottom panel: after, 196px down -->
+  <svg x="0" y="196" overflow="visible">
+    <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">加入节点 4 之后<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">每个节点 4 个分区</tspan></text>
+    <g text-anchor="middle" style="font-size: 13px; fill: var(--ink, #1B222B)">
+      <text x="10%" y="42">节点 0</text>
+      <text x="30%" y="42">节点 1</text>
+      <text x="50%" y="42">节点 2</text>
+      <text x="70%" y="42">节点 3</text>
+      <text x="90%" y="42" style="font-weight: 500">节点 4</text>
+    </g>
+    <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+      <rect x="2%" y="52.5" width="16%" height="18" />
+      <rect x="2%" y="76.5" width="16%" height="18" />
+      <rect x="2%" y="100.5" width="16%" height="18" />
+      <rect x="2%" y="124.5" width="16%" height="18" />
+      <rect x="22%" y="52.5" width="16%" height="18" />
+      <rect x="22%" y="76.5" width="16%" height="18" />
+      <rect x="22%" y="100.5" width="16%" height="18" />
+      <rect x="22%" y="124.5" width="16%" height="18" />
+      <rect x="42%" y="52.5" width="16%" height="18" />
+      <rect x="42%" y="76.5" width="16%" height="18" />
+      <rect x="42%" y="100.5" width="16%" height="18" />
+      <rect x="42%" y="124.5" width="16%" height="18" />
+      <rect x="62%" y="52.5" width="16%" height="18" />
+      <rect x="62%" y="76.5" width="16%" height="18" />
+      <rect x="62%" y="100.5" width="16%" height="18" />
+      <rect x="62%" y="124.5" width="16%" height="18" />
+    </g>
+    <!-- the slots the moved partitions left -->
+    <g style="fill: none; stroke: var(--faint, #757D87); stroke-width: 1; stroke-dasharray: 3 3">
+      <rect x="2%" y="148.5" width="16%" height="18" />
+      <rect x="22%" y="148.5" width="16%" height="18" />
+      <rect x="42%" y="148.5" width="16%" height="18" />
+      <rect x="62%" y="148.5" width="16%" height="18" />
+    </g>
+    <!-- node 4 holds the four moved partitions -->
+    <g style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1">
+      <rect x="82%" y="52.5" width="16%" height="18" />
+      <rect x="82%" y="76.5" width="16%" height="18" />
+      <rect x="82%" y="100.5" width="16%" height="18" />
+      <rect x="82%" y="124.5" width="16%" height="18" />
+    </g>
+    <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">
+      <text x="10%" y="66">p0</text>
+      <text x="10%" y="90">p4</text>
+      <text x="10%" y="114">p8</text>
+      <text x="10%" y="138">p12</text>
+      <text x="30%" y="66">p1</text>
+      <text x="30%" y="90">p5</text>
+      <text x="30%" y="114">p9</text>
+      <text x="30%" y="138">p13</text>
+      <text x="50%" y="66">p2</text>
+      <text x="50%" y="90">p6</text>
+      <text x="50%" y="114">p10</text>
+      <text x="50%" y="138">p14</text>
+      <text x="70%" y="66">p3</text>
+      <text x="70%" y="90">p7</text>
+      <text x="70%" y="114">p11</text>
+      <text x="70%" y="138">p15</text>
+      <g style="fill: var(--ink, #1B222B)">
+        <text x="90%" y="66">p16</text>
+        <text x="90%" y="90">p17</text>
+        <text x="90%" y="114">p18</text>
+        <text x="90%" y="138">p19</text>
+      </g>
+    </g>
+  </svg>
+</svg>

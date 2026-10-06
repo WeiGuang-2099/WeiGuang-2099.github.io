@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="372" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- The used-car example in two panels. Both partition the documents by ID (partition 0 holds docs 1-4,
+       partition 1 docs 5-8; red cars are 1, 3 and 6, silver cars 2 and 8). Top: a document-partitioned
+       (local) index, where each partition indexes only its own documents, so a query for color:red is
+       scattered to both partitions. Bottom: a term-partitioned (global) index, where terms a-r live in
+       partition 0 and s-z in partition 1, so color:red lists cars from both partitions and the query goes
+       to partition 0 only. Each panel: a centred query box (30-70%), a bus of orthogonal lines with
+       arrowheads touching the partition boxes, and two partition boxes (0-48% and 52-100%) with a rule
+       under their titles; the color:red entries are in ink. Index entries are 12px mono so the longest
+       one fits a partition box at a 304px figure width. No viewBox: text keeps its size. Colors are the
+       site's tokens, with light-theme fallbacks. -->
+
+  <!-- top panel: local index -->
+  <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">本地索引<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">按文档分区，查询发给所有分区</tspan></text>
+  <rect x="30%" y="26.5" width="40%" height="28" style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1" />
+  <text x="50%" y="45" text-anchor="middle" style="font-size: 14px; fill: var(--ink, #1B222B)">查询<tspan dx="6" style="font-family: var(--font-mono, monospace); font-size: 12.5px">color:red</tspan></text>
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="50%" y1="55" x2="50%" y2="68.5" />
+    <line x1="25%" y1="68.5" x2="75%" y2="68.5" />
+    <line x1="25%" y1="68" x2="25%" y2="77" />
+    <line x1="75%" y1="68" x2="75%" y2="77" />
+  </g>
+  <g style="fill: var(--ink, #1B222B)">
+    <svg x="25%" y="84" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    <svg x="75%" y="84" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+  </g>
+  <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+    <rect x="0.5" y="84.5" width="47.5%" height="84" />
+    <rect x="52%" y="84.5" width="47.5%" height="84" />
+  </g>
+  <g style="stroke: var(--rule, #DADDD8); stroke-width: 1">
+    <line x1="0.5" y1="114.5" x2="48%" y2="114.5" />
+    <line x1="52%" y1="114.5" x2="99.5%" y2="114.5" />
+  </g>
+  <svg x="0" y="84" overflow="visible">
+    <text x="9" y="20" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">分区 0<tspan dx="6" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">文档 1–4</tspan></text>
+    <g style="font-family: var(--font-mono, monospace); font-size: 12px">
+      <text x="9" y="50" style="fill: var(--ink, #1B222B)">color:red → 1 3</text>
+      <text x="9" y="70" style="fill: var(--muted, #5D6672)">color:silver → 2</text>
+    </g>
+  </svg>
+  <svg x="52%" y="84" overflow="visible">
+    <text x="9" y="20" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">分区 1<tspan dx="6" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">文档 5–8</tspan></text>
+    <g style="font-family: var(--font-mono, monospace); font-size: 12px">
+      <text x="9" y="50" style="fill: var(--ink, #1B222B)">color:red → 6</text>
+      <text x="9" y="70" style="fill: var(--muted, #5D6672)">color:silver → 8</text>
+    </g>
+  </svg>
+
+  <!-- bottom panel: global index, 200px down -->
+  <svg x="0" y="200" overflow="visible">
+    <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">全局索引<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">按词条分区，查询只找一个分区</tspan></text>
+    <rect x="30%" y="26.5" width="40%" height="28" style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1" />
+    <text x="50%" y="45" text-anchor="middle" style="font-size: 14px; fill: var(--ink, #1B222B)">查询<tspan dx="6" style="font-family: var(--font-mono, monospace); font-size: 12.5px">color:red</tspan></text>
+    <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+      <line x1="50%" y1="55" x2="50%" y2="68.5" />
+      <line x1="25%" y1="68.5" x2="50%" y2="68.5" />
+      <line x1="25%" y1="68" x2="25%" y2="77" />
+    </g>
+    <svg x="25%" y="84" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" style="fill: var(--ink, #1B222B)" /></svg>
+    <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+      <rect x="0.5" y="84.5" width="47.5%" height="84" />
+      <rect x="52%" y="84.5" width="47.5%" height="84" />
+    </g>
+    <g style="stroke: var(--rule, #DADDD8); stroke-width: 1">
+      <line x1="0.5" y1="114.5" x2="48%" y2="114.5" />
+      <line x1="52%" y1="114.5" x2="99.5%" y2="114.5" />
+    </g>
+    <svg x="0" y="84" overflow="visible">
+      <text x="9" y="20" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">分区 0<tspan dx="6" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">文档 1–4</tspan></text>
+      <text x="9" y="50" style="font-size: 12.5px; fill: var(--muted, #5D6672)">索引词条 a 到 r</text>
+      <text x="9" y="70" style="font-family: var(--font-mono, monospace); font-size: 12px; fill: var(--ink, #1B222B)">color:red → 1 3 6</text>
+    </svg>
+    <svg x="52%" y="84" overflow="visible">
+      <text x="9" y="20" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">分区 1<tspan dx="6" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">文档 5–8</tspan></text>
+      <text x="9" y="50" style="font-size: 12.5px; fill: var(--muted, #5D6672)">索引词条 s 到 z</text>
+      <text x="9" y="70" style="font-family: var(--font-mono, monospace); font-size: 12px; fill: var(--muted, #5D6672)">color:silver → 2 8</text>
+    </svg>
+  </svg>
+</svg>

@@ -1,0 +1,87 @@
+<!-- English version of request-routing.svg, written by npm run translate from source 7a5c1ff81696d70c. Adjust the layout here if a label does not fit; the file is only written again when request-routing.svg changes. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="456" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- The three ways a request for key "foo" reaches node 2, the node with foo's partition, stacked as
+       three panels (at 0, 160 and 336px). Every panel has the client in the left column (0-30%) and the
+       three nodes in columns 0-30%, 35-65% and 70-100%; node 2 is drawn in ink. 1: the client asks node 0,
+       which forwards the request along a path under the nodes. 2: the client asks a routing tier that
+       spans the width, which passes the request down to node 2. 3: the client knows the partition
+       assignment and goes straight to node 2, over the top of the other nodes. All edges are horizontal
+       or vertical, so the arrowheads (drawn in nested svgs at the edge ends) hold at any width. No
+       viewBox: text keeps its size. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- 1: any node, which forwards -->
+  <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">via any node<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">which forwards it</tspan></text>
+  <rect x="0.5" y="24.5" width="29.5%" height="28" style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+  <text x="15%" y="43" text-anchor="middle" style="font-size: 14px; fill: var(--ink, #1B222B)">client</text>
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="15%" y1="53" x2="15%" y2="69" />
+    <line x1="15%" y1="107" x2="15%" y2="120.5" />
+    <line x1="15%" y1="120.5" x2="85%" y2="120.5" />
+    <line x1="85%" y1="114" x2="85%" y2="121" />
+  </g>
+  <g style="fill: var(--ink, #1B222B)">
+    <svg x="15%" y="76" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    <svg x="85%" y="106" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+  </g>
+  <text x="50%" y="138" text-anchor="middle" style="font-size: 12.5px; fill: var(--muted, #5D6672)">node 0 lacks foo, forwards to node 2</text>
+  <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+    <rect x="0.5" y="76.5" width="29.5%" height="30" />
+    <rect x="35%" y="76.5" width="30%" height="30" />
+  </g>
+  <rect x="70%" y="76.5" width="29.5%" height="30" style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1" />
+  <g text-anchor="middle" style="font-size: 14px; fill: var(--ink, #1B222B)">
+    <text x="15%" y="96">node 0</text>
+    <text x="50%" y="96">node 1</text>
+    <text x="85%" y="96" style="font-weight: 500">node 2<tspan dx="6" style="font-family: var(--font-mono, monospace); font-size: 12.5px; font-weight: 400">foo</tspan></text>
+  </g>
+
+  <!-- 2: a routing tier -->
+  <svg x="0" y="160" overflow="visible">
+    <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">routing tier<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">all requests go through it</tspan></text>
+    <rect x="0.5" y="24.5" width="29.5%" height="28" style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+    <text x="15%" y="43" text-anchor="middle" style="font-size: 14px; fill: var(--ink, #1B222B)">client</text>
+    <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+      <line x1="15%" y1="53" x2="15%" y2="65" />
+      <line x1="85%" y1="101" x2="85%" y2="113" />
+    </g>
+    <g style="fill: var(--ink, #1B222B)">
+      <svg x="15%" y="72" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+      <svg x="85%" y="120" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    </g>
+    <rect x="0.5" y="72.5" width="99%" height="28" style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+    <text x="50%" y="91" text-anchor="middle" style="font-size: 14px; fill: var(--ink, #1B222B)">routing tier<tspan dx="8" style="font-size: 12.5px; fill: var(--muted, #5D6672)">knows where each partition is</tspan></text>
+    <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+      <rect x="0.5" y="120.5" width="29.5%" height="30" />
+      <rect x="35%" y="120.5" width="30%" height="30" />
+    </g>
+    <rect x="70%" y="120.5" width="29.5%" height="30" style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1" />
+    <g text-anchor="middle" style="font-size: 14px; fill: var(--ink, #1B222B)">
+      <text x="15%" y="140">node 0</text>
+      <text x="50%" y="140">node 1</text>
+      <text x="85%" y="140" style="font-weight: 500">node 2<tspan dx="6" style="font-family: var(--font-mono, monospace); font-size: 12.5px; font-weight: 400">foo</tspan></text>
+    </g>
+  </svg>
+
+  <!-- 3: a partition-aware client -->
+  <svg x="0" y="336" overflow="visible">
+    <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">partition-aware client<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">connects directly</tspan></text>
+    <rect x="0.5" y="24.5" width="29.5%" height="28" style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+    <text x="15%" y="43" text-anchor="middle" style="font-size: 14px; fill: var(--ink, #1B222B)">client</text>
+    <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+      <line x1="15%" y1="53" x2="15%" y2="66.5" />
+      <line x1="15%" y1="66.5" x2="85%" y2="66.5" />
+      <line x1="85%" y1="66" x2="85%" y2="81" />
+    </g>
+    <svg x="85%" y="88" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" style="fill: var(--ink, #1B222B)" /></svg>
+    <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+      <rect x="0.5" y="88.5" width="29.5%" height="30" />
+      <rect x="35%" y="88.5" width="30%" height="30" />
+    </g>
+    <rect x="70%" y="88.5" width="29.5%" height="30" style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1" />
+    <g text-anchor="middle" style="font-size: 14px; fill: var(--ink, #1B222B)">
+      <text x="15%" y="108">node 0</text>
+      <text x="50%" y="108">node 1</text>
+      <text x="85%" y="108" style="font-weight: 500">node 2<tspan dx="6" style="font-family: var(--font-mono, monospace); font-size: 12.5px; font-weight: 400">foo</tspan></text>
+    </g>
+  </svg>
+</svg>
