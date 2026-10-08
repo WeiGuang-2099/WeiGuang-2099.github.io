@@ -112,8 +112,8 @@ function translatedFrom(source: Source): string | null {
   return String((frontmatter as Record<string, unknown>).sourceHash ?? '');
 }
 
-/** Local SVG images in a Markdown body: ![alt](./name.svg "caption"). */
-const FIGURE = /!\[([^\]]*)\]\(\s*<?((?![a-z][a-z0-9+.-]*:|\/)[^)\s>]+\.svg)>?(?:\s+"([^"]*)")?\s*\)/gi;
+/** Local SVG images in a Markdown body: ![alt](./name.svg "caption"); the caption may hold escaped quotes (\"). */
+const FIGURE = /!\[([^\]]*)\]\(\s*<?((?![a-z][a-z0-9+.-]*:|\/)[^)\s>]+\.svg)>?(?:\s+"((?:[^"\\]|\\.)*)")?\s*\)/gi;
 /** The text elements of an SVG; the labels are the ones with Chinese in them. */
 const TEXT = /(<text\b[^>]*>)([\s\S]*?)(<\/text>)/g;
 
@@ -311,6 +311,7 @@ Keep the Markdown structure exactly as it is:
 Wording:
 - When the Chinese gives the English term in parentheses, as in 预写日志（write-ahead log）, write that English term once and drop the parentheses.
 - Quotations that are already in English, for example from a book, stay exactly as they are.
+- Some posts are notes on a book, such as the DDIA notes. Translate what the Chinese says, in your own words: do not bring in the book's own English sentences, examples, numbers or units where the post words things differently. Only the quotations that are already in English come from the book.
 - A Chinese book title in 《》 becomes the English title in italics, e.g. 《数据密集型应用系统设计》 becomes *Designing Data-Intensive Applications*. Do not repeat a title the sentence already gives in English.
 - Classical Chinese (poetry, lines from ancient texts) stays in Chinese, and the reader gets its meaning in English as well. A poem quoted in a blockquote keeps its Chinese lines and gets an English rendering of the whole poem as one more paragraph of the same blockquote, after the Chinese lines and before the attribution line (keep the backslash line breaks). A short quotation, or a word taken from such a text, in running prose is followed by its English meaning in parentheses, as in 日就 (a day's gain).
 - "图 1：" in a caption becomes "Figure 1: ".
