@@ -1,0 +1,45 @@
+<!-- English version of linearizability.svg, written by npm run translate from source 4999c53ed1cd27fa. Adjust the layout here if a label does not fit; the file is only written again when linearizability.svg changes. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="226" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- Linearizability of a single register x, after the book's clients A, B and C, drawn as a trace. Time
+       runs left to right, and each bar runs from when a client sent a request to when it got the response.
+       C writes 1 to x (16-84%). A reads three times: before the write starts (0-12%, gets 0), while it is
+       in progress (26-40%, gets 1) and after it has finished (88-100%, gets 1). B reads once (46-60%),
+       starting after A's second read has returned 1; the arrow from the end of that read (40%) to the start
+       of B's (46%) marks the ordering, and so B must also get 1. The write is ink, the reads muted, B's read
+       ink. No viewBox: text keeps its size, bars are placed in percentages. Colors are the site's tokens,
+       with light-theme fallbacks. -->
+
+  <text x="0" y="12" style="font-size: 12.5px; fill: var(--muted, #5D6672)">register x, initially <tspan style="font-family: var(--font-mono, monospace); fill: var(--ink, #1B222B)">0</tspan></text>
+  <line x1="0" y1="24.5" x2="100%" y2="24.5" style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+
+  <!-- C writes 1 -->
+  <text x="0" y="52" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">C<tspan dx="8" style="font-family: var(--font-mono, monospace); font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">write(x, 1)</tspan></text>
+  <rect x="16%" y="60" width="68%" height="8" rx="1" style="fill: var(--ink, #1B222B)" />
+
+  <!-- A reads before, during and after the write -->
+  <text x="0" y="100" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">A<tspan dx="8" style="font-family: var(--font-mono, monospace); font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">read(x)</tspan></text>
+  <g style="fill: var(--muted, #5D6672)">
+    <rect x="0" y="108" width="12%" height="8" rx="1" />
+    <rect x="26%" y="108" width="14%" height="8" rx="1" />
+    <rect x="88%" y="108" width="12%" height="8" rx="1" />
+  </g>
+  <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--ink, #1B222B)">
+    <text x="6%" y="132">0</text>
+    <text x="33%" y="132">1</text>
+    <text x="94%" y="132">1</text>
+  </g>
+
+  <!-- B reads after A has already seen the new value -->
+  <text x="0" y="162" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">B<tspan dx="8" style="font-family: var(--font-mono, monospace); font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">read(x)</tspan></text>
+  <rect x="46%" y="170" width="14%" height="8" rx="1" style="fill: var(--ink, #1B222B)" />
+  <text x="53%" y="194" text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; font-weight: 600; fill: var(--ink, #1B222B)">1</text>
+
+  <!-- A's read returned before B's began -->
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="40%" y1="117" x2="40%" y2="174.5" />
+    <line x1="40%" y1="174.5" x2="46%" y2="174.5" />
+  </g>
+  <svg x="46%" y="174.5" overflow="visible"><path d="M-8 -3.5V3.5L0 0Z" style="fill: var(--ink, #1B222B)" /></svg>
+
+  <text x="0" y="220" style="font-size: 12.5px; fill: var(--muted, #5D6672)">B starts after A read 1, so it must read 1</text>
+</svg>

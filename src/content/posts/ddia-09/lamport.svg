@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="210" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- Lamport timestamps, after the book's example of a client carrying the maximum counter it has seen.
+       Three horizontal lifelines, time running left to right: node 1 (y 40), client A (y 110) and node 2
+       (y 180), so every message is a vertical arrow between neighbouring lanes. A writes to node 2 (20%);
+       node 2's counter goes from 4 to 5 and it answers with the timestamp (5, 2) (35%). A then writes to
+       node 1 carrying max = 5 (55%); node 1's counter jumps from 1 to 5 and on to 6, and it answers (6, 1)
+       (70%). Labels sit beside their arrows, away from the other arrows. No viewBox: text keeps its size,
+       positions are percentages. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- lifelines -->
+  <g style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">
+    <text x="0" y="30">节点 1</text>
+    <text x="0" y="100">客户端 A</text>
+    <text x="0" y="170">节点 2</text>
+  </g>
+  <g style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+    <line x1="0" y1="40.5" x2="100%" y2="40.5" />
+    <line x1="0" y1="110.5" x2="100%" y2="110.5" />
+    <line x1="0" y1="180.5" x2="100%" y2="180.5" />
+  </g>
+
+  <!-- the messages -->
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="20%" y1="113" x2="20%" y2="173" />
+    <line x1="35%" y1="178" x2="35%" y2="118" />
+    <line x1="55%" y1="108" x2="55%" y2="48" />
+    <line x1="70%" y1="43" x2="70%" y2="103" />
+  </g>
+  <g style="fill: var(--ink, #1B222B)">
+    <svg x="20%" y="180.5" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    <svg x="35%" y="110.5" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+    <svg x="55%" y="40.5" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+    <svg x="70%" y="110.5" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+  </g>
+  <g style="font-size: 12.5px; fill: var(--muted, #5D6672)">
+    <svg x="20%" y="150" overflow="visible"><text x="6" y="0">写入</text></svg>
+    <svg x="55%" y="80" overflow="visible"><text x="-6" y="0" text-anchor="end">写入，<tspan style="font-family: var(--font-mono, monospace); fill: var(--ink, #1B222B)">max = 5</tspan></text></svg>
+  </g>
+  <g style="font-family: var(--font-mono, monospace); font-size: 12.5px; font-weight: 600; fill: var(--ink, #1B222B)">
+    <svg x="35%" y="150" overflow="visible"><text x="6" y="0">(5, 2)</text></svg>
+    <svg x="70%" y="80" overflow="visible"><text x="6" y="0">(6, 1)</text></svg>
+  </g>
+
+  <!-- what each node's counter did -->
+  <g style="font-size: 12.5px; fill: var(--muted, #5D6672)">
+    <text x="55%" y="30">计数器 <tspan style="font-family: var(--font-mono, monospace); fill: var(--ink, #1B222B)">1 → 5 → 6</tspan></text>
+    <text x="20%" y="202">计数器 <tspan style="font-family: var(--font-mono, monospace); fill: var(--ink, #1B222B)">4 → 5</tspan></text>
+  </g>
+</svg>
