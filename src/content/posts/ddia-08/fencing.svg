@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="264" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- The book's fencing-token example as a trace. Time runs left to right. Client 1 holds the lease with
+       token 33 until it expires at 40%; a GC pause stops it from 12% to 70%, so it never notices. Client 2
+       holds the lease with token 34 from 44% on and writes with it (50-60%), which the storage accepts.
+       Client 1 wakes up and writes with token 33 (74-84%); the storage has already seen 34 and rejects it,
+       drawn as an outlined bar. Leases and successful writes are ink, the pause is muted. Proportions are
+       illustrative. No viewBox: text keeps its size, bars are placed in percentages. Colors are the site's
+       tokens, with light-theme fallbacks. -->
+
+  <!-- client 1 holds the lease with token 33 until 40% -->
+  <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">客户端 1<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">持有租约，令牌 33</tspan></text>
+  <rect x="0" y="22" width="40%" height="8" rx="1" style="fill: var(--ink, #1B222B)" />
+
+  <!-- client 1 is paused across the end of its lease -->
+  <text x="0" y="62" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">客户端 1<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">GC 停顿，没发现租约过期</tspan></text>
+  <rect x="12%" y="70" width="58%" height="8" rx="1" style="fill: var(--muted, #5D6672)" />
+
+  <!-- client 2 gets the lease with token 34 and writes -->
+  <text x="0" y="110" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">客户端 2<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">持有租约，令牌 34</tspan></text>
+  <rect x="44%" y="118" width="56%" height="8" rx="1" style="fill: var(--ink, #1B222B)" />
+  <text x="0" y="158" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">客户端 2<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">带着令牌 34 写入：成功</tspan></text>
+  <rect x="50%" y="166" width="10%" height="8" rx="1" style="fill: var(--ink, #1B222B)" />
+
+  <!-- client 1 wakes up and writes with the old token: rejected -->
+  <text x="0" y="206" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">客户端 1<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">带着令牌 33 写入：被拒绝</tspan></text>
+  <rect x="74%" y="214.5" width="10%" height="7" rx="1" style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1" />
+
+  <text x="0" y="256" style="font-size: 12.5px; fill: var(--muted, #5D6672)">存储已经处理过令牌 <tspan style="font-family: var(--font-mono, monospace); fill: var(--ink, #1B222B)">34</tspan>，比它小的一律拒绝</text>
+</svg>

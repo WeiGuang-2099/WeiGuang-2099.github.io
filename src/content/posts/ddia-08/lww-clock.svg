@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="222" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- The book's last-write-wins example with skewed clocks, reduced to two orderings of the same two
+       writes. The top axis is the order in which they really happened: client A writes x = 1 on node 1
+       (25%), then client B, having seen it, increments x to 2 on node 3 (70%). The bottom axis is the
+       order of their timestamps, taken from each node's own clock: node 3's clock is a little behind, so
+       B gets 42.003 (30%) and A gets 42.004 (75%). The connectors run down, across and down again, so they
+       cross where the two orders disagree. The event labels sit above the top axis, one row each, so no
+       connector runs through them. No viewBox: text keeps its size, positions are percentages. Colors are
+       the site's tokens, with light-theme fallbacks. -->
+
+  <!-- the real order -->
+  <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">实际发生的顺序</text>
+  <text x="100%" y="14" text-anchor="end" style="font-size: 12.5px; fill: var(--muted, #5D6672)">早 → 晚</text>
+  <g text-anchor="middle" style="font-size: 12.5px; fill: var(--ink, #1B222B)">
+    <text x="25%" y="40">A 在节点 1 写入 x = 1</text>
+    <text x="70%" y="60">B 在节点 3 把 x 加到 2</text>
+  </g>
+  <g style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+    <line x1="25%" y1="46" x2="25%" y2="78" />
+    <line x1="70%" y1="66" x2="70%" y2="78" />
+  </g>
+  <line x1="0" y1="80.5" x2="100%" y2="80.5" style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+  <g style="fill: var(--ink, #1B222B)">
+    <circle cx="25%" cy="80.5" r="3.5" />
+    <circle cx="70%" cy="80.5" r="3.5" />
+  </g>
+
+  <!-- each write, from where it happened to where its timestamp puts it -->
+  <g style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="25%" y1="84" x2="25%" y2="108.5" />
+    <line x1="25%" y1="108.5" x2="75%" y2="108.5" />
+    <line x1="75%" y1="108" x2="75%" y2="132" />
+    <line x1="70%" y1="84" x2="70%" y2="122.5" />
+    <line x1="70%" y1="122.5" x2="30%" y2="122.5" />
+    <line x1="30%" y1="122" x2="30%" y2="132" />
+  </g>
+  <g style="fill: var(--ink, #1B222B)">
+    <svg x="75%" y="140" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    <svg x="30%" y="140" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+  </g>
+
+  <!-- the order of the timestamps -->
+  <line x1="0" y1="140.5" x2="100%" y2="140.5" style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+  <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--ink, #1B222B)">
+    <text x="30%" y="160">B 42.003</text>
+    <text x="75%" y="160">A 42.004</text>
+  </g>
+  <text x="0" y="186" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">时间戳的顺序</text>
+  <text x="100%" y="186" text-anchor="end" style="font-size: 12.5px; fill: var(--muted, #5D6672)">小 → 大</text>
+
+  <text x="0" y="214" style="font-size: 12.5px; fill: var(--muted, #5D6672)">最后写入胜出：留下 <tspan style="font-family: var(--font-mono, monospace); fill: var(--ink, #1B222B)">x = 1</tspan>，B 的递增丢了</text>
+</svg>

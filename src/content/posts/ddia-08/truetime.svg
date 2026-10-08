@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="206" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- Clock readings as confidence intervals, after the book's description of Spanner's TrueTime. Two
+       panels on the same notional time axis, each with two events A and B drawn as dimension lines from
+       their earliest to their latest possible time. Top panel (0-92px): A is 5-40%, B is 55-95%; the
+       intervals do not overlap, so B certainly happened after A. Bottom panel (112-204px): A is 5-60%, B
+       is 40-95%; a tinted band marks the overlap (40-60%), where the order of A and B is unknown.
+       Proportions are illustrative. No viewBox: text keeps its size, positions are percentages. Colors
+       are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- the intervals do not overlap -->
+  <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">不重叠<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">B 一定发生在 A 之后</tspan></text>
+  <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 13px; font-weight: 600; fill: var(--ink, #1B222B)">
+    <text x="22.5%" y="40">A</text>
+    <text x="75%" y="72">B</text>
+  </g>
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="5%" y1="46" x2="5%" y2="58" />
+    <line x1="5%" y1="52.5" x2="40%" y2="52.5" />
+    <line x1="40%" y1="46" x2="40%" y2="58" />
+    <line x1="55%" y1="78" x2="55%" y2="90" />
+    <line x1="55%" y1="84.5" x2="95%" y2="84.5" />
+    <line x1="95%" y1="78" x2="95%" y2="90" />
+  </g>
+
+  <!-- the intervals overlap: the tint marks where the order is unknown -->
+  <rect x="40%" y="136" width="20%" height="62" style="fill: var(--tint, #ECEEEA)" />
+  <text x="0" y="126" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">有重叠<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">分不清谁先谁后</tspan></text>
+  <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 13px; font-weight: 600; fill: var(--ink, #1B222B)">
+    <text x="22.5%" y="152">A</text>
+    <text x="77.5%" y="184">B</text>
+  </g>
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="5%" y1="158" x2="5%" y2="170" />
+    <line x1="5%" y1="164.5" x2="60%" y2="164.5" />
+    <line x1="60%" y1="158" x2="60%" y2="170" />
+    <line x1="40%" y1="190" x2="40%" y2="202" />
+    <line x1="40%" y1="196.5" x2="95%" y2="196.5" />
+    <line x1="95%" y1="190" x2="95%" y2="202" />
+  </g>
+</svg>
