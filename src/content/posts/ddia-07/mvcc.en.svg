@@ -1,0 +1,54 @@
+<!-- English version of mvcc.svg, written by npm run translate from source 6b0f220580805075. Adjust the layout here if a label does not fit; the file is only written again when mvcc.svg changes. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="246" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- The book's PostgreSQL example of snapshot isolation with MVCC. The axis is the transaction ID, with
+       illustrative spacing: txid 3 at 14%, 5 at 26%, 12 at 60%, 13 at 76%. The accounts table holds four
+       row versions, one per row of the figure, each drawn as a bar from the transaction that created it to
+       the one that deleted it (or to the right edge): account 1 = 500 (3-13), account 1 = 600 (13-), account
+       2 = 500 (5-13), account 2 = 400 (13-). Transaction 12's snapshot is a cut at 60%, drawn as a short
+       ink tick on every bar row (the row labels run past 60% on narrow screens, so the cut is not one long
+       line). The versions it crosses, both 500s, are ink; the others are muted. The figure assumes every
+       transaction below 12 had committed when 12 started. No viewBox: text keeps its size, bars are placed
+       in percentages. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- axis: transaction IDs -->
+  <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">
+    <text x="14%" y="12">3</text>
+    <text x="26%" y="12">5</text>
+    <text x="76%" y="12">13</text>
+  </g>
+  <text x="60%" y="12" text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; font-weight: 600; fill: var(--ink, #1B222B)">12</text>
+  <text x="100%" y="12" text-anchor="end" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">txid</text>
+  <line x1="0" y1="24.5" x2="100%" y2="24.5" style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+  <g style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+    <line x1="14%" y1="19" x2="14%" y2="25" />
+    <line x1="26%" y1="19" x2="26%" y2="25" />
+    <line x1="76%" y1="19" x2="76%" y2="25" />
+  </g>
+  <line x1="60%" y1="19" x2="60%" y2="30" style="stroke: var(--ink, #1B222B); stroke-width: 1" />
+
+  <!-- account 1 = 500: created by 3, deleted by 13; transaction 12 still sees it -->
+  <text x="0" y="52" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">account 1: 500<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">created by txn 3, deleted by 13</tspan></text>
+  <rect x="14%" y="60" width="62%" height="8" rx="1" style="fill: var(--ink, #1B222B)" />
+
+  <!-- account 1 = 600: created by 13, too late for transaction 12 -->
+  <text x="0" y="100" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">account 1: 600<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">created by txn 13</tspan></text>
+  <rect x="76%" y="108" width="24%" height="8" rx="1" style="fill: var(--muted, #5D6672)" />
+
+  <!-- account 2 = 500: created by 5, deleted by 13; transaction 12 still sees it -->
+  <text x="0" y="148" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">account 2: 500<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">created by txn 5, deleted by 13</tspan></text>
+  <rect x="26%" y="156" width="50%" height="8" rx="1" style="fill: var(--ink, #1B222B)" />
+
+  <!-- account 2 = 400: created by 13, too late for transaction 12 -->
+  <text x="0" y="196" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">account 2: 400<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">created by txn 13</tspan></text>
+  <rect x="76%" y="204" width="24%" height="8" rx="1" style="fill: var(--muted, #5D6672)" />
+
+  <!-- transaction 12's snapshot: a cut at 60% through every row -->
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1.5">
+    <line x1="60%" y1="56" x2="60%" y2="72" />
+    <line x1="60%" y1="104" x2="60%" y2="120" />
+    <line x1="60%" y1="152" x2="60%" y2="168" />
+    <line x1="60%" y1="200" x2="60%" y2="216" />
+  </g>
+
+  <text x="0" y="240" style="font-size: 12.5px; fill: var(--muted, #5D6672)">txn 12's snapshot: both accounts are <tspan style="font-family: var(--font-mono, monospace); fill: var(--ink, #1B222B)">500</tspan></text>
+</svg>
