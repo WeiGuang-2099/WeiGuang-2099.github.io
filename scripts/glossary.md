@@ -65,3 +65,23 @@ don't want, add a line here and translate the post again.
 - 天文晨光 / 航海晨光 / 民用晨光: astronomical twilight / nautical twilight / civil twilight
 - 检索增强生成: retrieval-augmented generation (RAG); 多智能体编排: multi-agent orchestration
 - 多路召回: several retrievers (the results of several retrieval methods, e.g. BM25 and vector search); 召回率: recall
+
+## 来时路 (The Road We Came)
+
+The laishilu posts are about the author's browser game 《来时路》. Its English version, *The Road We Came*, was rewritten rather than translated word for word. Use the English game's own words:
+
+- 《来时路》: *The Road We Came*, in italics like a book title. Two things keep the Chinese: the cinnabar seal on the scroll, which reads 来时路 in both versions, and the link-preview card title, which is literally "来时路 · The Road We Came".
+- 设计篇 / 转述篇 / 工程篇, the series' own names for its three posts: the design post / the retelling post / the engineering post.
+- Places: 茶寮 the Teahouse; 驿站 the Waystation; 桥头 the Stone Bridge; 渡口 the Ferry; 山门 the Mountain Gate; 山顶 the Summit. People: 老板娘 the woman who keeps the teahouse; 掌柜 the keeper; 孩子 the child; 船夫 the ferryman; 扫地的老人 the old man sweeping the steps; 守经的人 the keeper of the scrolls. 经卷 / 一卷经: the scroll.
+- Buttons and screen text: 开始: Begin. 继续上路: Carry on. 重新出发: Start afresh. 抹去走过的路: Forget the roads behind. 出发 (the button): Set out. 是这样: That's right. 不是这样的: That's not it. 继续: Go on. 再走一次: Walk it again. 打开声音 / 关闭声音: Sound on / Sound off. 大约五分钟。找个安静的时候。: About five minutes. Best somewhere quiet. 出发之前，写下你为什么要走这一趟。: Before you set out, write down why you're making this journey. 一句话就好，写真的理由。: One sentence will do. Make it the real reason. 这句话，路上的人会替你记着。: The people along the road will remember it for you. 凭记忆写: Write it from memory. 再多写几个字。: A few more words.
+- The six verdicts: 一字不差。你还记得。: Word for word. You still remember. 你记得大半。有几个字，留在了路上。: Most of it is still with you. A few words fell by the wayside. 你记得大半。可有的字，已经换成了路上的说法。: Most of it is still yours. But some of the words now belong to the road. 你记住的，是路上的人说的那一句。: What you remember is what the people on the road told you. 你只记得一点。剩下的，路替你改了。: Only a little of it is left. The road rewrote the rest. 你忘了。可你还是走到了这里。: You forgot. And still, you made it here.
+- 当你的旅程抵达终点后，你还会记得你为何而出发吗？: At the end of the road, will you still know why you began? 上一次，你写的也是这一句。: Last time, you wrote those very same words.
+- 原句: the original; 路上那句 / 一路传下来的那句: the road's version; 记得的那句: the remembered version; 转述: retell, retelling; 走样: drift; 换说法: rephrasing; 丢字: dropping a character; 丢词: dropping a word; 听岔: mishearing; 对调字母: swapping letters; 评语: verdict; 种子: seed; 霞鹜文楷: LXGW WenKai.
+- 字: in the Chinese version the unit is the character (the ferryman takes one character); the English version works in words.
+
+Rules for the laishilu posts:
+
+- They discuss Chinese text character by character: a player's sentence and the versions it turned into (想去看看母亲常说的那片海, 想看妈妈说的片湖), and characters or words picked out of them (常, 的, 那, 母亲 → 妈妈, 海 → 湖). Keep that Chinese exactly as it is, in running text, tables, image alt text and captions alike, and put its English meaning in parentheses after it, as in 母亲 (mother) → 妈妈 (mom); for a character that is only grammar, give its role, as in 的 (a possessive particle). Never replace it with English. Dialogue and narration from the game are translated.
+- Their code blocks are exact copies of the game's source. Copy every line of them unchanged, Chinese strings included: those strings are the game's data, such as '看海' or ['回', ['去']]. Only a Chinese title="..." on the fence line is translated.
+- The screenshots show the Chinese version of the game. An image's alt text says so once ("In the Chinese version: ..."), keeps the player's sentences in Chinese with their English meaning in parentheses, and translates the rest.
+- Never put a double quote inside an image title (the quoted caption after the image path): quote with single quotes there.
