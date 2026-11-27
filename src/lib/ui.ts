@@ -33,8 +33,7 @@ const en = {
     mix: 'Reading time by category, all posts',
     categoryLegend: (posts: number, minutes: number) => `${plural(posts, 'post')}, ${minutes} min`,
     allInCategory: (name: string, posts: number) => `All ${posts} posts in ${name}`,
-    /** a category announced before its first post (src/lib/categories.ts) */
-    upcoming: 'In progress',
+    /** under a category announced before its first post; its status comes from src/lib/categories.ts */
     upcomingNote: 'Posts will appear here once they are written.',
   },
   archive: {
@@ -122,7 +121,6 @@ const zh: UIStrings = {
     mix: '各栏目的阅读时长（全部文章）',
     categoryLegend: (posts, minutes) => `${posts} 篇，共 ${minutes} min`,
     allInCategory: (name, posts) => `${name}全部 ${posts} 篇`,
-    upcoming: '整理中',
     upcomingNote: '写好后放在这里。',
   },
   archive: {

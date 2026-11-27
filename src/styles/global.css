@@ -40,10 +40,12 @@
   --seal-ink: #FBF8F3;
 
   /* category lanes (src/lib/categories.ts), in mineral pigments: data marks only, always beside a text
-     label. projects = ochre, reading-notes = azurite, retrospectives = malachite; essays are the
-     catch-all and stay ink grey. */
+     label. projects = ochre, reading-notes = azurite, software-design = Han purple (the barium copper
+     silicate of the Han dynasty), retrospectives = malachite; essays are the catch-all and stay ink
+     grey. Cinnabar is the seal's and is not used here. */
   --lane-projects: #A35A20;
   --lane-reading-notes: #2C5B9C;
+  --lane-software-design: #74489A;
   --lane-retrospectives: #2B7A5A;
   --lane-essays: #6B7480;
 
@@ -88,6 +90,7 @@
     --seal-ink: #FBF8F3;
     --lane-projects: #E39E5B;
     --lane-reading-notes: #85A9EC;
+    --lane-software-design: #B996DE;
     --lane-retrospectives: #5DBE93;
     --lane-essays: #8F99A5;
     --tok-plain: #D5DBE1;
@@ -115,6 +118,7 @@
   --seal-ink: #FBF8F3;
   --lane-projects: #E39E5B;
   --lane-reading-notes: #85A9EC;
+  --lane-software-design: #B996DE;
   --lane-retrospectives: #5DBE93;
   --lane-essays: #8F99A5;
   --tok-plain: #D5DBE1;

@@ -9,23 +9,25 @@
 import { localePath, type Locale } from './i18n';
 import type { PostSummary } from './posts';
 
-export const CATEGORY_IDS = ['projects', 'reading-notes', 'essays', 'retrospectives'] as const;
+export const CATEGORY_IDS = ['projects', 'reading-notes', 'software-design', 'essays', 'retrospectives'] as const;
 export type CategoryId = (typeof CATEGORY_IDS)[number];
 
 export interface Category {
   name: Record<Locale, string>;
   /**
    * Announced before anything in it is published: while the category has no posts, the home page keeps
-   * a placeholder for it (the name and "in progress"), with no link, no count and no titles.
+   * a placeholder for it, the name and this status ("在读", "整理中"), with no link, no count and no titles.
    */
-  upcoming?: boolean;
+  upcoming?: Record<Locale, string>;
 }
 
 export const CATEGORIES: Record<CategoryId, Category> = {
   projects: { name: { zh: '作品', en: 'Projects' } },
   'reading-notes': { name: { zh: '读书笔记', en: 'Reading notes' } },
+  // notes on A Philosophy of Software Design first, and other books on software design later
+  'software-design': { name: { zh: '软件设计', en: 'Software design' }, upcoming: { zh: '在读', en: 'Now reading' } },
   essays: { name: { zh: '随笔', en: 'Essays' } },
-  retrospectives: { name: { zh: '复盘', en: 'Retrospectives' }, upcoming: true },
+  retrospectives: { name: { zh: '复盘', en: 'Retrospectives' }, upcoming: { zh: '整理中', en: 'In progress' } },
 };
 
 export const categoryUrl = (id: CategoryId, locale: Locale) => localePath(locale, `/${id}/`);

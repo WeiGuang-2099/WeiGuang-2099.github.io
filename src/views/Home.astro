@@ -88,7 +88,7 @@ const mix = groups;
       <div class="section-head">
         <h2 id={`cat-${id}`} class="cat-head">
           <span class="sw sw-lg" style={`--lane: ${laneVar(id)}`} aria-hidden="true"></span>{name(id)}
-          {!group && <span class="draft-mark">{t.home.upcoming}</span>}
+          {!group && <span class="draft-mark">{CATEGORIES[id].upcoming?.[locale]}</span>}
         </h2>
         {group && <p class="legend">{t.home.categoryLegend(group.items.length, group.minutes)}</p>}
       </div>
