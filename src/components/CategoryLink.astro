@@ -1,0 +1,14 @@
+---
+/* A post's category: its pigment swatch and its name, linked to the category page. It is the label that
+   says what the color of a span means, so it goes wherever posts of several categories are listed. */
+import { CATEGORIES, categoryUrl, laneVar, type CategoryId } from '../lib/categories';
+import type { Locale } from '../lib/i18n';
+
+interface Props {
+  category: CategoryId;
+  locale: Locale;
+}
+
+const { category, locale } = Astro.props;
+---
+<a class="cat-link" href={categoryUrl(category, locale)}><span class="sw" style={`--lane: ${laneVar(category)}`} aria-hidden="true"></span>{CATEGORIES[category].name[locale]}</a>

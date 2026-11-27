@@ -2,6 +2,7 @@
 title: "DDIA 读书笔记 06：分区"
 description: "《数据密集型应用系统设计》第一版第六章的笔记：按键范围和按键的哈希分区各有什么长处和热点问题，二级索引怎样分区，增减节点时怎样再平衡，以及请求怎样找到它要去的分区。"
 pubDate: 2026-10-06 21:00:00
+category: reading-notes
 tags: ["ddia", "distributed-systems", "reading-notes"]
 ---
 

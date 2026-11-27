@@ -5,7 +5,7 @@
 - 线上地址：<https://weiguang-2099.github.io>（英文版：<https://weiguang-2099.github.io/en/>）
 - 源码：<https://github.com/WeiGuang-2099/WeiGuang-2099.github.io>
 
-站点用 Astro 构建，从官方 minimal 模板起步，页面、布局和样式全部手写：没有博客主题，没有 UI 组件库，没有前端框架。设计方向叫“界”（ruled lines）：一本像中文书那样排版、像工程图那样标注的技术笔记。人写的内容用衬线体（思源宋体 / Source Serif），构建时测出来的数值（日期、阅读时长、篇数、小节编号、代码）用等宽体。阅读时长画成工程图里的尺寸线：一篇文章是一个 span，阅读时长是它的 duration，文章目录就是这篇文章自己的瀑布图。界面只用墨色和纸色，彩色只用来表示主题（rag、agents、llm-apps，用石绿、赭石、石青三种矿物颜料色）；唯一的例外是首页那方朱红的印章。
+站点用 Astro 构建，从官方 minimal 模板起步，页面、布局和样式全部手写：没有博客主题，没有 UI 组件库，没有前端框架。设计方向叫“界”（ruled lines）：一本像中文书那样排版、像工程图那样标注的技术笔记。人写的内容用衬线体（思源宋体 / Source Serif），构建时测出来的数值（日期、阅读时长、篇数、小节编号、代码）用等宽体。阅读时长画成工程图里的尺寸线：一篇文章是一个 span，阅读时长是它的 duration，文章目录就是这篇文章自己的瀑布图。界面只用墨色和纸色，彩色只用来表示栏目（作品、读书笔记、复盘，用赭石、石青、石绿三种矿物颜料色，随笔是墨灰）；唯一的例外是首页那方朱红的印章。
 
 ## 本地开发
 
@@ -34,12 +34,12 @@ scripts/glossary.md            翻译用的术语表
 src/content.config.ts          文章集合（posts）、英文版集合（translations）的定义和 frontmatter schema
 src/content/posts/             文章（英文版 index.en.md 放在原文旁边）
 src/content/drafts/            草稿（不进仓库，只在 npm run dev 里显示，需要时自己建）
-src/pages/                     路由：中文版的首页、文章、归档、标签、About、404、RSS
+src/pages/                     路由：中文版的首页、文章、栏目、归档、标签、About、404、RSS
 src/pages/en/                  路由：英文版的同一套页面
 src/views/                     页面内容：每个页面只写一份，中文和英文路由共用
 src/layouts/BaseLayout.astro   页面骨架：<head>（SEO、Open Graph、hreflang、字体）、页眉、页脚、主题切换
 src/components/                页眉（语言切换）、文章列表、目录瀑布图、标签等组件
-src/lib/                       数据整理：文章和它的英文版、主题泳道、阅读时长、坐标轴、日期格式；界面文字（ui.ts）
+src/lib/                       数据整理：文章和它的英文版、栏目（categories.ts）、阅读时长、坐标轴、日期格式；界面文字（ui.ts）
 src/plugins/                   Markdown 插件和代码高亮主题（构建时运行）
 src/styles/global.css          全部样式（颜色变量、排版、布局、组件、深色模式）
 ```
@@ -66,6 +66,7 @@ title: "文章标题：副标题"
 description: "一两句话的摘要，用在列表、RSS 和社交分享卡片里。"
 pubDate: 2026-10-03
 updatedDate: 2026-10-10
+category: retrospectives
 tags: ["rag", "retrieval"]
 draft: false
 lang: zh-CN
@@ -78,6 +79,7 @@ lang: zh-CN
 | `description` | string | 必填 | 摘要，同时作为页面的 meta description。 |
 | `pubDate` | 日期 | 必填 | 发布日期，写成 `2026-10-03`（同一天有多篇时可以加时间，见表格下面）。 |
 | `updatedDate` | 日期 | 无 | 更新日期，填了才会在文章页显示 “Updated”。 |
+| `category` | string | 必填 | 栏目，四选一：`projects`（作品）、`reading-notes`（读书笔记）、`essays`（随笔）、`retrospectives`（复盘）。漏写或写错时构建会报错，见下面的“栏目”。 |
 | `tags` | string[] | `[]` | 标签。每个标签都有自己的页面 `/tags/<标签>/`（小写，空格变 `-`，中文保留）。 |
 | `draft` | boolean | `false` | 草稿只在 `npm run dev` 里显示，不会出现在正式构建的任何页面、RSS 和 sitemap 里。但文件本身仍在公开仓库里，见下面的“草稿”。 |
 | `lang` | string | `zh-CN` | 正文的语言，也决定中文标点和字体的处理方式。`zh-CN` 的文章属于中文版；直接用英文写的文章写 `en`，它属于英文版，发布在 `/en/posts/<slug>/`。 |
@@ -103,9 +105,22 @@ src/content/drafts/my-post/index.md     -> /posts/my-post/（只在 npm run dev 
 
 另一种做法是把文章留在 `posts/` 里、在 frontmatter 写 `draft: true`。它同样只在 `npm run dev` 里显示（也带 `Draft` 标记），不会出现在任何页面、RSS 和 sitemap 里；**但文件会和其他文章一起提交，任何人都能在公开仓库里读到它**，它引用的图片也仍会被复制进构建结果、随网站一起发布（只是没有页面链接到它们）。不想公开的内容请用 `drafts/` 文件夹。
 
-### 主题泳道（彩色标记）
+### 栏目（彩色标记）
 
-站点有三个彩色的主题泳道：`rag`（石绿）、`agents`（赭石）、`llm-apps`（石青）。一篇文章属于哪个泳道，取决于它的 `tags` 里**第一个**出现的泳道标签；一个都没有就归入灰色的 `other`。泳道颜色用在首页和归档的阅读时长线、文章目录的瀑布图，以及该标签前面的小圆点上（`other` 的文章不显示圆点）。
+每篇文章属于一个栏目，由 frontmatter 的 `category` 决定。栏目定义在 `src/lib/categories.ts`，那里的顺序就是页眉导航和首页的顺序：
+
+| `category` | 栏目 | 英文版 | 颜色 |
+| --- | --- | --- | --- |
+| `projects` | 作品 | Projects | 赭石 |
+| `reading-notes` | 读书笔记 | Reading notes | 石青 |
+| `essays` | 随笔 | Essays | 墨灰 |
+| `retrospectives` | 复盘 | Retrospectives | 石绿 |
+
+- 首页按栏目分块，每块列出最新的 3 篇，多于 3 篇时下面有“全部 N 篇”的链接。简介下面那条线是各栏目阅读时长的占比，有两个栏目以上才显示。
+- 有文章的栏目都有自己的页面 `/<category>/`（英文版 `/en/<category>/`），并出现在页眉导航里。标签页和 RSS 的链接在页脚。
+- 栏目颜色用在阅读时长线、文章目录的瀑布图和栏目名前的小圆点上。归档页和标签页列出多个栏目的文章，所以每篇下面会写出栏目名，说明颜色的意思。
+- `retrospectives` 标了 `upcoming: true`：没有正式文章时，首页给它留一块“整理中”的占位，只显示栏目名，没有链接、篇数和标题，也没有栏目页。有了第一篇正式文章，它就和其他栏目一样。`npm run dev` 会把草稿算进去，所以本地看到的是草稿列表，不是占位。
+- 加一个栏目：在 `categories.ts` 里加一项（id 会成为网址，不要和 `about`、`archive`、`tags`、`posts`、`en` 重名），再在 `src/styles/global.css` 里给它定义 `--lane-<id>` 颜色（浅色一处，深色两处）。
 
 ### 阅读时长和目录
 

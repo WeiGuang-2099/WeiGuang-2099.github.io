@@ -8,12 +8,14 @@ interface Props {
 }
 
 const { locale } = Astro.props;
+const t = UI[locale];
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
   <div class="container">
-    <p>&copy; {year} {UI[locale].siteName}</p>
+    <p>&copy; {year} {t.siteName}</p>
     <ul>
+      <li><a href={localePath(locale, '/tags/')}>{t.nav.tags}</a></li>
       <li><a href={SITE.github}>GitHub</a></li>
       <li><a href={localePath(locale, '/rss.xml')}>RSS</a></li>
     </ul>

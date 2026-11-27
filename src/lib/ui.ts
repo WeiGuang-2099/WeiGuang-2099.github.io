@@ -14,7 +14,8 @@ const en = {
   skipLink: 'Skip to content',
   homeLink: 'Dawning, home',
   mainNav: 'Main',
-  nav: { archive: 'Archive', tags: 'Tags', about: 'About', rss: 'RSS' },
+  /** header (archive, about) and footer (tags) links; the categories name themselves */
+  nav: { archive: 'Archive', tags: 'Tags', about: 'About' },
   theme: { toggle: 'Switch color theme', toDark: 'Switch to dark theme', toLight: 'Switch to light theme' },
   /** the header link to the same page in the other edition; it names the language it leads to */
   switchTo: { label: '中', name: '中文' },
@@ -29,10 +30,12 @@ const en = {
     `${plural(posts, 'post')}, ${minutes} min of reading. Spans show reading time on a 0 to ${max} min scale.`,
   home: {
     gloss: { ji: 'to continue', xi: 'bright' },
-    mix: 'Reading time by topic, all posts',
-    writing: 'Writing',
-    legend: (max: number) => `Reading time, on a 0 to ${max} min scale`,
-    allPosts: (total: number, shown: number) => (total > shown ? `All ${total} posts` : 'All posts'),
+    mix: 'Reading time by category, all posts',
+    categoryLegend: (posts: number, minutes: number) => `${plural(posts, 'post')}, ${minutes} min`,
+    allInCategory: (name: string, posts: number) => `All ${posts} posts in ${name}`,
+    /** a category announced before its first post (src/lib/categories.ts) */
+    upcoming: 'In progress',
+    upcomingNote: 'Posts will appear here once they are written.',
   },
   archive: {
     title: 'Archive',
@@ -43,7 +46,7 @@ const en = {
     title: 'Tags',
     description: 'Posts on Dawning by tag, with the total reading time behind each tag.',
     dek: (tags: number, posts: number) =>
-      `${plural(tags, 'tag')} across ${plural(posts, 'post')}. Spans show the total reading time behind each tag, colored by topic.`,
+      `${plural(tags, 'tag')} across ${plural(posts, 'post')}. Spans show the total reading time behind each tag, colored by category.`,
     count: (n: number) => plural(n, 'post'),
     totalOf: 'Total reading time: ',
     empty: 'No tags yet.',
@@ -51,6 +54,10 @@ const en = {
   tag: {
     title: (name: string) => `Posts tagged ${name}`,
     description: (name: string) => `Posts on Dawning tagged “${name}”, newest first.`,
+  },
+  category: {
+    kicker: 'Category',
+    description: (name: string) => `Posts on Dawning in ${name}, newest first, with their reading time.`,
   },
   about: {
     title: 'About',
@@ -65,6 +72,7 @@ const en = {
     readingTime: 'Reading time',
     /** read after the minutes by screen readers ("12 min read"); empty where nothing is added */
     readSuffix: ' read',
+    category: 'Category',
     tags: 'Tags',
     /** on a translation: where the original is */
     translatedFrom: 'Translated from',
@@ -72,7 +80,8 @@ const en = {
     contents: 'Contents',
     sections: (n: number) => plural(n, 'section'),
     tocNote: 'Each span shows where a section starts in the post and how long it takes to read.',
-    more: 'More posts',
+    /** label of the previous/next links, which stay in the post's category */
+    more: (category: string) => `More in ${category}`,
     previous: 'Previous post',
     next: 'Next post',
   },
@@ -98,7 +107,7 @@ const zh: UIStrings = {
   skipLink: '跳到正文',
   homeLink: '缉熙，首页',
   mainNav: '主导航',
-  nav: { archive: '归档', tags: '标签', about: '关于', rss: 'RSS' },
+  nav: { archive: '归档', tags: '标签', about: '关于' },
   theme: { toggle: '切换配色', toDark: '切换到深色主题', toLight: '切换到浅色主题' },
   switchTo: { label: 'EN', name: 'English' },
   noTranslation: '这篇文章还没有英文版',
@@ -110,10 +119,11 @@ const zh: UIStrings = {
   listDek: (posts, minutes, max) => `${posts} 篇，读完约需 ${minutes} min。线段表示阅读时长，刻度 0 到 ${max} min。`,
   home: {
     gloss: { ji: '接续', xi: '光明' },
-    mix: '各主题的阅读时长（全部文章）',
-    writing: '文章',
-    legend: (max) => `阅读时长，刻度 0 到 ${max} min`,
-    allPosts: (total, shown) => (total > shown ? `全部 ${total} 篇` : '全部文章'),
+    mix: '各栏目的阅读时长（全部文章）',
+    categoryLegend: (posts, minutes) => `${posts} 篇，共 ${minutes} min`,
+    allInCategory: (name, posts) => `${name}全部 ${posts} 篇`,
+    upcoming: '整理中',
+    upcomingNote: '写好后放在这里。',
   },
   archive: {
     title: '归档',
@@ -123,7 +133,7 @@ const zh: UIStrings = {
   tags: {
     title: '标签',
     description: '缉熙的文章按标签归类，附每个标签下的总阅读时长。',
-    dek: (tags, posts) => `${tags} 个标签，${posts} 篇文章。线段表示每个标签下文章的总阅读时长，颜色表示主题。`,
+    dek: (tags, posts) => `${tags} 个标签，${posts} 篇文章。线段表示每个标签下文章的总阅读时长，颜色表示栏目。`,
     count: (n) => `${n} 篇`,
     totalOf: '总阅读时长：',
     empty: '还没有标签。',
@@ -131,6 +141,10 @@ const zh: UIStrings = {
   tag: {
     title: (name) => `标签：${name}`,
     description: (name) => `缉熙带有“${name}”标签的文章，按时间倒序排列。`,
+  },
+  category: {
+    kicker: '栏目',
+    description: (name) => `缉熙“${name}”栏目的文章，按时间倒序排列，附阅读时长。`,
   },
   about: {
     title: '关于',
@@ -143,13 +157,14 @@ const zh: UIStrings = {
     updated: '更新',
     readingTime: '阅读时长',
     readSuffix: '',
+    category: '栏目',
     tags: '标签',
     translatedFrom: '译自',
     original: '英文原文',
     contents: '目录',
     sections: (n) => `${n} 节`,
     tocNote: '每条线段表示一节从文章的哪里开始、读完要多久。',
-    more: '更多文章',
+    more: (category) => `更多${category}`,
     previous: '上一篇',
     next: '下一篇',
   },

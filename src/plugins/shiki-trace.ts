@@ -8,8 +8,8 @@
  *   type         types and classes                                          muted violet
  *   comment      comments                                                   grey
  *   punctuation  punctuation and operators                                  darker grey
- * The hues are kept away from the topic lane pigments (malachite, ochre, azurite), so code never
- * "speaks" the topic language.
+ * The hues are kept away from the category lane pigments (malachite, ochre, azurite), so code never
+ * "speaks" the category language.
  *
  * Astro renders both themes at once (`defaultColor: false`), as --shiki-light / --shiki-dark custom
  * properties on every token; src/styles/global.css (the .astro-code span rules) picks one, so the manual

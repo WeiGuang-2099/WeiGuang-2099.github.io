@@ -2,6 +2,7 @@
 title: "纯静态小游戏的工程清单：《来时路》的存档、输入、排版和发布"
 description: "《来时路》没有后端，玩家写的字也不离开浏览器。这一篇把它在工程上照顾到的细节整理成一份清单：存档和刷新，怎样让测试走完一整趟旅程，中文输入法和手机键盘，竖排的经卷和字体，浏览器里合成的风声，双语的链接预览，每次都一样的 zip，不收集文字的访问统计，以及 Dependabot 和 CI 的设置。"
 pubDate: 2026-11-25 22:00:00
+category: projects
 tags: ["laishilu", "game-dev", "frontend", "typescript", "testing", "ci"]
 ---
 

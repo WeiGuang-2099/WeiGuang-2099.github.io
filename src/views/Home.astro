@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostList from '../components/PostList.astro';
-import { getPosts, LANE_ORDER, laneVar, listAxis, summarize } from '../lib/posts';
+import { getPosts, listAxis, summarize } from '../lib/posts';
+import { CATEGORIES, CATEGORY_IDS, categoryUrl, groupByCategory, laneVar } from '../lib/categories';
 import { SITE } from '../lib/site';
 import { localePath, type Locale } from '../lib/i18n';
 import { UI } from '../lib/ui';
@@ -12,17 +13,23 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = UI[locale];
-const LATEST = 10;
+/** newest posts listed per category; the rest are on the category's page */
+const SHOWN = 3;
 const all = await summarize(await getPosts(locale));
 const axis = listAxis(all.map((s) => s.minutes));
-const latest = all.slice(0, LATEST);
+const groups = groupByCategory(all);
+const name = (id: (typeof CATEGORY_IDS)[number]) => CATEGORIES[id].name[locale];
 
-// The whole archive as one 100% bar: total reading time per topic lane (lanes without posts are left out).
-// It only says something once there are two lanes to compare.
-const mix = LANE_ORDER.map((lane) => ({
-  lane,
-  minutes: all.filter((s) => s.lane === lane).reduce((sum, s) => sum + s.minutes, 0),
-})).filter((entry) => entry.minutes > 0);
+// One block per category, in the categories' order. An upcoming category without posts keeps its place
+// with a placeholder; any other category without posts is left out.
+const blocks = CATEGORY_IDS.flatMap((id) => {
+  const group = groups.find((g) => g.id === id);
+  return group || CATEGORIES[id].upcoming ? [{ id, group }] : [];
+});
+
+// The whole archive as one 100% bar: total reading time per category. It only says something once
+// there are two categories to compare.
+const mix = groups;
 ---
 <BaseLayout locale={locale}>
   <section class="hero container" aria-labelledby="hero-name">
@@ -64,11 +71,11 @@ const mix = LANE_ORDER.map((lane) => ({
         <figure class="mix">
           <figcaption>{t.home.mix}</figcaption>
           <div class="mix-bar" aria-hidden="true">
-            {mix.map(({ lane, minutes }) => <span style={`--lane: ${laneVar(lane)}; --v: ${minutes}`}></span>)}
+            {mix.map(({ id, minutes }) => <span style={`--lane: ${laneVar(id)}; --v: ${minutes}`}></span>)}
           </div>
           <ul class="mix-key">
-            {mix.map(({ lane, minutes }) => (
-              <li><span class="sw" style={`--lane: ${laneVar(lane)}`} aria-hidden="true"></span>{lane} <span class="num">{minutes} min</span></li>
+            {mix.map(({ id, minutes }) => (
+              <li><span class="sw" style={`--lane: ${laneVar(id)}`} aria-hidden="true"></span>{name(id)} <span class="num">{minutes} min</span></li>
             ))}
           </ul>
         </figure>
@@ -76,16 +83,30 @@ const mix = LANE_ORDER.map((lane) => ({
     </div>
   </section>
 
-  <section class="writing container" aria-labelledby="writing-h">
-    <div class="section-head">
-      <h2 id="writing-h">{t.home.writing}</h2>
-      <p class="legend">{t.home.legend(axis.max)}</p>
-    </div>
-    {latest.length > 0 ? (
-      <PostList locale={locale} items={latest} axis={axis} />
-    ) : (
+  {blocks.map(({ id, group }) => (
+    <section class="writing container" aria-labelledby={`cat-${id}`}>
+      <div class="section-head">
+        <h2 id={`cat-${id}`} class="cat-head">
+          <span class="sw sw-lg" style={`--lane: ${laneVar(id)}`} aria-hidden="true"></span>{name(id)}
+          {!group && <span class="draft-mark">{t.home.upcoming}</span>}
+        </h2>
+        {group && <p class="legend">{t.home.categoryLegend(group.items.length, group.minutes)}</p>}
+      </div>
+      {group ? (
+        <Fragment>
+          <PostList locale={locale} items={group.items.slice(0, SHOWN)} axis={axis} showCategory={false} showTags={false} />
+          {group.items.length > SHOWN && (
+            <p class="after-list"><a class="text-link" href={categoryUrl(id, locale)}>{t.home.allInCategory(name(id), group.items.length)}</a></p>
+          )}
+        </Fragment>
+      ) : (
+        <p class="cat-empty">{t.home.upcomingNote}</p>
+      )}
+    </section>
+  ))}
+  {all.length === 0 && (
+    <section class="writing container">
       <p class="empty">{t.empty}</p>
-    )}
-    <p class="after-list"><a class="text-link" href={localePath(locale, '/archive/')}>{t.home.allPosts(all.length, LATEST)}</a></p>
-  </section>
+    </section>
+  )}
 </BaseLayout>

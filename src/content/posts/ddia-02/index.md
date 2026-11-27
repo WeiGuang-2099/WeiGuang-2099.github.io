@@ -2,6 +2,7 @@
 title: "DDIA 读书笔记 02：数据模型与查询语言"
 description: "《数据密集型应用系统设计》第一版第二章的笔记：关系模型和文档模型各自适合什么样的数据，声明式查询为什么胜出，以及属性图、三元组和 Datalog 这几种图模型。"
 pubDate: 2026-10-04
+category: reading-notes
 tags: ["ddia", "distributed-systems", "reading-notes"]
 ---
 

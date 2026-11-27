@@ -1,6 +1,7 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import type { MarkdownHeading } from 'astro';
 import type { ReadingData, ReadingSection } from '../plugins/remark-reading-time';
+import type { CategoryId } from './categories';
 import { isDraftFile, SHOW_DRAFTS, sourceKey } from './post-files';
 import { localeOfLang, localePath, otherLocale, LANG, LOCALES, type Locale } from './i18n';
 import { sourceHash } from './source-hash';
@@ -101,7 +102,7 @@ export const editionUrl = (post: Post, locale: Locale) =>
   post.locales.includes(locale) ? localePath(locale, `/posts/${post.id}/`) : null;
 
 /* ---------------------------------------------------------------------------------------------
-   Tags and topic lanes
+   Tags (categories are in src/lib/categories.ts)
    --------------------------------------------------------------------------------------------- */
 
 /** URL segment for a tag: lowercased, whitespace to "-", CJK kept. */
@@ -114,23 +115,6 @@ export function tagSlug(tag: string): string {
 }
 
 export const tagUrl = (tag: string, locale: Locale) => localePath(locale, `/tags/${tagSlug(tag)}/`);
-
-/** The colored topic lanes. Everything else falls into the neutral `other` lane. */
-export const TOPIC_LANES = ['rag', 'agents', 'llm-apps'] as const;
-export type Lane = (typeof TOPIC_LANES)[number] | 'other';
-export const LANE_ORDER: Lane[] = [...TOPIC_LANES, 'other'];
-
-/** The first tag that names a topic lane, if any. Its tag gets the lane swatch. */
-export function laneTag(tags: readonly string[]): string | undefined {
-  return tags.find((tag) => (TOPIC_LANES as readonly string[]).includes(tagSlug(tag)));
-}
-
-export function laneOf(tags: readonly string[]): Lane {
-  const tag = laneTag(tags);
-  return tag ? (tagSlug(tag) as Lane) : 'other';
-}
-
-export const laneVar = (lane: Lane) => `var(--lane-${lane})`;
 
 /* ---------------------------------------------------------------------------------------------
    Reading time and the contents waterfall
@@ -194,8 +178,7 @@ export function getReading(post: Post): Promise<PostReading> {
 export interface PostSummary {
   post: Post;
   url: string;
-  lane: Lane;
-  laneTag?: string;
+  category: CategoryId;
   minutes: number;
   /** only ever true in `astro dev` */
   draft: boolean;
@@ -206,8 +189,7 @@ export async function summarize(posts: Post[]): Promise<PostSummary[]> {
     posts.map(async (post) => ({
       post,
       url: postUrl(post),
-      lane: laneOf(post.data.tags),
-      laneTag: laneTag(post.data.tags),
+      category: post.data.category,
       minutes: (await getReading(post)).minutes,
       draft: isDraft(post),
     })),

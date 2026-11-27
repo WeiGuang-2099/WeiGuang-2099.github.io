@@ -27,6 +27,7 @@ import punct600 from '@fontsource/noto-serif-sc/files/noto-serif-sc-latin-600-no
 
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import type { CategoryId } from '../lib/categories';
 import { SITE } from '../lib/site';
 import { DEFAULT_LOCALE, LANG, localeOfPath, localePath, OG_LOCALE, otherLocale, unlocalizedPath, type Locale } from '../lib/i18n';
 import { UI } from '../lib/ui';
@@ -43,7 +44,10 @@ interface Props {
   title?: string;
   description?: string;
   type?: 'website' | 'article';
-  article?: { published: Date; modified?: Date; tags: string[] };
+  /** section: the name of the post's category */
+  article?: { published: Date; modified?: Date; section: string; tags: string[] };
+  /** The category of the post on this page; the header marks it as the current section. */
+  category?: CategoryId;
   /** Extra class on <main>. */
   mainClass?: string;
   /** Canonical path when it differs from the URL (the 404 page is served from /404.html). */
@@ -61,6 +65,7 @@ const {
   description = t.siteDescription,
   type = 'website',
   article,
+  category,
   mainClass,
   canonicalPath,
   noindex,
@@ -135,6 +140,7 @@ const punctFaces = [
     <meta property="og:image:alt" content={t.ogImageAlt} />
     {article && <meta property="article:published_time" content={article.published.toISOString()} />}
     {article?.modified && <meta property="article:modified_time" content={article.modified.toISOString()} />}
+    {article && <meta property="article:section" content={article.section} />}
     {article?.tags.map((tag) => <meta property="article:tag" content={tag} />)}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={ogTitle} />
@@ -152,7 +158,7 @@ const punctFaces = [
   </head>
   <body>
     <a class="skip-link" href="#main">{t.skipLink}</a>
-    <SiteHeader locale={locale} alternate={alternate} />
+    <SiteHeader locale={locale} alternate={alternate} category={category} />
     <main id="main" class={mainClass}>
       <slot />
     </main>

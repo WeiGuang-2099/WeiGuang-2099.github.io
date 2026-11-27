@@ -1,0 +1,9 @@
+---
+import type { InferGetStaticPropsType } from 'astro';
+import Category from '../../views/Category.astro';
+import { categoryPaths } from '../../lib/routes';
+
+export const getStaticPaths = () => categoryPaths('en');
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+---
+<Category {...Astro.props} />

@@ -2,6 +2,7 @@
 title: "Hello, World：缉熙与 Dawning"
 description: "博客的第一篇文章：讲讲“缉熙”和“Dawning”这两个名字的由来，顺便当作一份排版样张。"
 pubDate: 2026-10-03
+category: essays
 tags: ["meta", "typography"]
 ---
 

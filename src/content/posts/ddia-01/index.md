@@ -2,6 +2,7 @@
 title: "DDIA 读书笔记 01：可靠、可扩展与可维护的应用"
 description: "《数据密集型应用系统设计》第一版第一章的笔记：故障与失效的区别，怎样用负载参数和响应时间百分位数讨论可扩展性，以及可维护性的三个方面。"
 pubDate: 2026-10-03 20:00:00
+category: reading-notes
 tags: ["ddia", "distributed-systems", "reading-notes"]
 ---
 

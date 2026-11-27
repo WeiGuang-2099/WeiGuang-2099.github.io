@@ -2,6 +2,7 @@
 title: "DDIA 读书笔记 05：复制"
 description: "《数据密集型应用系统设计》第一版第五章的笔记：单领导者、多领导者和无领导者三种复制方式怎样工作，复制延迟会带来哪些反常现象，法定人数能保证什么、不能保证什么，以及怎样判断两次写入是先后发生还是并发的。"
 pubDate: 2026-10-06 20:00:00
+category: reading-notes
 tags: ["ddia", "distributed-systems", "reading-notes"]
 ---
 

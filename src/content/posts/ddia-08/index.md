@@ -2,6 +2,7 @@
 title: "DDIA 读书笔记 08：分布式系统的麻烦"
 description: "《数据密集型应用系统设计》第一版第八章的笔记：网络会丢包、会无限期地延迟，时钟会漂移、会跳变，进程会在任何地方暂停；在这样的环境里，一个节点能知道什么、该相信谁，以及怎样用系统模型推理算法的正确性。"
 pubDate: 2026-10-08 21:00:00
+category: reading-notes
 tags: ["ddia", "distributed-systems", "reading-notes"]
 ---
 

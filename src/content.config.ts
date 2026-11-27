@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { CATEGORY_IDS } from './lib/categories';
 import { withInlinedSvgs } from './lib/inlined-svgs';
 import { postId, SHOW_DRAFTS } from './lib/post-files';
 
@@ -20,6 +21,9 @@ const posts = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
+    // The category (栏目) the post is listed under: src/lib/categories.ts. Required, so a post never
+    // lands in the wrong one unnoticed.
+    category: z.enum(CATEGORY_IDS),
     tags: z.array(z.string()).default([]),
     // Drafts render in `astro dev` and are left out of production builds.
     draft: z.boolean().default(false),

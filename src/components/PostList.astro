@@ -1,12 +1,14 @@
 ---
 /*
- * Waterfall list: one row per post. Columns are date, post (title, description, tags) and a timeline
- * cell where the post's reading time is drawn as a span (a dimension line) on the list's shared
- * minute axis.
+ * Waterfall list: one row per post. Columns are date, post (title, description, category and tags) and
+ * a timeline cell where the post's reading time is drawn as a span (a dimension line) on the list's
+ * shared minute axis, in the pigment of the post's category.
  */
 import TitleSegments from './TitleSegments.astro';
 import TagList from './TagList.astro';
-import { laneVar, type Axis, type PostSummary } from '../lib/posts';
+import CategoryLink from './CategoryLink.astro';
+import { laneVar } from '../lib/categories';
+import type { Axis, PostSummary } from '../lib/posts';
 import { isoDate, pct, tickLabel } from '../lib/format';
 import { LANG, type Locale } from '../lib/i18n';
 import { UI } from '../lib/ui';
@@ -17,9 +19,12 @@ interface Props {
   axis: Axis;
   /** Heading level of the post titles, so the outline stays correct on every page. */
   titleTag?: 'h2' | 'h3';
+  /** Name each post's category, the label of its span's color. Off where the list is one category. */
+  showCategory?: boolean;
+  showTags?: boolean;
 }
 
-const { locale, items, axis, titleTag: TitleTag = 'h3' } = Astro.props;
+const { locale, items, axis, titleTag: TitleTag = 'h3', showCategory = true, showTags = true } = Astro.props;
 const t = UI[locale];
 const intervals = axis.ticks.length - 1;
 ---
@@ -36,14 +41,19 @@ const intervals = axis.ticks.length - 1;
     </div>
   </div>
   <ol class="wf-rows">
-    {items.map(({ post, url, lane, minutes, draft }) => (
-      <li class:list={['wf-row', { 'is-draft': draft }]} style={`--lane: ${laneVar(lane)}; --dur: ${minutes}`}>
+    {items.map(({ post, url, category, minutes, draft }) => (
+      <li class:list={['wf-row', { 'is-draft': draft }]} style={`--lane: ${laneVar(category)}; --dur: ${minutes}`}>
         <time class="c-date" datetime={isoDate(post.data.pubDate)}>{isoDate(post.data.pubDate)}</time>
         <div class="c-post">
           {/* lang-mark: a post that exists only in the other language (not translated yet); kept on one line, so no space is set between the marks and the title */}
           <TitleTag class="post-title" lang={post.data.lang}>{draft && <span class="draft-mark" lang={LANG[locale]}>{t.draft}</span>}{post.locale !== locale && <span class="lang-mark" aria-hidden="true">{t.otherLanguage.mark}</span>}<a href={url}>{post.locale !== locale && <span class="sr-only" lang={LANG[locale]}>{t.otherLanguage.prefix}</span>}<TitleSegments title={post.data.title} /></a></TitleTag>
           <p class="post-desc" lang={post.data.lang}>{post.data.description}</p>
-          <TagList tags={post.data.tags} locale={locale} />
+          {(showCategory || (showTags && post.data.tags.length > 0)) && (
+            <div class="post-meta">
+              {showCategory && <CategoryLink category={category} locale={locale} />}
+              {showTags && <TagList tags={post.data.tags} locale={locale} />}
+            </div>
+          )}
         </div>
         <div class="c-time">
           <div class="span-row"><span class="bar" aria-hidden="true"></span><span class="dur"><span class="sr-only">{t.readingTimeOf}</span>{minutes} min</span></div>

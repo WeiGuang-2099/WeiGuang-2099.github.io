@@ -2,6 +2,7 @@
 title: "DDIA 读书笔记 04：编码与演化"
 description: "《数据密集型应用系统设计》第一版第四章的笔记：JSON、Thrift、Protocol Buffers 和 Avro 怎样把数据编码成字节，模式怎样演化才能让新旧代码互相读懂，以及数据经过数据库、服务调用和消息传递时各自需要怎样的兼容性。"
 pubDate: 2026-10-05 21:00:00
+category: reading-notes
 tags: ["ddia", "distributed-systems", "reading-notes"]
 ---
 

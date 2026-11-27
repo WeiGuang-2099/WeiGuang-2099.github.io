@@ -2,6 +2,7 @@
 title: "DDIA 读书笔记 09：一致性与共识"
 description: "《数据密集型应用系统设计》第一版第九章的笔记：线性一致性保证了什么、代价在哪里，因果顺序和全序有什么不同，全序广播为什么等价于共识，两阶段提交为什么会卡住，以及共识算法和 ZooKeeper 这样的协调服务能做什么。"
 pubDate: 2026-10-08 22:00:00
+category: reading-notes
 tags: ["ddia", "distributed-systems", "reading-notes"]
 ---
 

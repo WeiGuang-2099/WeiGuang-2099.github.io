@@ -1,4 +1,5 @@
-import { LANE_ORDER, tagSlug, TOPIC_LANES, type Lane, type PostSummary } from './posts';
+import { CATEGORY_IDS, type CategoryId } from './categories';
+import { tagSlug, type PostSummary } from './posts';
 
 export interface TagGroup {
   slug: string;
@@ -6,10 +7,8 @@ export interface TagGroup {
   name: string;
   items: PostSummary[];
   minutes: number;
-  /** reading time per lane, for the stacked bar on /tags/ */
-  lanes: { lane: Lane; minutes: number }[];
-  /** set when the tag itself names a topic lane */
-  lane?: Lane;
+  /** reading time per category, for the stacked bar on /tags/ */
+  categories: { category: CategoryId; minutes: number }[];
 }
 
 export function groupByTag(all: PostSummary[]): TagGroup[] {
@@ -22,8 +21,7 @@ export function groupByTag(all: PostSummary[]): TagGroup[] {
       seen.add(slug);
       let group = groups.get(slug);
       if (!group) {
-        const lane = (TOPIC_LANES as readonly string[]).includes(slug) ? (slug as Lane) : undefined;
-        group = { slug, name: tag, items: [], minutes: 0, lanes: [], lane };
+        group = { slug, name: tag, items: [], minutes: 0, categories: [] };
         groups.set(slug, group);
       }
       group.items.push(item);
@@ -31,9 +29,9 @@ export function groupByTag(all: PostSummary[]): TagGroup[] {
     }
   }
   for (const group of groups.values()) {
-    group.lanes = LANE_ORDER.map((lane) => ({
-      lane,
-      minutes: group.items.filter((i) => i.lane === lane).reduce((sum, i) => sum + i.minutes, 0),
+    group.categories = CATEGORY_IDS.map((category) => ({
+      category,
+      minutes: group.items.filter((i) => i.category === category).reduce((sum, i) => sum + i.minutes, 0),
     })).filter((entry) => entry.minutes > 0);
   }
   return [...groups.values()].sort(

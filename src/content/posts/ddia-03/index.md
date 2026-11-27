@@ -2,6 +2,7 @@
 title: "DDIA 读书笔记 03：存储与检索"
 description: "《数据密集型应用系统设计》第一版第三章的笔记：哈希索引、SSTable 和 LSM 树、B 树怎样把数据存到磁盘上又找回来，两类存储引擎各自的代价，以及数据仓库为什么改用列式存储。"
 pubDate: 2026-10-05 20:00:00
+category: reading-notes
 tags: ["ddia", "distributed-systems", "reading-notes"]
 ---
 

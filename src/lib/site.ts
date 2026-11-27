@@ -9,12 +9,12 @@ export const SITE = {
 } as const;
 
 /**
- * Header navigation. Paths are written without the edition prefix (src/lib/i18n.ts adds /en/), labels
- * come from UI[locale].nav, and `match` decides which section a path belongs to.
+ * Header navigation after the categories, which come first (src/components/SiteHeader.astro). Paths are
+ * written without the edition prefix (src/lib/i18n.ts adds /en/), labels come from UI[locale].nav, and
+ * `match` decides which section a path belongs to. A post belongs to its category; the tags and the
+ * feed are linked from the footer.
  */
 export const NAV = [
-  { key: 'archive', href: '/archive/', match: (path: string) => path.startsWith('/archive') || path.startsWith('/posts/') },
-  { key: 'tags', href: '/tags/', match: (path: string) => path.startsWith('/tags') },
+  { key: 'archive', href: '/archive/', match: (path: string) => path.startsWith('/archive') },
   { key: 'about', href: '/about/', match: (path: string) => path.startsWith('/about') },
-  { key: 'rss', href: '/rss.xml', match: () => false },
 ] as const;

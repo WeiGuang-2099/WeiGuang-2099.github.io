@@ -2,6 +2,7 @@
 title: "DDIA 读书笔记 07：事务"
 description: "《数据密集型应用系统设计》第一版第七章的笔记：ACID 的四个字母各自承诺了什么，读已提交和快照隔离挡住了哪些竞态、漏掉了哪些，写偏斜和幻读为什么难防，以及实现可串行化的三种办法。"
 pubDate: 2026-10-08 20:00:00
+category: reading-notes
 tags: ["ddia", "distributed-systems", "reading-notes"]
 ---
 

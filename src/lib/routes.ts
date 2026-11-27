@@ -5,23 +5,26 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
 import { getPosts, listAxis, postUrl, summarize } from './posts';
+import { groupByCategory } from './categories';
 import { groupByTag } from './tags';
 import { LANG, localePath, type Locale } from './i18n';
 import { SITE } from './site';
 import { UI } from './ui';
 
 /**
- * One page per post that exists in the edition. Previous and next follow the edition's list, which
- * also holds the posts that are only in the other language.
+ * One page per post that exists in the edition. Previous and next stay in the post's category and
+ * follow the edition's list, which also holds the posts that are only in the other language. The
+ * first and the last post of a category (and the only one) have no link on that side.
  */
 export async function postPaths(locale: Locale) {
   const posts = await getPosts(locale);
   const axisMax = listAxis((await summarize(posts)).map((s) => s.minutes)).max;
-  return posts.flatMap((post, i) =>
-    post.locale === locale
-      ? [{ params: { slug: post.id }, props: { locale, post, newer: posts[i - 1], older: posts[i + 1], axisMax } }]
-      : [],
-  );
+  return posts.flatMap((post) => {
+    if (post.locale !== locale) return [];
+    const category = posts.filter((other) => other.data.category === post.data.category);
+    const i = category.indexOf(post);
+    return [{ params: { slug: post.id }, props: { locale, post, newer: category[i - 1], older: category[i + 1], axisMax } }];
+  });
 }
 
 /** One page per tag, on the same scale as the home page and the archive, so a bar means the same everywhere. */
@@ -29,6 +32,16 @@ export async function tagPaths(locale: Locale) {
   const all = await summarize(await getPosts(locale));
   const axis = listAxis(all.map((s) => s.minutes));
   return groupByTag(all).map((group) => ({ params: { tag: group.slug }, props: { locale, group, axis } }));
+}
+
+/**
+ * One page per category that has posts in the edition (/projects/, /en/projects/ ...), on the same
+ * scale as every other list. A category announced before its first post has no page yet.
+ */
+export async function categoryPaths(locale: Locale) {
+  const all = await summarize(await getPosts(locale));
+  const axis = listAxis(all.map((s) => s.minutes));
+  return groupByCategory(all).map((group) => ({ params: { category: group.id }, props: { locale, group, axis } }));
 }
 
 /** The edition's feed: /rss.xml in Chinese, /en/rss.xml in English. */
