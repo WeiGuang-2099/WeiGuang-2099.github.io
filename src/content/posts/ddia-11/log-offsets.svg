@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="180" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- A topic with two partitions, each an append-only log drawn as a row of cells holding the offsets
+       (partition 0 at y 44-70 with offsets 0-8, partition 1 at y 150-176 with offsets 0-6). The row labels
+       sit in the first 16%; every cell is 8% wide, so cell i of a row spans 16+8i to 24+8i percent. A
+       dashed cell after the last message is where the next one will be appended. Consumer group A has one
+       consumer per partition, pointing down at offset 6 of partition 0 and offset 4 of partition 1;
+       consumer group B, another application, points up at offset 2 of partition 0, where it is replaying
+       old messages. All lines are vertical, so the arrowheads, drawn in nested svgs at the line ends, hold
+       at any width. No viewBox: text keeps its size. Colors are the site's tokens, with light-theme
+       fallbacks. -->
+
+  <!-- partition 0 -->
+  <text x="0" y="62" style="font-size: 14px; fill: var(--ink, #1B222B)">分区 0</text>
+  <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+    <rect x="16%" y="44.5" width="8%" height="26" />
+    <rect x="24%" y="44.5" width="8%" height="26" />
+    <rect x="32%" y="44.5" width="8%" height="26" />
+    <rect x="40%" y="44.5" width="8%" height="26" />
+    <rect x="48%" y="44.5" width="8%" height="26" />
+    <rect x="56%" y="44.5" width="8%" height="26" />
+    <rect x="64%" y="44.5" width="8%" height="26" />
+    <rect x="72%" y="44.5" width="8%" height="26" />
+    <rect x="80%" y="44.5" width="8%" height="26" />
+  </g>
+  <rect x="88%" y="44.5" width="8%" height="26" style="fill: none; stroke: var(--faint, #757D87); stroke-width: 1; stroke-dasharray: 2 3" />
+  <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--ink, #1B222B)">
+    <text x="20%" y="62">0</text>
+    <text x="28%" y="62">1</text>
+    <text x="36%" y="62">2</text>
+    <text x="44%" y="62">3</text>
+    <text x="52%" y="62">4</text>
+    <text x="60%" y="62">5</text>
+    <text x="68%" y="62">6</text>
+    <text x="76%" y="62">7</text>
+    <text x="84%" y="62">8</text>
+  </g>
+
+  <!-- partition 1 -->
+  <text x="0" y="168" style="font-size: 14px; fill: var(--ink, #1B222B)">分区 1</text>
+  <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+    <rect x="16%" y="150.5" width="8%" height="26" />
+    <rect x="24%" y="150.5" width="8%" height="26" />
+    <rect x="32%" y="150.5" width="8%" height="26" />
+    <rect x="40%" y="150.5" width="8%" height="26" />
+    <rect x="48%" y="150.5" width="8%" height="26" />
+    <rect x="56%" y="150.5" width="8%" height="26" />
+    <rect x="64%" y="150.5" width="8%" height="26" />
+  </g>
+  <rect x="72%" y="150.5" width="8%" height="26" style="fill: none; stroke: var(--faint, #757D87); stroke-width: 1; stroke-dasharray: 2 3" />
+  <g text-anchor="middle" style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--ink, #1B222B)">
+    <text x="20%" y="168">0</text>
+    <text x="28%" y="168">1</text>
+    <text x="36%" y="168">2</text>
+    <text x="44%" y="168">3</text>
+    <text x="52%" y="168">4</text>
+    <text x="60%" y="168">5</text>
+    <text x="68%" y="168">6</text>
+  </g>
+
+  <!-- the consumers: group A has one consumer per partition, group B replays partition 0 -->
+  <g text-anchor="middle" style="font-size: 12.5px; fill: var(--ink, #1B222B)">
+    <text x="68%" y="18">组 A 的消费者 1</text>
+    <text x="52%" y="124">组 A 的消费者 2</text>
+    <text x="36%" y="104">组 B 的消费者</text>
+  </g>
+  <text x="96%" y="90" text-anchor="end" style="font-size: 12.5px; fill: var(--muted, #5D6672)">新消息追加到末尾</text>
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="68%" y1="24" x2="68%" y2="37" />
+    <line x1="52%" y1="130" x2="52%" y2="143" />
+    <line x1="36%" y1="79" x2="36%" y2="90" />
+  </g>
+  <g style="fill: var(--ink, #1B222B)">
+    <svg x="68%" y="44" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    <svg x="52%" y="150" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    <svg x="36%" y="71" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+  </g>
+</svg>
