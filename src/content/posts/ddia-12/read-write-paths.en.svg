@@ -1,0 +1,44 @@
+<!-- English version of read-write-paths.svg, written by npm run translate from source 9e92182417fc3154. Adjust the layout here if a label does not fit; the file is only written again when read-write-paths.svg changes. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="240" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- Where the write path ends and the read path begins, for full-text search done three ways. A key at
+       the top, one entry per line (the English entries do not fit side by side at 304px): the write path
+       (work done ahead of time) in ink, the read path (work done when someone asks) in muted grey. Then
+       three rows (at 54, 116 and 178px), each a title, an 8px bar across the full width split at the
+       boundary, and a line under it saying what each side does: no index, the boundary at 6% (nothing to
+       do on write, a scan of every document on read); a full-text index, at 50%; a cache of the results of
+       common queries, at 86%. The proportions are illustrative. No viewBox: text keeps its size, the bars
+       are placed in percentages. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- the key -->
+  <g style="font-size: 12.5px; fill: var(--muted, #5D6672)">
+    <rect x="0" y="5" width="14" height="8" rx="1" style="fill: var(--ink, #1B222B)" />
+    <text x="20" y="13">write path: do it ahead of time</text>
+    <rect x="0" y="23" width="14" height="8" rx="1" style="fill: var(--muted, #5D6672)" />
+    <text x="20" y="31">read path: do it only on request</text>
+  </g>
+
+  <!-- three places to draw the boundary -->
+  <g style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">
+    <text x="0" y="68">no index</text>
+    <text x="0" y="130">full-text index</text>
+    <text x="0" y="192">cache results of common queries</text>
+  </g>
+  <g style="fill: var(--ink, #1B222B)">
+    <rect x="0" y="78" width="6%" height="8" rx="1" />
+    <rect x="0" y="140" width="50%" height="8" rx="1" />
+    <rect x="0" y="202" width="86%" height="8" rx="1" />
+  </g>
+  <g style="fill: var(--muted, #5D6672)">
+    <rect x="6.5%" y="78" width="93.5%" height="8" rx="1" />
+    <rect x="50.5%" y="140" width="49.5%" height="8" rx="1" />
+    <rect x="86.5%" y="202" width="13.5%" height="8" rx="1" />
+  </g>
+  <g style="font-size: 12.5px; fill: var(--muted, #5D6672)">
+    <text x="0" y="104">write: do nothing</text>
+    <text x="100%" y="104" text-anchor="end">read: scan all documents</text>
+    <text x="0" y="166">write: update index</text>
+    <text x="100%" y="166" text-anchor="end">read: look up index</text>
+    <text x="0" y="228">write: update cache</text>
+    <text x="100%" y="228" text-anchor="end">read: fetch cached result</text>
+  </g>
+</svg>
