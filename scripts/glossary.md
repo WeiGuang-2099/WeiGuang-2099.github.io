@@ -10,6 +10,7 @@ don't want, add a line here and translate the post again.
 - 读书笔记 in a title: Reading Notes. "DDIA 读书笔记 01：……" becomes "DDIA Reading Notes 01: ...".
 - 《数据密集型应用系统设计》: *Designing Data-Intensive Applications* (DDIA), by Martin Kleppmann. 中译本: the Chinese translation of the book.
 - 道格拉斯·亚当斯《基本无害》: Douglas Adams, *Mostly Harmless*. 格蕾丝·霍珀: Grace Murray Hopper. Poons 先生 / Cake 太太: Mr. Poons / Mrs. Cake.
+- 托马斯·阿奎那《神学大全》: Thomas Aquinas, *Summa Theologica*. 《星球大战》: *Star Wars*.
 - 《诗经》: the Book of Songs. 《诗经·周颂·敬之》: "Jing Zhi", in the Hymns of Zhou of the Book of Songs; keep the Chinese title beside it.
 
 ## DDIA terms
@@ -59,6 +60,19 @@ don't want, add a line here and translate the post again.
 - 因果关系: causality; 因果依赖: causal dependency; 因果一致: causally consistent; 全序 / 偏序: total order / partial order; 序列号: sequence number; 全序广播 / 原子广播: total order broadcast / atomic broadcast; 可靠交付 / 全序交付: reliable delivery / totally ordered delivery; 状态机复制: state machine replication; 顺序一致性: sequential consistency; 自增并读取: increment-and-get
 - 原子提交: atomic commit; FLP 结论: the FLP result; 两阶段提交 / 三阶段提交: two-phase commit (2PC) / three-phase commit (3PC); 协调者: coordinator; 事务管理器: transaction manager; 参与者: participant; 准备: prepare; 提交点: commit point; 存疑: in doubt; 补偿事务: compensating transaction; 恰好一次: exactly once; 孤立的存疑事务: orphaned in-doubt transaction; 启发式决策: heuristic decision
 - 一致同意 / 完整性 / 有效性 / 终止: uniform agreement / integrity / validity / termination; 提议 / 决定（共识）: propose / decide; 视图戳复制: Viewstamped Replication; 纪元编号 / 选票编号 / 视图编号 / 任期号: epoch number / ballot number / view number / term number; 动态成员: dynamic membership; 成员服务: membership service; 临时节点: ephemeral node
+- 记录系统: system of record; 派生数据 / 派生数据系统: derived data / derived data system; 批处理 / 流处理: batch processing / stream processing; 在线系统 / 离线系统 / 近实时系统: online / offline / near-real-time system; 吞吐量: throughput
+- 工作集: working set; 统一接口: uniform interface; 逻辑与布线分离: separation of logic and wiring; 分布式文件系统: distributed filesystem; 纠删码: erasure coding; 让计算靠近数据: putting the computation near the data; mapper / reducer stay in English; 混洗: the shuffle; 工作流 / 工作流调度器: workflow / workflow scheduler
+- 排序合并连接: sort-merge join; 二次排序: secondary sort; 分组: grouping; 会话化: sessionization; 热键: hot key; reduce 端连接 / map 端连接: reduce-side join / map-side join; 广播哈希连接: broadcast hash join; 分区哈希连接: partitioned hash join; map 端合并连接: map-side merge join
+- 批量加载: bulk loading; 最小化不可逆性: minimizing irreversibility; 大规模并行处理: massively parallel processing (MPP); 数据湖: data lake; 寿司原则: the sushi principle; 读时模式 / 写时模式: schema-on-read / schema-on-write
+- 中间状态: intermediate state; 物化（把中间状态写下来）: materialization; 数据流引擎: dataflow engine; 算子: operator; 血缘: lineage; 检查点: checkpoint; 确定性的: deterministic; 批量同步并行: bulk synchronous parallel (BSP); 向量化处理: vectorized processing; 有界 / 无界: bounded / unbounded
+- 事件: event; 生产者 / 消费者: producer / consumer; 主题: topic; 背压: backpressure; 负载均衡: load balancing; 确认: acknowledgment; 重新投递: redelivery; 基于日志的消息代理: log-based message broker; 偏移量: offset; 消费者组: consumer group; 重放: replay
+- 双写: dual writes; 变更数据捕获: change data capture (CDC); 日志压实: log compaction; 事件溯源: event sourcing; 命令（事件溯源）: command; 命令查询职责分离: command query responsibility segregation (CQRS)
+- 复杂事件处理: complex event processing (CEP); 流分析: stream analytics; 事件时间 / 处理时间: event time / processing time; 掉队者: straggler; 滚动窗口 / 跳跃窗口 / 滑动窗口 / 会话窗口: tumbling / hopping / sliding / session window; 流-流连接 / 流-表连接 / 表-表连接: stream-stream / stream-table / table-table join; 扩充: enrichment; 缓慢变化维度: slowly changing dimension (SCD)
+- 恰好一次语义: exactly-once semantics; 有效一次: effectively-once; 微批: microbatching; 屏障: barrier; 幂等性 / 幂等的: idempotence / idempotent
+- 数据集成: data integration; 重新处理: reprocessing; Lambda 架构: lambda architecture; 拆解数据库: unbundling databases; 联邦数据库: federated database; 把数据库里外翻过来: database inside-out; 写路径 / 读路径: write path / read path; 离线优先: offline-first; 本地优先软件: local-first software
+- 端到端论证: the end-to-end argument; 重复抑制: duplicate suppression; 请求 ID: request ID; 唯一性约束: uniqueness constraint; 及时性 / 完整性: timeliness / integrity; 避免协调: coordination-avoiding; 审计: auditing; Merkle 树: Merkle tree; 证书透明度: Certificate Transparency
+- 监控 has two senses. In the last section of DDIA notes 12 (做正确的事, about privacy and tracking) it is surveillance: 监控基础设施: surveillance infrastructure, and the thought experiment that swaps 数据 for 监控 swaps "data" for "surveillance" (监控驱动的组织: surveillance-driven organization; 监控流 / 监控仓库: surveillance stream / surveillance warehouse). Everywhere else (监控作业, 监控消费者落后了多少) it is monitoring.
+- 预测分析: predictive analytics; 算法监狱: algorithmic prison; 偏见的洗钱: money laundering for bias; 道德想象力: moral imagination; 系统思维: systems thinking; 数据尾气: data exhaust; 有毒资产: toxic asset; 《通用数据保护条例》: the General Data Protection Regulation (GDPR)
 
 ## Other
 
