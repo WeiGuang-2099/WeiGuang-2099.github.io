@@ -1,0 +1,94 @@
+<!-- English version of map-side-joins.svg, written by npm run translate from source 93fcfab166128a83. Adjust the layout here if a label does not fit; the file is only written again when map-side-joins.svg changes. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="408" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- Two map-side hash joins, stacked as two panels (at 0 and 216px), each with two mappers in the columns
+       0-47.5% and 52-99.5% (centres at 24% and 76%). The user database comes in from the top, the activity
+       events from the bottom. Broadcast hash join: the whole small input (one box across the full width)
+       goes into both mappers, which each hold a hash table of all users, and the events arrive in arbitrary
+       blocks. Partitioned hash join: both inputs are partitioned alike, by the last digit of the user ID
+       (0-4 and 5-9), and each mapper loads only its own partition of users and reads the same partition of
+       events. All lines are vertical, so the arrowheads, drawn in nested svgs at the line ends, hold at
+       any width. No viewBox: text keeps its size, columns are placed in percentages. Colors are the site's
+       tokens, with light-theme fallbacks. -->
+
+  <!-- 1: broadcast hash join -->
+  <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">broadcast hash join</text>
+  <text x="0" y="33" style="font-size: 12.5px; fill: var(--muted, #5D6672)">small input copied in full to every mapper</text>
+  <rect x="0.5" y="44.5" width="99%" height="28" style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+  <text x="50%" y="63" text-anchor="middle" style="font-size: 14px; fill: var(--ink, #1B222B)">user database<tspan dx="8" style="font-size: 12.5px; fill: var(--muted, #5D6672)">small input, all records</tspan></text>
+  <g style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1">
+    <rect x="0.5" y="93.5" width="47.5%" height="48" />
+    <rect x="52%" y="93.5" width="47.5%" height="48" />
+  </g>
+  <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+    <rect x="0.5" y="161.5" width="47.5%" height="28" />
+    <rect x="52%" y="161.5" width="47.5%" height="28" />
+  </g>
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="24%" y1="73" x2="24%" y2="86" />
+    <line x1="76%" y1="73" x2="76%" y2="86" />
+    <line x1="24%" y1="149" x2="24%" y2="161" />
+    <line x1="76%" y1="149" x2="76%" y2="161" />
+  </g>
+  <g style="fill: var(--ink, #1B222B)">
+    <svg x="24%" y="93" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    <svg x="76%" y="93" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    <svg x="24%" y="142" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+    <svg x="76%" y="142" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+  </g>
+  <g text-anchor="middle">
+    <g style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">
+      <text x="24%" y="113">mapper 1</text>
+      <text x="76%" y="113">mapper 2</text>
+    </g>
+    <g style="font-size: 12.5px; fill: var(--muted, #5D6672)">
+      <text x="24%" y="132">hash table: all users</text>
+      <text x="76%" y="132">hash table: all users</text>
+      <text x="24%" y="180">activity events, block 1</text>
+      <text x="76%" y="180">activity events, block 2</text>
+    </g>
+  </g>
+
+  <!-- 2: partitioned hash join -->
+  <svg x="0" y="216" overflow="visible">
+    <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">partitioned hash join</text>
+    <text x="0" y="33" style="font-size: 12.5px; fill: var(--muted, #5D6672)">both inputs partitioned alike; one per mapper</text>
+    <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+      <rect x="0.5" y="44.5" width="47.5%" height="28" />
+      <rect x="52%" y="44.5" width="47.5%" height="28" />
+      <rect x="0.5" y="161.5" width="47.5%" height="28" />
+      <rect x="52%" y="161.5" width="47.5%" height="28" />
+    </g>
+    <g style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1">
+      <rect x="0.5" y="93.5" width="47.5%" height="48" />
+      <rect x="52%" y="93.5" width="47.5%" height="48" />
+    </g>
+    <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+      <line x1="24%" y1="73" x2="24%" y2="86" />
+      <line x1="76%" y1="73" x2="76%" y2="86" />
+      <line x1="24%" y1="149" x2="24%" y2="161" />
+      <line x1="76%" y1="149" x2="76%" y2="161" />
+    </g>
+    <g style="fill: var(--ink, #1B222B)">
+      <svg x="24%" y="93" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+      <svg x="76%" y="93" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+      <svg x="24%" y="142" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+      <svg x="76%" y="142" overflow="visible"><path d="M-3.5 8H3.5L0 0Z" /></svg>
+    </g>
+    <g text-anchor="middle">
+      <g style="font-size: 14px; fill: var(--ink, #1B222B)">
+        <text x="24%" y="63">users<tspan dx="6" style="font-size: 12.5px; fill: var(--muted, #5D6672)">last digit</tspan><tspan dx="4" style="font-family: var(--font-mono, monospace); font-size: 12.5px">0–4</tspan></text>
+        <text x="76%" y="63">users<tspan dx="6" style="font-size: 12.5px; fill: var(--muted, #5D6672)">last digit</tspan><tspan dx="4" style="font-family: var(--font-mono, monospace); font-size: 12.5px">5–9</tspan></text>
+      </g>
+      <g style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">
+        <text x="24%" y="113">mapper 1</text>
+        <text x="76%" y="113">mapper 2</text>
+      </g>
+      <g style="font-size: 12.5px; fill: var(--muted, #5D6672)">
+        <text x="24%" y="132">hash table: users<tspan dx="4" style="font-family: var(--font-mono, monospace)">0–4</tspan></text>
+        <text x="76%" y="132">hash table: users<tspan dx="4" style="font-family: var(--font-mono, monospace)">5–9</tspan></text>
+        <text x="24%" y="180">events, last digit<tspan dx="4" style="font-family: var(--font-mono, monospace)">0–4</tspan></text>
+        <text x="76%" y="180">events, last digit<tspan dx="4" style="font-family: var(--font-mono, monospace)">5–9</tspan></text>
+      </g>
+    </g>
+  </svg>
+</svg>

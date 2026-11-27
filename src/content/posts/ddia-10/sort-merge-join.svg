@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="280" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- A reduce-side sort-merge join, after the book's example of user activity events joined with a user
+       database. The two inputs sit side by side: activity events in the left column (0-47.5%), the user
+       database in the right column (52-99.5%), each a box with a field legend and its records. User 104's
+       records are in ink, user 173's in muted grey. Each input goes through map (an arrow down at 24% and
+       76%) into the shuffle, a band across the full width (y 136-166) that partitions and sorts by user ID.
+       Below it are two reducer calls, one per user, each with the user record first (secondary sort) and
+       then that user's events in time order; the call for user 104 is framed in ink. All lines are
+       vertical, so the arrowheads, drawn in nested svgs at the line ends, hold at any width. No viewBox:
+       text keeps its size, columns are placed in percentages. Colors are the site's tokens, with
+       light-theme fallbacks. -->
+
+  <!-- the two inputs -->
+  <g style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">
+    <text x="0" y="14">活动事件</text>
+    <text x="52%" y="14">用户数据库</text>
+  </g>
+  <g style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1">
+    <rect x="0.5" y="24.5" width="47.5%" height="86" />
+    <rect x="52%" y="24.5" width="47.5%" height="86" />
+  </g>
+  <text x="8" y="44" style="font-size: 12.5px; fill: var(--muted, #5D6672)">用户 ID、网址、时间</text>
+  <g style="font-family: var(--font-mono, monospace); font-size: 12.5px">
+    <text x="8" y="66" style="fill: var(--ink, #1B222B)">104<tspan dx="10">/a</tspan><tspan dx="10">10:01</tspan></text>
+    <text x="8" y="84" style="fill: var(--muted, #5D6672)">173<tspan dx="10">/x</tspan><tspan dx="10">10:03</tspan></text>
+    <text x="8" y="102" style="fill: var(--ink, #1B222B)">104<tspan dx="10">/b</tspan><tspan dx="10">10:05</tspan></text>
+  </g>
+  <svg x="52%" y="0" overflow="visible">
+    <text x="8" y="44" style="font-size: 12.5px; fill: var(--muted, #5D6672)">用户 ID、出生年份</text>
+    <g style="font-family: var(--font-mono, monospace); font-size: 12.5px">
+      <text x="8" y="66" style="fill: var(--ink, #1B222B)">104<tspan dx="10">1989</tspan></text>
+      <text x="8" y="84" style="fill: var(--muted, #5D6672)">173<tspan dx="10">1992</tspan></text>
+    </g>
+  </svg>
+
+  <!-- map, then the shuffle -->
+  <g style="stroke: var(--ink, #1B222B); stroke-width: 1">
+    <line x1="24%" y1="111" x2="24%" y2="129" />
+    <line x1="76%" y1="111" x2="76%" y2="129" />
+    <line x1="24%" y1="167" x2="24%" y2="180" />
+    <line x1="76%" y1="167" x2="76%" y2="180" />
+  </g>
+  <g style="fill: var(--ink, #1B222B)">
+    <svg x="24%" y="136" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    <svg x="76%" y="136" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    <svg x="24%" y="187" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+    <svg x="76%" y="187" overflow="visible"><path d="M-3.5 -8H3.5L0 0Z" /></svg>
+  </g>
+  <g style="font-family: var(--font-mono, monospace); font-size: 12.5px; fill: var(--muted, #5D6672)">
+    <svg x="24%" y="127" overflow="visible"><text x="8" y="0">map</text></svg>
+    <svg x="76%" y="127" overflow="visible"><text x="8" y="0">map</text></svg>
+  </g>
+  <rect x="0.5" y="136.5" width="99%" height="30" style="fill: var(--tint, #ECEEEA); stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+  <text x="50%" y="156" text-anchor="middle" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">混洗<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">按用户 ID 分区、排序</tspan></text>
+
+  <!-- one reducer call per user: the user record first, then the events in time order -->
+  <rect x="0.5" y="187.5" width="47.5%" height="88" style="fill: none; stroke: var(--ink, #1B222B); stroke-width: 1" />
+  <rect x="52%" y="187.5" width="47.5%" height="88" style="fill: none; stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+  <text x="8" y="207" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">reducer：用户<tspan dx="4" style="font-family: var(--font-mono, monospace); font-size: 12.5px">104</tspan></text>
+  <g style="font-size: 12.5px">
+    <text x="8" y="229" style="font-family: var(--font-mono, monospace); font-weight: 500; fill: var(--ink, #1B222B)">1989<tspan dx="10" style="font-family: var(--font-text, serif); font-weight: 400; fill: var(--muted, #5D6672)">用户记录</tspan></text>
+    <text x="8" y="247" style="font-family: var(--font-mono, monospace); fill: var(--ink, #1B222B)">/a<tspan dx="10">10:01</tspan><tspan dx="10" style="font-family: var(--font-text, serif); fill: var(--muted, #5D6672)">事件</tspan></text>
+    <text x="8" y="265" style="font-family: var(--font-mono, monospace); fill: var(--ink, #1B222B)">/b<tspan dx="10">10:05</tspan><tspan dx="10" style="font-family: var(--font-text, serif); fill: var(--muted, #5D6672)">事件</tspan></text>
+  </g>
+  <svg x="52%" y="0" overflow="visible">
+    <text x="8" y="207" style="font-size: 14px; font-weight: 500; fill: var(--muted, #5D6672)">reducer：用户<tspan dx="4" style="font-family: var(--font-mono, monospace); font-size: 12.5px">173</tspan></text>
+    <g style="font-size: 12.5px; fill: var(--muted, #5D6672)">
+      <text x="8" y="229" style="font-family: var(--font-mono, monospace); font-weight: 500">1992<tspan dx="10" style="font-family: var(--font-text, serif); font-weight: 400">用户记录</tspan></text>
+      <text x="8" y="247" style="font-family: var(--font-mono, monospace)">/x<tspan dx="10">10:03</tspan><tspan dx="10" style="font-family: var(--font-text, serif)">事件</tspan></text>
+    </g>
+  </svg>
+</svg>

@@ -1,0 +1,61 @@
+<!-- English version of materialization.svg, written by npm run translate from source 55fe32409a194da9. Adjust the layout here if a label does not fit; the file is only written again when materialization.svg changes. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="390" style="font-family: var(--font-text, 'Noto Serif SC', 'Songti SC', serif); overflow: visible">
+  <!-- The same two-stage workflow run twice, as two timelines stacked in panels (at 0 and 224px). Time runs
+       from left to right across the full width, so every bar is placed in percentages; the proportions are
+       illustrative. Each task is an 8px bar. MapReduce: three tasks of job 1 (one of them a straggler, in
+       ink), then the output is written to HDFS and replicated, and only then do the two tasks of job 2
+       start (a dashed line at 62% marks the wait); the workflow finishes at 88%. Dataflow engine: the same
+       three tasks of operator 1 (the dashed line starts below the straggler's label, so it never crosses
+       it), while the two tasks of operator 2 start almost at once and consume the
+       output as it is produced; the workflow finishes at 58%. A time axis with a finish tick closes each
+       panel. No viewBox: text keeps its size. Colors are the site's tokens, with light-theme fallbacks. -->
+
+  <!-- 1: MapReduce -->
+  <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">MapReduce<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">each job's output is written to HDFS</tspan></text>
+  <g style="font-size: 12.5px; fill: var(--muted, #5D6672)">
+    <text x="1" y="37">job 1</text>
+    <text x="0" y="99">written to HDFS, replicated 3 times</text>
+    <text x="1" y="133">job 2</text>
+  </g>
+  <line x1="62%" y1="86" x2="62%" y2="168" style="stroke: var(--faint, #757D87); stroke-width: 1; stroke-dasharray: 2 3" />
+  <g style="fill: var(--muted, #5D6672)">
+    <rect x="0" y="44" width="26%" height="8" rx="1" />
+    <rect x="0" y="56" width="32%" height="8" rx="1" />
+    <rect x="62%" y="141" width="20%" height="8" rx="1" />
+    <rect x="62%" y="153" width="26%" height="8" rx="1" />
+  </g>
+  <rect x="0" y="68" width="54%" height="8" rx="1" style="fill: var(--ink, #1B222B)" />
+  <rect x="54%" y="107" width="8%" height="8" rx="1" style="fill: var(--faint, #757D87)" />
+  <svg x="54%" y="76" overflow="visible"><text x="6" y="0" style="font-size: 12.5px; fill: var(--ink, #1B222B)">slowest task</text></svg>
+  <line x1="0" y1="178.5" x2="99%" y2="178.5" style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+  <svg x="100%" y="178.5" overflow="visible"><path d="M-8 -3.5V3.5L0 0Z" style="fill: var(--rule-strong, #B1B8BB)" /></svg>
+  <line x1="88%" y1="173" x2="88%" y2="184" style="stroke: var(--ink, #1B222B); stroke-width: 1" />
+  <g style="font-size: 12.5px">
+    <text x="0" y="198" style="fill: var(--muted, #5D6672)">time</text>
+    <text x="88%" y="198" text-anchor="middle" style="fill: var(--ink, #1B222B)">done</text>
+  </g>
+
+  <!-- 2: a dataflow engine -->
+  <svg x="0" y="224" overflow="visible">
+    <text x="0" y="14" style="font-size: 14px; font-weight: 500; fill: var(--ink, #1B222B)">dataflow engine<tspan dx="8" style="font-size: 12.5px; font-weight: 400; fill: var(--muted, #5D6672)">operators pass data directly</tspan></text>
+    <g style="font-size: 12.5px; fill: var(--muted, #5D6672)">
+      <text x="0" y="37">operator 1</text>
+      <text x="0" y="99">operator 2</text>
+    </g>
+    <g style="fill: var(--muted, #5D6672)">
+      <rect x="0" y="44" width="26%" height="8" rx="1" />
+      <rect x="0" y="56" width="32%" height="8" rx="1" />
+      <rect x="4%" y="107" width="30%" height="8" rx="1" />
+      <rect x="4%" y="119" width="54%" height="8" rx="1" />
+    </g>
+    <rect x="0" y="68" width="54%" height="8" rx="1" style="fill: var(--ink, #1B222B)" />
+    <svg x="54%" y="76" overflow="visible"><text x="6" y="0" style="font-size: 12.5px; fill: var(--ink, #1B222B)">slowest task</text></svg>
+    <line x1="0" y1="140.5" x2="99%" y2="140.5" style="stroke: var(--rule-strong, #B1B8BB); stroke-width: 1" />
+    <svg x="100%" y="140.5" overflow="visible"><path d="M-8 -3.5V3.5L0 0Z" style="fill: var(--rule-strong, #B1B8BB)" /></svg>
+    <line x1="58%" y1="135" x2="58%" y2="146" style="stroke: var(--ink, #1B222B); stroke-width: 1" />
+    <g style="font-size: 12.5px">
+      <text x="0" y="160" style="fill: var(--muted, #5D6672)">time</text>
+      <text x="58%" y="160" text-anchor="middle" style="fill: var(--ink, #1B222B)">done</text>
+    </g>
+  </svg>
+</svg>
