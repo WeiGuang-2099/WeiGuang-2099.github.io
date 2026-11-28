@@ -74,6 +74,29 @@ don't want, add a line here and translate the post again.
 - 监控 has two senses. In the last section of DDIA notes 12 (做正确的事, about privacy and tracking) it is surveillance: 监控基础设施: surveillance infrastructure, and the thought experiment that swaps 数据 for 监控 swaps "data" for "surveillance" (监控驱动的组织: surveillance-driven organization; 监控流 / 监控仓库: surveillance stream / surveillance warehouse). Everywhere else (监控作业, 监控消费者落后了多少) it is monitoring.
 - 预测分析: predictive analytics; 算法监狱: algorithmic prison; 偏见的洗钱: money laundering for bias; 道德想象力: moral imagination; 系统思维: systems thinking; 数据尾气: data exhaust; 有毒资产: toxic asset; 《通用数据保护条例》: the General Data Protection Regulation (GDPR)
 
+## LLM-year terms
+
+The llm-year posts are reading notes on *What We Learned from a Year of Building with LLMs* (O'Reilly, July 2024), by Eugene Yan, Bryan Bischof, Charles Frye, Hamel Husain, Jason Liu and Shreya Shankar. Its free online edition is applied-llms.org. Where a Chinese term renders one of the book's own headings or terms, use the book's English. This edition spells it fine-tune / fine-tuning.
+
+- 【原文】 / 【扩展】, the markers in front of paragraphs: [Book] / [Extension]. [Book] marks the author's summary of the book; [Extension] marks the author's own additions. In the reflection post, 【事实】 / 【观点】 / 【我的判断】: [Fact] / [Opinion] / [My judgment].
+- 第 N 章读书笔记 in a title: Chapter N Reading Notes. 反思笔记 in a title: Reflection.
+- 战术 / 运营 / 战略: tactics / operations / strategy (the book's three chapters: Tactics, Operations, Strategy)
+- 提示 / Prompt 工程: prompting / prompt engineering; 思维链: chain-of-thought (CoT); n-shot 提示: n-shot prompting; 上下文学习: in-context learning; 预填: prefill; 精雕上下文: crafting the context (the book: "Craft Your Context Tokens")
+- 关键词检索: keyword search; 混合检索: hybrid search; 重排: reranking; 相关性 / 信息密度 / 细节程度: relevance / information density / level of detail
+- 确定性工作流: deterministic workflow; 多步流程: multi-step flow; 前缀缓存: prefix caching; 精确缓存 / 语义缓存: exact cache / semantic cache
+- 评测: evals (an eval); 断言 / 断言式单元测试: assertion / assertion-based unit tests; 成对比较: pairwise comparison; 实习生测试: the intern test; 护栏: guardrails; 无参考评测: reference-free evals; 大海捞针: needle in a haystack (NIAH); 错误分析: error analysis; 幻觉: hallucination; 事实不一致: factual inconsistency
+- 开发—生产偏差: development-prod skew; 结构性偏差 / 内容性偏差: structural skew / content-based skew; 标准漂移: criteria drift; 现地现物: genchi genbutsu; 固定版本: pinning model versions; 影子流水线: shadow pipeline
+- 人在回路: human-in-the-loop (HITL); 人在环上: human on the loop; 最小可爱好产品: minimum lovable product; 待完成的任务: jobs to be done; 偶然复杂度 / 本质复杂度: accidental / essential complexity
+- 门槛 / 预算 / 增益, the author's three kinds of product requirements: gates / budgets / nice-to-haves
+- AI 工程师: AI engineer; 派驻式工程师 / FDE: forward-deployed engineer (FDE); 解决方案工程师: solutions engineer
+- PMF: product-market fit (PMF); 套壳: a thin wrapper; 评测底盘: evaluation chassis; 数据飞轮: data flywheel; 战略性拖延: strategic procrastination; 牦牛 (the book's yak shaving): the yaks that model providers will shave
+- 半人马: centaur; 低成本认知: low-cost cognition; 能力过剩: capability overhang; 杰文斯悖论: Jevons paradox
+- 推理模型: reasoning model; 思考 token: thinking tokens; 上下文工程: context engineering; 自主性调节器: autonomy slider; 模型退役 / 弃用: model retirement / deprecation
+
+Rules for the llm-year posts:
+
+- The [Book] paragraphs are the author's Chinese summary of the book. Translate that Chinese. Do not restore the book's original sentences from memory, apart from the few English quotes the post already gives in English, which stay exactly as they are.
+
 ## Other
 
 - 天文晨光 / 航海晨光 / 民用晨光: astronomical twilight / nautical twilight / civil twilight
